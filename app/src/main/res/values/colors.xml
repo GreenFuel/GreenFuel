@@ -6,4 +6,13 @@
     <color name="white">#fff</color>
     <color name="bgofdefault">#c3c3c3</color>
     <color name="title">#ffffff</color>
+    <color name="colorDark">#000000</color>
+    <color name="colorIconBlue">#0b76dd</color>
+    <color name="colorGray1">#8a8a8a</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorGray2">#cdcdcd</color>
+    <color name="colorGray3">#e6e6e6</color>
+    <color name="transparent">#00000000</color>
+    <color name="darkGrey"> #C0C0C0</color>
+    <color name="gary">#898989</color>
 </resources>

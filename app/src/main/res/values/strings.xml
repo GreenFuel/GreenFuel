@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">GreenFuel</string>
     <string name="app_id">输入您讯飞的appid</string>
+    <string name="near">附近</string>
+    <string name="route">路线</string>
+    <string name="mine">我的</string>
+    <string name="hintKeyWordSearch">请输入关键字</string>
+    <string name="search">搜索</string>
+    <string name="route_situation">路况</string>
 </resources>
