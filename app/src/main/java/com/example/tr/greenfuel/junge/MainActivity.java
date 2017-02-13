@@ -23,6 +23,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
@@ -204,5 +205,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             mLocationClient.onDestroy();
         }
         mLocationClient = null;
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.route:
+                Intent i = new Intent(MainActivity.this,SetPath.class);
+                startActivity(i);
+                break;
+        }
     }
 }
