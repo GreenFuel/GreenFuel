@@ -1,5 +1,6 @@
 package com.example.tr.greenfuel.junge;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -27,7 +28,7 @@ import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
-        AMapLocationListener {
+        AMapLocationListener, View.OnClickListener {
     private MapView mapView=null;
     private OnLocationChangedListener mListener;
     private AMapLocationClient mLocationClient;
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         }
     }
 
-        //停止定位
+    //停止定位
     @Override
     public void deactivate() {
         mListener = null;
@@ -205,6 +206,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             mLocationClient.onDestroy();
         }
         mLocationClient = null;
+    }
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.route:

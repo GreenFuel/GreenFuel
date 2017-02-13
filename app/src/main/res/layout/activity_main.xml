@@ -49,6 +49,8 @@
                     />
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/route"
+                android:onClick="onClick"
                 android:clickable="true"
                 android:layout_width="0dp"
                 android:layout_weight="1"
