@@ -9,29 +9,136 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/linearLayout" />
+        <com.amap.api.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_above="@+id/linearLayout" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <LinearLayout
+                android:clickable="true"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@drawable/rec_bg_color_press"
+                android:gravity="center">
                 <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:src="@mipmap/near1" />
-
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/near"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/mTextSize"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorDark"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rec_bg_color_press"
+                android:gravity="center">
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/route" />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/route"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/mTextSize"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorDark"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:clickable="true"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rec_bg_color_press"
+                android:gravity="center">
+                <ImageView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@mipmap/user" />
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mine"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/mTextSize"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorDark"
+                    />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linerLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_marginRight="60dp"
+        android:gravity="center_vertical"
+        android:background="@drawable/rec_bg_corner"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:clickable="true"
+        >
+        <TextView
+            android:onClick="keySearch"
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:drawableLeft="@mipmap/search_input"
+            android:hint="@string/hintKeyWordSearch"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/darkGrey"/>
+    </LinearLayout>
+    <CheckedTextView
+        android:onClick="realRouteChange"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/linerLayout1"
+        android:drawablePadding="-4dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="2dp"
+        android:drawableTop="@mipmap/route_situation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rec_bg_corner"
+        android:text="@string/route_situation"
+        android:textSize="@dimen/tTextSize"
+        />
 </RelativeLayout>
