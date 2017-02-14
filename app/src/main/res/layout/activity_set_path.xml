@@ -15,12 +15,13 @@
         android:background="@color/dodgerblue"
         >
         <LinearLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
             >
             <Button
+                android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
@@ -28,8 +29,9 @@
                 android:onClick="back"
                 android:id="@+id/back" />
             <EditText
+                android:layout_gravity="center"
                 android:onClick="setOriginPoint"
-                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="从"
@@ -39,22 +41,22 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:orientation="horizontal"
-            android:layout_marginTop="10dp"
             >
             <Button
+                android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:background="@mipmap/add"
                 android:id="@+id/add" />
             <EditText
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="到  输入终点"
-                android:textColor="@color/white"
+                android:textColor="@color/colorGray3"
                 android:onClick="setEndPoint"
                 android:id="@+id/terminal" />
         </LinearLayout>
@@ -74,7 +76,7 @@
             android:layout_height="wrap_content"
             android:text="规划偏好"
             android:textColor="@color/black"
-            android:layout_marginTop="10dp"
+
             />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -130,31 +132,59 @@
             android:orientation="vertical"
             >
     <LinearLayout
+        android:background="@color/white"
         android:id="@+id/homeAndCompany"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_below="@+id/strategy"
         android:layout_marginTop="5dp"
         >
-        <Button
+        <LinearLayout
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
             android:background="@color/white"
-            android:layout_height="50dp"
-            android:text="回家"
-            />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/home"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="  回家"
+                >
+            </TextView>
+        </LinearLayout>
         <ImageView
             android:layout_width="2px"
             android:layout_height="match_parent"
-            android:background="@color/bgofdefault"
+            android:background="@color/colorGray2"
             />
-        <Button
+        <LinearLayout
             android:layout_weight="1"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="20dp"
             android:background="@color/white"
-            android:text="去公司"
-            android:layout_height="50dp" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/company"
+                android:layout_gravity="center"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="  去公司"
+                >
+            </TextView>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

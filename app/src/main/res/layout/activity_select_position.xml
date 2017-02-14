@@ -22,7 +22,7 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:background="@mipmap/icon_back"
+                android:background="@drawable/back"
                 android:onClick="back"
                 android:id="@+id/back" />
             <LinearLayout

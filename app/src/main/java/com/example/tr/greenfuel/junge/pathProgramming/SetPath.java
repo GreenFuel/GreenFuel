@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.poiSearch.PoiAroundSearchActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,14 +39,15 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text"},
                 new int[]{R.id.item_src,R.id.item_text});
         paths.setAdapter(simpleAdapter);
+        //编辑框设置
         origin = (EditText) findViewById(R.id.origin);
         terminal = (EditText) findViewById(R.id.terminal);
-        terminal.requestFocus();
+        //terminal.requestFocus();
         origin.setOnFocusChangeListener(this);
         terminal.setOnFocusChangeListener(this);
         origin.setFocusable(false);
+        terminal.setFocusable(false);
         terminal.setInputType(InputType.TYPE_NULL);
-
     }
     //获取路径信息
     private List<Map<String,Object>> getData(){
@@ -58,15 +60,15 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         return dataList;
     }
     //点击事件
-
     public void back(View v){
        finish();
     }
     public void setOriginPoint(View v){
-        startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",0));
+        //startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",0));
+        startActivity(new Intent(SetPath.this,PoiAroundSearchActivity.class).putExtra("type",0));
     }
     public void setEndPoint(View v){
-        startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",0));
+        startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",1));
     }
 
     @Override
@@ -74,7 +76,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         if(b) {
             switch (view.getId()) {
                 case R.id.terminal:
-                    startActivity(new Intent(SetPath.this, SelectPosition.class).putExtra("type", 0));
+                    //startActivity(new Intent(SetPath.this, SelectPosition.class).putExtra("type", 0));
                     break;
                 default:
                     break;

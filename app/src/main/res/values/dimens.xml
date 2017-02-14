@@ -7,5 +7,12 @@
     <dimen name="mTextSize">15sp</dimen>
     <dimen name="lTextSize">17sp</dimen>
     <dimen name="xlTextSize">20sp</dimen>
+    <dimen name="poi_title_size">14sp</dimen>
+    <dimen name="poi_field_size">14sp</dimen>
+    <dimen name="margin_left">15dp</dimen>
+    <dimen name="margin_right">15dp</dimen>
+    <dimen name="offset_title_left">5dp</dimen>
+    <dimen name="detail_img_offset_top">8dp</dimen>
+    <dimen name="index_offset">4dp</dimen>
     <dimen name="xxlTextSize">24sp</dimen>
 </resources>

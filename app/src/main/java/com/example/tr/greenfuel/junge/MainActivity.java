@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         aMap.setLocationSource(this);     //设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);  //显示定位按钮
         aMap.setMyLocationEnabled(true); //显示定位层并可触发定位
-        aMap.setMyLocationType(AMap.LOCATION_TYPE_LOCATE);  //设置定位方式：定位，跟随，旋转
+        aMap.setMyLocationType(AMap.MAP_TYPE_NORMAL);  //设置定位方式：定位，跟随，旋转
     }
 
     //点击关键字搜索
