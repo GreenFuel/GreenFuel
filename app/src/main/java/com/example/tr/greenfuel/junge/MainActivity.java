@@ -6,8 +6,10 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -23,13 +25,16 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.maps.model.Poi;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
 import com.example.tr.greenfuel.nearFunction.nearActivity;
+import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
-        AMapLocationListener {
+        AMapLocationListener,AMap.OnPOIClickListener,
+        AMap.OnMarkerClickListener {
     private MapView mapView = null;
     private OnLocationChangedListener mListener;
     private AMapLocationClient mLocationClient;
@@ -51,12 +56,13 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         init();
     }
 
-    private void findViews() {
-        mapView = (MapView) findViewById(R.id.map);
+    private void findViews(){
+        mapView= (MapView) findViewById(R.id.map);
     }
 
-    private void init() {
-        if (aMap == null) {
+    private void init(){
+        if(aMap == null)
+        {
             aMap = mapView.getMap();
             setUpMap();
         }
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     }
 
     //设置aMap的属性
-    private void setUpMap() {
+    private void setUpMap(){
         aMap.setLocationSource(this);     //设置定位监听
         aMap.getUiSettings().setMyLocationButtonEnabled(true);  //显示定位按钮
         aMap.setMyLocationEnabled(true); //显示定位层并可触发定位
@@ -79,22 +85,22 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     }
 
     //点击关键字搜索
-    public void keySearch(View v) {
-
+    public void keySearch(View v){
+        startActivity(new Intent(MainActivity.this, PoiSearchPageActivity.class));
     }
 
     //点击实时路况开关
-    public void realRouteChange(View v) {
-        CheckedTextView checkedTextView = (CheckedTextView) v;
-        if (aMap != null) {
+    public void realRouteChange(View v){
+        CheckedTextView checkedTextView = (CheckedTextView)v;
+        if(aMap != null){
             aMap.setTrafficEnabled(checkedTextView.isChecked());
         }
-        if (checkedTextView.isChecked()) {
-            checkedTextView.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.mipmap.route_situation_selected), null, null);
+        if(checkedTextView.isChecked()){
+            checkedTextView.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.mipmap.route_situation_selected),null,null);
             System.out.println("checked");
             checkedTextView.setChecked(false);
-        } else {
-            checkedTextView.setCompoundDrawablesWithIntrinsicBounds(null, getResources().getDrawable(R.mipmap.route_situation), null, null);
+        }else{
+            checkedTextView.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.mipmap.route_situation),null,null);
             System.out.println("unchecked");
             checkedTextView.setChecked(true);
         }
@@ -103,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     @Override
     protected void onPause() {
         super.onPause();
-        if (mSensorHelper != null) {
+        if(mSensorHelper != null){
             mSensorHelper.unregisterSensorListener();
             mSensorHelper.setCurrentMarker(null);
             mSensorHelper = null;
@@ -122,12 +128,12 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     @Override
     protected void onResume() {
         super.onResume();
-        if (mSensorHelper != null) {
+        if(mSensorHelper != null){
             mSensorHelper.registerSensorListener();
-        } else {
+        }else{
             mSensorHelper = new SensorEventHelper(this);
-            if (mSensorHelper != null) {
-                if (mSensorHelper.getCurrentMarker() == null && mLocMarker != null) {
+            if(mSensorHelper != null){
+                if(mSensorHelper.getCurrentMarker() == null && mLocMarker != null){
                     mSensorHelper.setCurrentMarker(mLocMarker);
                 }
             }
@@ -146,34 +152,35 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
      */
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
-        if (mListener != null && aMapLocation != null) {
-            if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
-                LatLng latLng = new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude());
-                if (!mFirstFix) {
+        if(mListener != null && aMapLocation != null){
+            if(aMapLocation != null && aMapLocation.getErrorCode() == 0){
+                LatLng latLng = new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+                if(!mFirstFix){
                     mFirstFix = true;
                     addMarker(latLng);  //在地图上添加定位箭头
                     mSensorHelper.setCurrentMarker(mLocMarker); //控制定位箭头旋转
-                } else {
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
+                }else{
                     mLocMarker.setPosition(latLng);
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
                 }
-                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-            }
-        } else {
-            String errStr = "定位失败," + aMapLocation.getErrorCode() + ":" + aMapLocation.getErrorInfo();
+                }
+        }else{
+            String errStr = "定位失败,"+aMapLocation.getErrorCode()+":"+aMapLocation.getErrorInfo();
             Toast.makeText(this, errStr, Toast.LENGTH_SHORT).show();
         }
     }
 
     //添加marker
     private void addMarker(LatLng latLng) {
-        if (mLocMarker != null) {
-            return;
+        if(mLocMarker != null){
+            return ;
         }
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.navi_arrow);
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.mipmap.navi_arrow);
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.icon(bitmapDescriptor);
-        markerOptions.anchor(0.5f, 0.5f);
+        markerOptions.anchor(0.5f,0.5f);
         markerOptions.position(latLng);
         mLocMarker = aMap.addMarker(markerOptions);
         mLocMarker.setTitle(LOCATION_MARKER_FLAG);
@@ -183,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
-        if (null == mLocationClient) {
+        if(null == mLocationClient){
             mLocationClient = new AMapLocationClient(this);
             mLocationOption = new AMapLocationClientOption();
             mLocationClient.setLocationListener(this);  //设置定位监听
@@ -197,19 +204,19 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         }
     }
 
-    //停止定位
+        //停止定位
     @Override
     public void deactivate() {
         mListener = null;
-        if (null != mLocationClient) {
+        if(null != mLocationClient){
             mLocationClient.stopLocation();
             mLocationClient.onDestroy();
         }
         mLocationClient = null;
     }
 
-    public void goNearActivity(View v) {
-        startActivity(new Intent(MainActivity.this, nearActivity.class));
+    public void  goNearActivity(View v){
+        startActivity(new Intent(MainActivity.this,nearActivity.class));
     }
     //设置路线
     public void onClick(View v) {
@@ -218,5 +225,28 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                 startActivity(new Intent(MainActivity.this, SetPath.class));
                 break;
         }
+    }
+
+    //点击marker调用
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Toast.makeText(this, "marker被点击", Toast.LENGTH_SHORT).show();
+        aMap.clear();
+        return false;
+    }
+
+    //点击poi时调用
+    @Override
+    public void onPOIClick(Poi poi) {
+        aMap.clear();
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(poi.getCoordinate());    // 获取POI坐标
+        TextView textView = new TextView(this);
+        textView.setText("到"+poi.getName()+"去");
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextColor(getResources().getColor(R.color.colorIconBlue));
+        textView.setBackgroundResource(R.drawable.custom_info_bubble);
+        markerOptions.icon(BitmapDescriptorFactory.fromView(textView));
+        aMap.addMarker(markerOptions);
     }
 }

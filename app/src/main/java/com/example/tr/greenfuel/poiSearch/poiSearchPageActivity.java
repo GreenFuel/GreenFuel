@@ -12,7 +12,7 @@ import com.example.tr.greenfuel.R;
  * Created by tangpeng on 2017/2/13.
  */
 
-public class poiSearchPageActivity extends AppCompatActivity {
+public class PoiSearchPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
