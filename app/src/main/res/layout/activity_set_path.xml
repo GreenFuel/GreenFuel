@@ -25,15 +25,17 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@mipmap/icon_back"
+                android:onClick="back"
                 android:id="@+id/back" />
             <EditText
+                android:onClick="setOriginPoint"
                 android:layout_marginLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="从"
                 android:text="从  我的位置"
                 android:textColor="@color/white"
-                android:id="@+id/editText" />
+                android:id="@+id/origin" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,6 +55,7 @@
                 android:layout_height="wrap_content"
                 android:text="到  输入终点"
                 android:textColor="@color/white"
+                android:onClick="setEndPoint"
                 android:id="@+id/terminal" />
         </LinearLayout>
     </LinearLayout>
