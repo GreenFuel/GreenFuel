@@ -1,5 +1,6 @@
 package com.example.tr.greenfuel.junge;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.nearFunction.nearActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if(mLocMarker != null){
             return ;
         }
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.mipmap.ssss);
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.mipmap.navi_arrow);
         BitmapDescriptor bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.icon(bitmapDescriptor);
@@ -204,5 +206,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
             mLocationClient.onDestroy();
         }
         mLocationClient = null;
+    }
+
+    public void  goNearActivity(View v){
+        startActivity(new Intent(MainActivity.this,nearActivity.class));
     }
 }

@@ -7,4 +7,15 @@
     <string name="hintKeyWordSearch">请输入关键字</string>
     <string name="search">搜索</string>
     <string name="route_situation">路况</string>
+    <string name="delicious">美食</string>
+    <string name="hotel">酒店</string>
+    <string name="famousPlace">景点</string>
+    <string name="movie">电影</string>
+    <string name="bank">银行</string>
+    <string name="gasStation">加油站</string>
+    <string name="park">停车场</string>
+    <string name="subway">地铁</string>
+    <string name="weizhang">违章</string>
+    <string name="slogan">节能减排，从我做起</string>
+
 </resources>
