@@ -40,7 +40,7 @@
     <LinearLayout
         android:id="@+id/poi_detail"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@drawable/border_bg"
@@ -61,7 +61,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:textColor="@color/royalblue"
+            android:textColor="@color/colorIconBlue"
             android:textSize="@dimen/mTextSize" />
         <TextView
             android:id="@+id/poi_address"
@@ -74,16 +74,7 @@
             android:maxLines="1"
             android:textColor="@color/colorDark"
             android:textSize="@dimen/mTextSize" />
-        <TextView
-            android:id="@+id/poi_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/poi_address"
-            android:layout_marginStart="12dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/colorDark"
-            android:textSize="@dimen/sTextSize" />
+
     </RelativeLayout>
         <TextView
             android:id="@+id/tvNavigate"

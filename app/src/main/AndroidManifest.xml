@@ -30,15 +30,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".junge.GPSNaviActivity"/>
-        <activity android:name=".poiSearch.PoiSearchPageActivity"></activity>
-        <activity android:name=".nearFunction.NearActivity"></activity>
-        <activity android:name=".poiSearch.NearPoiSearchResultActivity"></activity>
-        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <activity android:name=".poiSearch.PoiSearchPageActivity"/>
+        <activity android:name=".nearFunction.NearActivity"/>
+        <activity android:name=".poiSearch.NearPoiSearchResultActivity"/>
 
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service android:name="com.amap.api.location.APSService"/>
+
+        <activity android:name=".junge.GPSNaviActivity"/>
         <activity android:name=".junge.pathProgramming.SetPath" />
-        <activity android:name=".junge.pathProgramming.SelectPosition"></activity>
+        <activity android:name=".junge.pathProgramming.SelectPosition"/>
     </application>
 
 </manifest>
