@@ -39,6 +39,7 @@
                     android:background="@mipmap/search_input"
                     android:layout_height="32dp" />
                 <EditText
+                    android:id="@+id/search_text"
                     android:layout_marginLeft="5dp"
                     android:background="@color/transparent"
                     android:layout_width="match_parent"

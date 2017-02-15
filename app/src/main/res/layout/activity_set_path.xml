@@ -28,14 +28,21 @@
                 android:background="@mipmap/icon_back"
                 android:onClick="back"
                 android:id="@+id/back" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center"
+                android:text="从"
+                />
             <EditText
+                android:layout_marginLeft="5dp"
                 android:layout_gravity="center"
                 android:onClick="setOriginPoint"
                 android:gravity="center_vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="从"
-                android:text="从  我的位置"
+                android:text="我的位置"
                 android:textColor="@color/white"
                 android:id="@+id/origin" />
         </LinearLayout>
@@ -51,11 +58,19 @@
                 android:layout_height="16dp"
                 android:background="@mipmap/add"
                 android:id="@+id/add" />
-            <EditText
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorGray3"
+                android:layout_gravity="center"
                 android:layout_marginLeft="6dp"
+                android:text="到"
+                />
+            <EditText
+                android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="到  输入终点"
+                android:text="输入终点"
                 android:textColor="@color/colorGray3"
                 android:onClick="setEndPoint"
                 android:id="@+id/terminal" />

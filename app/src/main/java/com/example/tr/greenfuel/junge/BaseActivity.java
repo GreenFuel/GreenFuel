@@ -235,7 +235,6 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
     @Override
     public void showLaneInfo(AMapLaneInfo[] laneInfos, byte[] laneBackgroundInfo, byte[] laneRecommendedInfo) {
         //显示车道信息
-
     }
 
     @Override

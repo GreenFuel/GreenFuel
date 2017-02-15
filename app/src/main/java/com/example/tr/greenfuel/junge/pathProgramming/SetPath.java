@@ -3,6 +3,7 @@ package com.example.tr.greenfuel.junge.pathProgramming;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.poiSearch.PoiAroundSearchActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,6 +43,10 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         origin = (EditText) findViewById(R.id.origin);
         terminal = (EditText) findViewById(R.id.terminal);
         //terminal.requestFocus();
+        String oo = getIntent().getStringExtra("orgin");
+        if(oo!=null&&!oo.equals("")){
+            origin.setText(getIntent().getStringExtra("orgin"));
+        }
         origin.setOnFocusChangeListener(this);
         terminal.setOnFocusChangeListener(this);
         origin.setFocusable(false);
@@ -64,11 +68,16 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
        finish();
     }
     public void setOriginPoint(View v){
-        //startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",0));
-        startActivity(new Intent(SetPath.this,PoiAroundSearchActivity.class).putExtra("type",0));
+        Intent i = new Intent(SetPath.this,SelectPosition.class);
+        i.putExtra("POSITION_TYPE",0);
+        startActivity(i);
+        //startActivity(new Intent(SetPath.this,PoiAroundSearchActivity.class).putExtra("POSITION_TYPE",0));
     }
     public void setEndPoint(View v){
-        startActivity(new Intent(SetPath.this,SelectPosition.class).putExtra("type",1));
+        Intent i = new Intent(SetPath.this,SelectPosition.class);
+        i.putExtra("orgin",origin.getText());
+        i.putExtra("POSITION_TYPE",1);
+        startActivity(i);
     }
 
     @Override
@@ -76,7 +85,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         if(b) {
             switch (view.getId()) {
                 case R.id.terminal:
-                    //startActivity(new Intent(SetPath.this, SelectPosition.class).putExtra("type", 0));
+                    //startActivity(new Intent(SetPath.this, SelectPosition.class).putExtra("POSITION_TYPE", 0));
                     break;
                 default:
                     break;

@@ -6,8 +6,8 @@
     android:orientation="horizontal">
         <ImageView
             android:id="@+id/item_src"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginLeft="15dp"
             android:layout_gravity="center_vertical"
             android:src="@mipmap/path_flag"/>
@@ -29,8 +29,8 @@
         >
         <ImageView
             android:layout_gravity="center"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:layout_marginRight="10dp"
             android:src="@drawable/diagonal_arrow"
             android:id="@+id/imageView" />
