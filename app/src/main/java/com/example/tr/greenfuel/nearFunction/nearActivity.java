@@ -1,5 +1,6 @@
 package com.example.tr.greenfuel.nearFunction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.adapterSet.MyViewPagerAdapter;
+import com.example.tr.greenfuel.poiSearch.NearPoiSearchResultActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
  * Created by tangpeng on 2017/2/14.
  */
 
-public class nearActivity extends AppCompatActivity {
+public class NearActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private List<ImageView> imageViewsList;
@@ -40,7 +42,8 @@ public class nearActivity extends AppCompatActivity {
             }
         }
     };
-
+    private Intent intent;  //跳转到搜索结果的activity
+    private Intent weiZhangIntent ; //跳转到违章查询的activity
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,9 @@ public class nearActivity extends AppCompatActivity {
         });
 
         autoPlay();
+
+        intent = new Intent(this, NearPoiSearchResultActivity.class);
+
     }
 
     private void initViews(){
@@ -160,28 +166,36 @@ public class nearActivity extends AppCompatActivity {
     }
 
     public void searchDelicious(View v){//查询美食
-
+        intent.putExtra("keyWord","美食");
+        startActivity(intent);
     }
     public void searchHotel(View v){//酒店
-
+        intent.putExtra("keyWord","酒店");
+        startActivity(intent);
     }
     public void searchFamousPlace(View v){//景点
-
+        intent.putExtra("keyWord","景点");
+        startActivity(intent);
     }
     public void searchMovie(View v){//电影
-
+        intent.putExtra("keyWord","电影");
+        startActivity(intent);
     }
     public void searchBank(View v){//银行
-
+        intent.putExtra("keyWord","银行");
+        startActivity(intent);
     }
     public void searchGasStation(View v){//加油站
-
+        intent.putExtra("keyWord","加油站");
+        startActivity(intent);
     }
     public void searchPark(View v){//停车场
-
+        intent.putExtra("keyWord","停车场");
+        startActivity(intent);
     }
     public void searchSubway(View v){//地铁
-
+        intent.putExtra("keyWord","地铁");
+        startActivity(intent);
     }
     public void searchWeiZhang(View v){//违章查询
 

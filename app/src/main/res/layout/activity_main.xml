@@ -9,16 +9,33 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
         <com.amap.api.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_above="@+id/linearLayout" />
-
+            android:layout_height="match_parent"/>
+            <LinearLayout
+                android:onClick="backMyLocation"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:orientation="vertical"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/rec_bg_color_press"
+                android:clickable="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginBottom="20dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@mipmap/location"/>
+            </LinearLayout>
+        </RelativeLayout>
         <LinearLayout
+            android:id="@+id/linerLayoutBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -105,17 +122,18 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linerLayout1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:orientation="horizontal"
-        android:layout_marginRight="60dp"
+        android:layout_marginRight="5dp"
         android:gravity="center_vertical"
         android:background="@drawable/rec_bg_corner"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:clickable="true"
         android:onClick="keySearch"
         >

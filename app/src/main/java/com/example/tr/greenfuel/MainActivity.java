@@ -1,4 +1,4 @@
-package com.example.tr.greenfuel.junge;
+package com.example.tr.greenfuel;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,9 +26,8 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Poi;
-import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
-import com.example.tr.greenfuel.nearFunction.nearActivity;
+import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
@@ -40,9 +39,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private AMap aMap;
-
+    private AMapLocation aMapLocation;  //返回的定位信息
     private boolean mFirstFix = false;
     private Marker mLocMarker;
+    private Marker poiTagMarker;    //点击poi时当初的marker
+    private TextView poiTextView;   //被点击poi上的tv
     public static final String LOCATION_MARKER_FLAG = "myLocation";
     private SensorEventHelper mSensorHelper;
 
@@ -79,11 +80,23 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     //设置aMap的属性
     private void setUpMap(){
         aMap.setLocationSource(this);     //设置定位监听
-        aMap.getUiSettings().setMyLocationButtonEnabled(true);  //显示定位按钮
+        aMap.getUiSettings().setMyLocationButtonEnabled(false);  //显示定位按钮
         aMap.setMyLocationEnabled(true); //显示定位层并可触发定位
         aMap.setMyLocationType(AMap.MAP_TYPE_NORMAL);  //设置定位方式：定位，跟随，旋转
+        aMap.setOnMarkerClickListener(this);    //监听点击marker
+        aMap.setOnPOIClickListener(this);   //监听点击poi
     }
 
+    //定位到自己的位置
+    public void backMyLocation(View v) {
+        if (aMapLocation != null && aMapLocation.getErrorCode() == 0)
+            {//将地图定位到当前位置
+                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(aMapLocation.getLatitude(), aMapLocation.getLongitude()), 18));
+            }else{
+                Toast.makeText(this, "定位失败！", Toast.LENGTH_SHORT).show();
+            }
+        }
+    
     //点击关键字搜索
     public void keySearch(View v){
         startActivity(new Intent(MainActivity.this, PoiSearchPageActivity.class));
@@ -154,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     public void onLocationChanged(AMapLocation aMapLocation) {
         if(mListener != null && aMapLocation != null){
             if(aMapLocation != null && aMapLocation.getErrorCode() == 0){
+                this.aMapLocation = aMapLocation;
                 LatLng latLng = new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude());
                 if(!mFirstFix){
                     mFirstFix = true;
@@ -161,9 +175,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
                     mSensorHelper.setCurrentMarker(mLocMarker); //控制定位箭头旋转
                     aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
                 }else{
-                    mLocMarker.setPosition(latLng);
-                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
-                }
+                        mLocMarker.setPosition(latLng);
+                    }
                 }
         }else{
             String errStr = "定位失败,"+aMapLocation.getErrorCode()+":"+aMapLocation.getErrorInfo();
@@ -171,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         }
     }
 
-    //添加marker
+    //添加定位带箭头的marker
     private void addMarker(LatLng latLng) {
         if(mLocMarker != null){
             return ;
@@ -183,10 +196,10 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         markerOptions.anchor(0.5f,0.5f);
         markerOptions.position(latLng);
         mLocMarker = aMap.addMarker(markerOptions);
-        mLocMarker.setTitle(LOCATION_MARKER_FLAG);
+        //mLocMarker.setTitle(LOCATION_MARKER_FLAG);
     }
 
-    //激活定位
+    //激活定位，打开定位服务
     @Override
     public void activate(OnLocationChangedListener onLocationChangedListener) {
         mListener = onLocationChangedListener;
@@ -204,7 +217,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         }
     }
 
-        //停止定位
+    //停止定位
     @Override
     public void deactivate() {
         mListener = null;
@@ -215,9 +228,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mLocationClient = null;
     }
 
+    //转到附近页面
     public void  goNearActivity(View v){
-        startActivity(new Intent(MainActivity.this,nearActivity.class));
+        startActivity(new Intent(MainActivity.this,NearActivity.class));
     }
+
     //设置路线
     public void onClick(View v) {
         switch (v.getId()){
@@ -231,22 +246,30 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     @Override
     public boolean onMarkerClick(Marker marker) {
         Toast.makeText(this, "marker被点击", Toast.LENGTH_SHORT).show();
-        aMap.clear();
+        if(marker.equals(poiTagMarker)){
+            marker.destroy();
+        }
+        //aMap.clear();
         return false;
     }
 
     //点击poi时调用
     @Override
     public void onPOIClick(Poi poi) {
-        aMap.clear();
+        //aMap.clear();
+        if(poiTagMarker != null)
+            poiTagMarker.destroy();
+
+        poiTextView = null;
+        poiTextView = new TextView(this);
+        poiTextView.setGravity(Gravity.CENTER);
+        poiTextView.setTextColor(getResources().getColor(R.color.colorIconBlue));
+        poiTextView.setBackgroundResource(R.drawable.custom_info_bubble);
+        poiTextView.setText("到" + poi.getName() + "去");
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(poi.getCoordinate());    // 获取POI坐标
-        TextView textView = new TextView(this);
-        textView.setText("到"+poi.getName()+"去");
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextColor(getResources().getColor(R.color.colorIconBlue));
-        textView.setBackgroundResource(R.drawable.custom_info_bubble);
-        markerOptions.icon(BitmapDescriptorFactory.fromView(textView));
-        aMap.addMarker(markerOptions);
+        markerOptions.icon(BitmapDescriptorFactory.fromView(poiTextView));
+        poiTagMarker = aMap.addMarker(markerOptions);
+        //poiTagMarker.setPosition(poi.getCoordinate());
     }
 }
