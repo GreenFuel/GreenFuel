@@ -39,8 +39,8 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     private List<Map<String,Object>> getData(){
         for(int i=0;i<20;i++){
             Map<String,Object>map=new HashMap<String,Object>();
-            map.put("item_src",R.mipmap.path_flag);
-            map.put("item_text", "我的位置 到 城北客运站");
+            map.put("item_src",R.mipmap.search_input);
+            map.put("item_text", "城北客运站");
             dataList.add(map);
         }
         return dataList;
