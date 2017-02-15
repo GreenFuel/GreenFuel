@@ -15,7 +15,7 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.junge.RouteActivity;
+import com.example.tr.greenfuel.poiSearch.PoiByKeyWordsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,9 +96,9 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
             startActivity(intent);
             //i.putExtra()
         }else{   //开启路径规划
-            Intent intent = new Intent(SelectPosition.this,RouteActivity.class);
-            intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
-            intent.putExtra("terminal",positionName.getText());
+            Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
+            //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
+            //intent.putExtra("terminal",positionName.getText());
             startActivity(intent);
         }
     }

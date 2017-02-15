@@ -259,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         //aMap.clear();
         if(poiTagMarker != null)
             poiTagMarker.destroy();
-
         poiTextView = null;
         poiTextView = new TextView(this);
         poiTextView.setGravity(Gravity.CENTER);

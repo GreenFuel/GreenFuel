@@ -48,5 +48,4 @@ public class RouteActivity extends BaseActivity  {
         super.onCalculateRouteSuccess();
         mAMapNavi.startNavi(NaviType.GPS);
     }
-
 }

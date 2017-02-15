@@ -29,10 +29,9 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="68d1d17198bcc4b455b1246cdaa01c8d">
-        </meta-data>
-        <!-- android:value="68d1d17198bcc4b455b1246cdaa01c8d"-->
-        <!--android:value="c4f139b20831d267048d55a804d39e0c"-->
+            android:value="68d1d17198bcc4b455b1246cdaa01c8d"></meta-data>
+        <!-- android:value="68d1d17198bcc4b455b1246cdaa01c8d" -->
+        <!-- android:value="c4f139b20831d267048d55a804d39e0c" -->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,17 +39,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".junge.GPSNaviActivity"/>
-        <activity android:name=".poiSearch.PoiSearchPageActivity"></activity>
-        <activity android:name=".nearFunction.NearActivity"></activity>
-        <activity android:name=".poiSearch.NearPoiSearchResultActivity"></activity>
-        <activity android:name=".poiSearch.PoiAroundSearchActivity"></activity>
-        <activity android:name=".junge.RouteActivity"></activity>
+        <activity android:name=".junge.GPSNaviActivity" />
+        <activity android:name=".poiSearch.PoiSearchPageActivity" />
+        <activity android:name=".nearFunction.NearActivity" />
+        <activity android:name=".poiSearch.NearPoiSearchResultActivity" />
+        <activity android:name=".poiSearch.PoiAroundSearchActivity" />
+        <activity android:name=".junge.RouteActivity" />
         <activity android:name=".junge.pathProgramming.SetPath" />
-        <activity android:name=".junge.pathProgramming.SelectPosition"></activity>
+        <activity android:name=".junge.pathProgramming.SelectPosition" />
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService" />
 
+        <activity android:name=".poiSearch.PoiByKeyWordsActivity"></activity>
     </application>
 
 </manifest>

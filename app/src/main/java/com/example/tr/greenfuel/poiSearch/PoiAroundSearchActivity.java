@@ -338,7 +338,6 @@ public class PoiAroundSearchActivity extends Activity implements OnClickListener
 					+ cities.get(i).getAdCode() + "\n";
 		}
 		Toast.makeText(PoiAroundSearchActivity.this,"NO Result",Toast.LENGTH_SHORT).show();
-
 	}
 	
 	private class myPoiOverlay {
@@ -454,9 +453,5 @@ public class PoiAroundSearchActivity extends Activity implements OnClickListener
 				return icon;
 			}	
 		}
-
-
-		
-
 	}
 }
