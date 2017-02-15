@@ -16,6 +16,7 @@
     <string name="park">停车场</string>
     <string name="subway">地铁</string>
     <string name="weizhang">违章</string>
+    <string name="navigate">导航</string>
     <string name="slogan">节能减排，从我做起</string>
 
 </resources>
