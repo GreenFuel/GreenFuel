@@ -1,5 +1,6 @@
 package com.example.tr.greenfuel.poiSearch;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -10,8 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.BitmapDescriptor;
 import com.amap.api.maps.model.BitmapDescriptorFactory;
@@ -36,7 +42,12 @@ import java.util.List;
 
 public class NearPoiSearchResultActivity extends AppCompatActivity implements
         AMap.OnMapClickListener, AMap.OnInfoWindowClickListener, AMap.InfoWindowAdapter, AMap.OnMarkerClickListener,
-        PoiSearch.OnPoiSearchListener {
+        PoiSearch.OnPoiSearchListener,LocationSource,
+        AMapLocationListener {
+
+    private OnLocationChangedListener mListener;
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
 
     private MapView mapView;
     private AMap aMap;
@@ -60,6 +71,9 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     private String keyWord = "";
 
     private Intent intent;
+    private ProgressDialog progressDialog;
+    private boolean mFirstFix = false;
+    private boolean hasSearched = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,8 +88,9 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
         keyWord = intent.getStringExtra("keyWord");
 
         init();
-        //开始搜索
-        doSearchQuery();
+
+        showDialog();
+        //开始定位
     }
 
     private void initViews() {
@@ -94,8 +109,12 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
             aMap.setOnMarkerClickListener(this);
             aMap.setOnInfoWindowClickListener(this);
             aMap.setInfoWindowAdapter(this);
+            aMap.setLocationSource(this);     //设置定位监听
+            aMap.getUiSettings().setMyLocationButtonEnabled(false);  //显示定位按钮
+            aMap.setMyLocationEnabled(true); //显示定位层并可触发定位
+            aMap.setMyLocationType(AMap.MAP_TYPE_NORMAL);  //设置定位方式：定位，跟随，旋转
 
-            locationMaker = addLocationMarker();
+            //locationMaker = addLocationMarker();
             //locationMarker.showInfoWindow();
             aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude()), 14));
         }
@@ -111,7 +130,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     //向地图添加定位图标
     private Marker addLocationMarker() {
         return aMap.addMarker(new MarkerOptions().anchor(0.5f, 0.5f).
-                icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.point5)))
+                icon(BitmapDescriptorFactory.fromBitmap(BitmapFactory.decodeResource(getResources(), R.mipmap.gps_point)))
                 .position(new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude())));
     }
 
@@ -150,6 +169,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
         mapView.onPause();
+        deactivate();
     }
 
     @Override
@@ -213,6 +233,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     //poi搜索成功回调
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
+        dismissDialog();
         if (i == AMapException.CODE_AMAP_SUCCESS) {
             if (poiResult != null && poiResult.getQuery() != null) {//搜索poi的结果
                 if (poiResult.getQuery().equals(query)) {    //是否是同一条query
@@ -285,6 +306,64 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
             R.mipmap.poi_marker_9,
             R.mipmap.poi_marker_10
     };
+
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        dismissDialog();
+        if(mListener != null && aMapLocation != null){
+            if(aMapLocation != null && aMapLocation.getErrorCode() == 0){//定位成功
+                latLonPoint = null;
+                //重新定位到当前位置
+                latLonPoint = new LatLonPoint(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+                LatLng latLng = new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude());
+                if(!mFirstFix){
+                    mFirstFix = true;
+                    locationMaker = addLocationMarker();
+                    aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,14));
+                }else{
+                    locationMaker.setPosition(latLng);
+                }
+                if(!hasSearched){//定位后还没有进行搜索
+                    hasSearched = true;
+                    doSearchQuery();
+                }
+            }
+        }else{
+            String errStr = "定位失败,"+aMapLocation.getErrorCode()+":"+aMapLocation.getErrorInfo();
+            Toast.makeText(this, errStr, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    //激活定位
+    @Override
+    public void activate(OnLocationChangedListener onLocationChangedListener) {
+        mListener = onLocationChangedListener;
+        if(null == mLocationClient){
+            mLocationClient = new AMapLocationClient(this);
+            mLocationOption = new AMapLocationClientOption();
+            mLocationClient.setLocationListener(this);  //设置定位监听
+            mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy); //设置高精度定位模式
+            mLocationOption.setInterval(10000);
+            mLocationClient.setLocationOption(mLocationOption); //设置定位参数
+            // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+            // 注意设置合适的定位时间的间隔（最小间隔支持为2000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+            // 在定位结束后，在合适的生命周期调用onDestroy()方法
+            // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+            mLocationClient.startLocation();
+        }
+    }
+
+    //关闭定位
+    @Override
+    public void deactivate() {
+        mListener = null;
+        if(null != mLocationClient){
+            mLocationClient.stopLocation();
+            mLocationClient.onDestroy();
+        }
+        mLocationClient = null;
+    }
 
     //自定义poi图层
     private class MyPoiOverlay {
@@ -408,5 +487,22 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
 
     public void back(View v) {
         finish();
+    }
+
+    private void showDialog(){
+        if(progressDialog == null){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.setMessage("正在定位");
+        }
+        if(progressDialog != null){
+            progressDialog.show();
+        }
+    }
+
+    private void dismissDialog(){
+        if(progressDialog != null && progressDialog.isShowing()){
+            progressDialog.dismiss();
+        }
     }
 }

@@ -19,6 +19,6 @@
     <string name="navigate">导航</string>
     <string name="slogan">节能减排，从我做起</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
-    <string name="unknown_error">未知错误</string>
+    <string name="unknown_error">网络异常</string>
 
 </resources>

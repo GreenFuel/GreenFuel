@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private AMapLocation aMapLocation;  //返回的定位信息
     private boolean mFirstFix = false;
     private Marker mLocMarker;
-    private Marker poiTagMarker;    //点击poi时当初的marker
+    private Marker poiTagMarker;    //点击poi时弹出的marker
     private TextView poiTextView;   //被点击poi上的tv
     public static final String LOCATION_MARKER_FLAG = "myLocation";
     private SensorEventHelper mSensorHelper;

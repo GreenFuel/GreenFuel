@@ -33,4 +33,5 @@ dependencies {
     compile 'com.android.support:design:23.4.0'
     testCompile 'junit:junit:4.12'
     compile files('libs/AMap3DMap_4.1.3_AMapNavi_1.9.4_AMapSearch_4.0.0_AMapLocation_3.3.0_20170118.jar')
+    compile files('libs/volley.jar')
 }
