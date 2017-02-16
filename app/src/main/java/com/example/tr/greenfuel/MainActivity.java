@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     public static final String LOCATION_MARKER_FLAG = "myLocation";
     private SensorEventHelper mSensorHelper;
 
+    public static String cityName = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         if(mListener != null && aMapLocation != null){
             if(aMapLocation != null && aMapLocation.getErrorCode() == 0){
                 this.aMapLocation = aMapLocation;
+                cityName = aMapLocation.getCity();
                 LatLng latLng = new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude());
                 if(!mFirstFix){
                     mFirstFix = true;

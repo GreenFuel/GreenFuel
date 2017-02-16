@@ -107,6 +107,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         }
         return dataList;
     }
+
     public void setAutoSearch(String name){
         InputtipsQuery inputtipsQuery = new InputtipsQuery(name,"成都");
         inputtipsQuery.setCityLimit(true);

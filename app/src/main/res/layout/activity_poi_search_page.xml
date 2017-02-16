@@ -1,73 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp">
+        android:orientation="horizontal"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
         <Button
-            android:onClick="back"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:background="@drawable/bn_bg_back"/>
+            android:background="@drawable/bn_bg_back"
+            android:onClick="back" />
+
         <LinearLayout
-            android:layout_marginRight="10dp"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="35dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:background="@drawable/rec_bg_corner"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/rec_bg_corner"
             android:clickable="true"
-            >
-            <EditText
-                android:maxLines="1"
-                android:id="@+id/etKeyWord"
-                android:background="@color/transparent"
-                android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/autoKeyWord"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:clickable="true"
                 android:drawableLeft="@mipmap/search_input"
-                android:hint="@string/hintKeyWordSearch"
                 android:gravity="center_vertical"
+                android:hint="@string/search"
+                android:maxLines="1"
                 android:textColorHint="@color/darkGrey"
-                android:textSize="@dimen/mTextSize"/>
+                android:textSize="@dimen/mTextSize" />
         </LinearLayout>
+
         <Button
-            android:onClick="search"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginBottom="3dp"
             android:layout_width="42dp"
             android:layout_height="40dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/btn_bg_search"
+            android:onClick="search"
             android:text="@string/search"
-            android:textColor="@color/white"
-            android:background="@drawable/btn_bg_search"/>
+            android:textColor="@color/white" />
     </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/darkGrey"/>
+        android:background="@color/darkGrey" />
 
-        <ScrollView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            android:layout_height="140dp"
+            android:paddingTop="5dp">
 
-            </LinearLayout>
-        </ScrollView>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/delicious"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/delicious"
+                    android:textSize="@dimen/mTextSize" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/hotel"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/hotel" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/famous_place"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/famousPlace" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/movie"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/movie" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/bank"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/bank" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/gas_station"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/gasStation" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/park"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/park" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@mipmap/subway"
+                    android:gravity="center"
+                    android:onClick="doSearch"
+
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/subway" />
+            </TableRow>
+        </TableLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/darkGrey" />
+
+        <ListView
+            android:id="@+id/listviewSearchHistory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
 </LinearLayout>

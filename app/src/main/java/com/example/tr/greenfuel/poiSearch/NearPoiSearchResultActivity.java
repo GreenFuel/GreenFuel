@@ -87,7 +87,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
 
         intent = getIntent();
         keyWord = intent.getStringExtra("keyWord");
-        System.out.println("getKeyWord:"+keyWord);
+        //System.out.println("getKeyWord:"+keyWord);
         fromActivity = intent.getIntExtra("fromActivity",0);    // 0是附近搜索，1是关键字搜索，2是路线终点搜索
         init();
 
