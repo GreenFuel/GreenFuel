@@ -148,6 +148,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 Intent intent = new Intent(SelectPosition.this,SetPath.class);
                 intent.putExtra("orgin",positionName.getText());
                 startActivity(intent);
+                finish();
                 //i.putExtra()
             }else{   //开启路径规划
                 //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
@@ -156,6 +157,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 //intent.putExtra("terminal",positionName.getText());
                 Log.i("test","==============-11"+myLocation.getMyLocation());
                 startActivity(intent);
+                finish();
             }
     }
 
@@ -222,6 +224,14 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     public void placeOnMap(View view){
         findViewById(R.id.myplace).setBackgroundResource(R.color.white);
         findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
+        Intent intent = new Intent(view.getContext(),MarkerPosition.class);
+        intent.putExtra("type",POSITION_TYPE);
+        intent.putExtra("Lat",myLocation.getMyLocation().latitude);
+        intent.putExtra("Lng",myLocation.getMyLocation().longitude);
+        startActivity(intent);
         view.setBackgroundResource(R.color.gary);
+    }
+    public void selected(View view){
+        startActivity(new Intent(view.getContext(),SetPath.class).putExtra("orgin","我的位置"));
     }
 }

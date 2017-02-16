@@ -214,7 +214,7 @@
         android:layout_below="@+id/homeAndCompany"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="360dp"
         android:id="@+id/path_lists"
         >
     </ListView>
