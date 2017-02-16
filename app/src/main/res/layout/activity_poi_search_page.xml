@@ -30,6 +30,8 @@
             android:clickable="true"
             >
             <EditText
+                android:maxLines="1"
+                android:id="@+id/etKeyWord"
                 android:background="@color/transparent"
                 android:clickable="true"
                 android:layout_width="match_parent"

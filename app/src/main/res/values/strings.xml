@@ -20,5 +20,8 @@
     <string name="slogan">节能减排，从我做起</string>
     <string name="no_result">对不起，没有搜索到相关数据！</string>
     <string name="unknown_error">网络异常</string>
+    <string name="go_here">去这儿</string>
+    <string name="is_searching">正在搜索</string>
+    <string name="no_result_curr_city">当前城市无结果</string>
 
 </resources>

@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.adapterSet.MyViewPagerAdapter;
@@ -165,39 +166,14 @@ public class NearActivity extends AppCompatActivity {
         finish();
     }
 
-    public void searchDelicious(View v){//查询美食
-        intent.putExtra("keyWord","美食");
-        startActivity(intent);
-    }
-    public void searchHotel(View v){//酒店
-        intent.putExtra("keyWord","酒店");
-        startActivity(intent);
-    }
-    public void searchFamousPlace(View v){//景点
-        intent.putExtra("keyWord","景点");
-        startActivity(intent);
-    }
-    public void searchMovie(View v){//电影
-        intent.putExtra("keyWord","电影");
-        startActivity(intent);
-    }
-    public void searchBank(View v){//银行
-        intent.putExtra("keyWord","银行");
-        startActivity(intent);
-    }
-    public void searchGasStation(View v){//加油站
-        intent.putExtra("keyWord","加油站");
-        startActivity(intent);
-    }
-    public void searchPark(View v){//停车场
-        intent.putExtra("keyWord","停车场");
-        startActivity(intent);
-    }
-    public void searchSubway(View v){//地铁
-        intent.putExtra("keyWord","地铁");
-        startActivity(intent);
-    }
     public void searchWeiZhang(View v){//违章查询
 
+    }
+
+    //8种查询
+    public void doSearch(View v) {
+        intent.putExtra("keyWord",((TextView)v).getText().toString());
+        intent.putExtra("fromActivity",0);
+        startActivity(intent);
     }
 }

@@ -48,6 +48,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     private OnLocationChangedListener mListener;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
+    private AMapLocation aMapLocation;
 
     private MapView mapView;
     private AMap aMap;
@@ -74,7 +75,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     private ProgressDialog progressDialog;
     private boolean mFirstFix = false;
     private boolean hasSearched = false;
-
+    private int fromActivity = 0;   //判断是哪个activity调用的
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +87,8 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
 
         intent = getIntent();
         keyWord = intent.getStringExtra("keyWord");
-
+        System.out.println("getKeyWord:"+keyWord);
+        fromActivity = intent.getIntExtra("fromActivity",0);    // 0是附近搜索，1是关键字搜索，2是路线终点搜索
         init();
 
         showDialog();
@@ -116,13 +118,20 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
 
             //locationMaker = addLocationMarker();
             //locationMarker.showInfoWindow();
-            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLonPoint.getLatitude(), latLonPoint.getLongitude()), 14));
+            aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(39.993743, 116.472995), 14));  //默认显示北京
         }
-        searchTitle.setText("附近 - " + keyWord);
+
+        switch(fromActivity){
+            case 0:searchTitle.setText("附近 - " + keyWord);break;
+            case 1:
+            case 2:searchTitle.setText(keyWord);break;
+            default:break;
+        }
+
         navigate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(NearPoiSearchResultActivity.this, "调用导航...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NearPoiSearchResultActivity.this, "调用省油导航方案", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -137,15 +146,25 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     //开始进行poi搜索
     private void doSearchQuery() {
         currPage = 0;
-        query = new PoiSearch.Query(keyWord, "", "");// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
+        String city = "";
+        if(aMapLocation != null)
+        {
+            city = aMapLocation.getCity();
+        }
+        query = new PoiSearch.Query(keyWord, "", city);// 第一个参数表示搜索字符串，第二个参数表示poi搜索类型，第三个参数表示poi搜索区域（空字符串代表全国）
         query.setPageSize(resultPageSize);  // 设置每页最多返回多少条poiitem
         query.setPageNum(currPage); // 设置查第一页
 
         if (latLonPoint != null) {
             poiSearch = new PoiSearch(this, query);
             poiSearch.setOnPoiSearchListener(this);
-            poiSearch.setBound(new PoiSearch.SearchBound(latLonPoint, 5000, true));// 设置搜索区域为以lp点为圆心，其周围5000米范围
+            if(fromActivity == 0)
+            {
+                poiSearch.setBound(new PoiSearch.SearchBound(latLonPoint, 5000, true));// 设置搜索区域为以lp点为圆心，其周围5000米范围
+            }
             poiSearch.searchPOIAsyn(); // 异步搜索
+        }else{
+
         }
     }
 
@@ -314,6 +333,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
         if(mListener != null && aMapLocation != null){
             if(aMapLocation != null && aMapLocation.getErrorCode() == 0){//定位成功
                 latLonPoint = null;
+                this.aMapLocation = aMapLocation;
                 //重新定位到当前位置
                 latLonPoint = new LatLonPoint(aMapLocation.getLatitude(),aMapLocation.getLongitude());
                 LatLng latLng = new LatLng(aMapLocation.getLatitude(),aMapLocation.getLongitude());
@@ -482,7 +502,8 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
                     + cities.get(i).getCityCode() + "城市编码:"
                     + cities.get(i).getAdCode() + "\n";
         }
-        Toast.makeText(this, infomation, Toast.LENGTH_SHORT).show();
+        System.out.println("推荐城市："+infomation);
+        Toast.makeText(this, getResources().getString(R.string.no_result_curr_city), Toast.LENGTH_SHORT).show();
     }
 
     public void back(View v) {
@@ -493,7 +514,8 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
         if(progressDialog == null){
             progressDialog = new ProgressDialog(this);
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progressDialog.setMessage("正在定位");
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(getResources().getString(R.string.is_searching));
         }
         if(progressDialog != null){
             progressDialog.show();
@@ -504,5 +526,9 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
         if(progressDialog != null && progressDialog.isShowing()){
             progressDialog.dismiss();
         }
+    }
+
+    public void goHere(View v){
+        Toast.makeText(this, "选择导航方案", Toast.LENGTH_SHORT).show();
     }
 }
