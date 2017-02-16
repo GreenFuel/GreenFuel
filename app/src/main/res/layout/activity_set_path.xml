@@ -83,13 +83,16 @@
         android:layout_below="@id/startToEnd"
         android:orientation="vertical"
         android:background="@color/white"
+        android:layout_marginTop="5dp"
         android:id="@+id/strategy"
         >
         <TextView
             android:layout_marginLeft="15dp"
             android:layout_width="match_parent"
+            android:layout_marginTop="5dp"
             android:layout_height="wrap_content"
             android:text="规划偏好"
+            android:layout_marginBottom="5dp"
             android:textColor="@color/black"
 
             />

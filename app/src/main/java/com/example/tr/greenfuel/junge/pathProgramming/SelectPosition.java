@@ -1,6 +1,8 @@
 package com.example.tr.greenfuel.junge.pathProgramming;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -18,7 +20,7 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.poiSearch.PoiByKeyWordsActivity;
+import com.example.tr.greenfuel.poiSearch.NearPoiSearchResultActivity;
 import com.example.tr.greenfuel.util.MyLocation;
 
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     private  int POSITION_TYPE;
     private TextView positionName;
     private MyLocation myLocation;
+    private boolean ISCOLLECT=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +52,8 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         positions = (ListView) findViewById(R.id.positions);
         auto_poi_name = (ListView) findViewById(R.id.auto_poi_name);
         dataList = new ArrayList<Map<String,Object>>();
-        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text"},
-                new int[]{R.id.item_src,R.id.item_text});
-        positions.setAdapter(simpleAdapter);
+        getHistorySearch();
+        //positions.setAdapter(simpleAdapter2);
         //设置list监听
         positions.setOnItemClickListener(this);
         auto_poi_name.setOnItemClickListener(this);
@@ -60,6 +62,25 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         //初始化输入框
         initEditText();
 
+    }
+
+    private void getHistorySearch() {
+        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text"},
+                new int[]{R.id.item_src,R.id.item_text});
+        positions.setAdapter(simpleAdapter);
+    }
+
+    private void getCollect(){
+        dataList.clear();
+        for(int i=0;i<20;i++){
+            Map<String,Object>map=new HashMap<String,Object>();
+            map.put("item_src",R.drawable.point_collect);
+            map.put("item_text", "西南交大");
+            dataList.add(map);
+        }
+        simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_paths,new String[]{"item_src","item_text"},
+                new int[]{R.id.item_src,R.id.item_text});
+        positions.setAdapter(simpleAdapter);
     }
 
     private void initEditText() {
@@ -77,6 +98,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     }
 
     private List<Map<String,Object>> getData(){
+        dataList.clear();
         for(int i=0;i<20;i++){
             Map<String,Object>map=new HashMap<String,Object>();
             map.put("item_src",R.mipmap.search_input);
@@ -120,7 +142,6 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if(view.getId() == R.id.positions) {
             positionName = (TextView)view.findViewById(R.id.item_text);
             //Toast.makeText(view.getContext(),positionName.getText(), Toast.LENGTH_SHORT).show();
             if(POSITION_TYPE == 0){
@@ -129,15 +150,13 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 startActivity(intent);
                 //i.putExtra()
             }else{   //开启路径规划
-                Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
+                //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
+                Intent intent = new Intent(SelectPosition.this,NearPoiSearchResultActivity.class).putExtra("keyWord",positionName.getText());
                 //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
                 //intent.putExtra("terminal",positionName.getText());
                 Log.i("test","==============-11"+myLocation.getMyLocation());
                 startActivity(intent);
             }
-        } else {
-
-        }
     }
 
     @Override
@@ -172,5 +191,37 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     @Override
     public void afterTextChanged(Editable editable) {
         Log.i("test","----------------afterTextChanged");
+    }
+    public void openCollect(View v){
+        //positions.setAdapter(simpleAdapter2);
+        findViewById(R.id.place_onMap).setBackgroundResource(R.color.white);
+        findViewById(R.id.myplace).setBackgroundResource(R.color.white);
+        if(!ISCOLLECT){
+            v.setBackgroundResource(R.color.gary);
+            ISCOLLECT = true;
+            getCollect();
+        }else{
+            ISCOLLECT = false;
+            v.setBackgroundColor(Color.WHITE);
+            getHistorySearch();
+        }
+    }
+    public void myPlace(View v){
+        findViewById(R.id.place_onMap).setBackgroundResource(R.color.white);
+        findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
+        if(POSITION_TYPE == 1){
+            Dialog d = new Dialog(v.getContext());
+            d.setTitle("起点和终点不能相同");
+            d.show();
+        }else {
+            startActivity(new Intent(v.getContext(),SetPath.class).putExtra("orgin","我的位置"));
+            finish();
+        }
+    }
+    //地图选点
+    public void placeOnMap(View view){
+        findViewById(R.id.myplace).setBackgroundResource(R.color.white);
+        findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
+        view.setBackgroundResource(R.color.gary);
     }
 }
