@@ -159,4 +159,19 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/poiList"
+        android:background="@color/bgofdefault"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="47dp"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+        <ListView
+            android:id="@+id/auto_poi_name"
+            android:layout_width="match_parent"
+            android:layout_height="300dp">
+
+        </ListView>
+    </LinearLayout>
 </RelativeLayout>

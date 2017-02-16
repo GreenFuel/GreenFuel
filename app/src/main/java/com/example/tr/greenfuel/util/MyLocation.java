@@ -31,7 +31,7 @@ public class MyLocation implements AMapLocationListener {
         mapLocationClientOption.setLocationMode(AMapLocationClientOption
                 .AMapLocationMode.Hight_Accuracy);
         //设置定位间隔,单位毫秒
-        mapLocationClientOption.setInterval(20);
+        mapLocationClientOption.setInterval(200);
         mapLocationClient.setLocationOption(mapLocationClientOption);
         //启动定位
         mapLocationClient.startLocation();

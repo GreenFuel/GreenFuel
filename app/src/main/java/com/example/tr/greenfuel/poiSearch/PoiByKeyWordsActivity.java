@@ -2,7 +2,9 @@ package com.example.tr.greenfuel.poiSearch;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
+import com.amap.api.maps.model.LatLng;
 import com.example.tr.greenfuel.R;
 
 public class PoiByKeyWordsActivity extends AppCompatActivity {
@@ -20,5 +22,8 @@ public class PoiByKeyWordsActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+    public void onClick(View view){
+        LatLng c = poiByKeyWs.getCenter();
     }
 }

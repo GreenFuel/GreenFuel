@@ -33,14 +33,20 @@ public class PoiByKeyWords {
                     e.printStackTrace();
                 }
                 center = myLocation.getMyLocation();
-                //Log.d("test","==========1"+center);
+                Log.d("test","==========1"+center);
             }
         });
         thread.start();
-        Thread.sleep(300);
+        //PoiByKeyWords.this.sleep(300);
         center = myLocation.getMyLocation();
         Log.d("test","==========1"+center);
-        myLocation.stop();
+        //myLocation.stop();
+    }
+
+    public LatLng getCenter(){
+        this.center = myLocation.getMyLocation();
+        Log.d("test","==========2"+center);
+        return center;
     }
 
     public PoiByKeyWords(String name,LatLng center,int r) {
@@ -52,12 +58,11 @@ public class PoiByKeyWords {
     public PoiByKeyWords(String name,int r) {
         this.name = name;
         this.center = myLocation.getMyLocation();
-        myLocation.stop();
+        //myLocation.stop();
         this.r = r;
     }
 
     public static void main(String[] args) {
         //PoiByKeyWords poiByKeyWords = new PoiByKeyWords("test");
-
     }
 }

@@ -1,10 +1,10 @@
 package com.example.tr.greenfuel.poiSearch;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.tr.greenfuel.R;
 
@@ -24,6 +24,7 @@ public class PoiSearchPageActivity extends AppCompatActivity {
     }
 
     public void search(View v){
-        Toast.makeText(this, "对话框", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(PoiSearchPageActivity.this,NearPoiSearchResultActivity.class).putExtra("keyWord","宾馆"));
+        //Toast.makeText(this, "对话框", Toast.LENGTH_SHORT).show();
     }
 }
