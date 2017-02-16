@@ -114,6 +114,9 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
                         new int[]{R.id.item_src,R.id.item_text});
             }
             poiList.setAdapter(simpleAdapter);
+            poiList.setOnItemClickListener(this);
+            poiList.setItemsCanFocus(true);
+            //poiList.setVisibility(ListView.INVISIBLE);
         }
     }
 
@@ -151,5 +154,13 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+    public void selected(View v){
+        TextView t = (TextView) v.findViewById(R.id.item_text);
+        if(TYPE == 0){
+            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+        }else{
+            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+        }
     }
 }

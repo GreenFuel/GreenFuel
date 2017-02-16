@@ -20,6 +20,7 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.junge.RouteActivity;
 import com.example.tr.greenfuel.poiSearch.NearPoiSearchResultActivity;
 import com.example.tr.greenfuel.util.MyLocation;
 
@@ -56,7 +57,19 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         //positions.setAdapter(simpleAdapter2);
         //设置list监听
         positions.setOnItemClickListener(this);
-        auto_poi_name.setOnItemClickListener(this);
+        //auto_poi_name.setOnItemClickListener(t);
+        auto_poi_name.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                positionName = (TextView)view.findViewById(R.id.item_text);
+                Intent intent = new Intent(adapterView.getContext(), NearPoiSearchResultActivity.class).putExtra("keyWord", positionName.getText());
+                //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
+                //intent.putExtra("terminal",positionName.getText());
+                Log.i("test","==============-11"+myLocation.getMyLocation());
+                startActivity(intent);
+                finish();
+            }
+        });
         poiList = (LinearLayout) findViewById(R.id.poiList);
         poiList.setVisibility(View.INVISIBLE);
         //初始化输入框
@@ -143,6 +156,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
             positionName = (TextView)view.findViewById(R.id.item_text);
             //Toast.makeText(view.getContext(),positionName.getText(), Toast.LENGTH_SHORT).show();
             if(POSITION_TYPE == 0){
@@ -153,10 +167,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 //i.putExtra()
             }else{   //开启路径规划
                 //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
-                Intent intent = new Intent(SelectPosition.this,NearPoiSearchResultActivity.class).putExtra("keyWord",positionName.getText());
-                //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
-                //intent.putExtra("terminal",positionName.getText());
-                Log.i("test","==============-11"+myLocation.getMyLocation());
+                Intent intent = new Intent(SelectPosition.this,RouteActivity.class);
                 startActivity(intent);
                 finish();
             }
