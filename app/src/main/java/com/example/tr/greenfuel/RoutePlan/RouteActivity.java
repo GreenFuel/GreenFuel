@@ -1,12 +1,13 @@
-package com.example.tr.greenfuel.junge;
+package com.example.tr.greenfuel.RoutePlan;
 
 import android.os.Bundle;
 
 import com.amap.api.navi.AMapNaviView;
 import com.amap.api.navi.enums.NaviType;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.junge.BaseActivity;
 
-public class RouteActivity extends BaseActivity  {
+public class RouteActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +41,12 @@ public class RouteActivity extends BaseActivity  {
             e.printStackTrace();
         }
         mAMapNavi.calculateDriveRoute(sList, eList, mWayPointList, strategy);
-
     }
 
     @Override
     public void onCalculateRouteSuccess() {
         super.onCalculateRouteSuccess();
         mAMapNavi.startNavi(NaviType.GPS);
+        //mAMapNavi.getNaviPaths();
     }
 }

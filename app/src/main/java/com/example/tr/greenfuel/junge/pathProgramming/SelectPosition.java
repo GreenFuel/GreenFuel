@@ -20,7 +20,7 @@ import com.amap.api.services.help.Inputtips;
 import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.junge.RouteActivity;
+import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
 import com.example.tr.greenfuel.poiSearch.NearPoiSearchResultActivity;
 import com.example.tr.greenfuel.util.MyLocation;
 
@@ -167,7 +167,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 //i.putExtra()
             }else{   //开启路径规划
                 //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
-                Intent intent = new Intent(SelectPosition.this,RouteActivity.class);
+                Intent intent = new Intent(SelectPosition.this,RestRouteShowActivity.class);
                 startActivity(intent);
                 finish();
             }

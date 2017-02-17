@@ -44,9 +44,10 @@
         <activity android:name=".nearFunction.NearActivity" />
         <activity android:name=".poiSearch.NearPoiSearchResultActivity" />
         <activity android:name=".poiSearch.PoiAroundSearchActivity" />
-        <activity android:name=".junge.RouteActivity" />
+        <activity android:name=".RoutePlan.RouteActivity" />
         <activity android:name=".junge.pathProgramming.SetPath" />
         <activity android:name=".junge.pathProgramming.SelectPosition" />
+        <activity android:name=".RoutePlan.RestRouteShowActivity"></activity>
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 
