@@ -238,9 +238,22 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
         Intent intent = new Intent(view.getContext(),MarkerPosition.class);
         intent.putExtra("type",POSITION_TYPE);
+        Log.i("POSITION_TYPE","pos-----:"+POSITION_TYPE);
         intent.putExtra("Lat",myLocation.getMyLocation().latitude);
         intent.putExtra("Lng",myLocation.getMyLocation().longitude);
+
+        if(getIntent().getDoubleExtra("startLat",0f) == 0f){
+            Log.i("sp","sp----:my"+myLocation.getMyLocation().latitude);
+            intent.putExtra("startLat2",myLocation.getMyLocation().latitude);
+            intent.putExtra("startLng2",myLocation.getMyLocation().longitude);
+        }else {
+            Log.i("sp","sp----2"+getIntent().getDoubleExtra("startLat",0f));
+            intent.putExtra("startLat2",getIntent().getDoubleExtra("startLat",0f));
+            intent.putExtra("startLng2",getIntent().getDoubleExtra("startLng",0f));
+            Log.i("sp","sp----2"+getIntent().getDoubleExtra("startLat",0f));
+        }
         startActivity(intent);
+        finish();
         view.setBackgroundResource(R.color.gary);
     }
     public void selected(View view){

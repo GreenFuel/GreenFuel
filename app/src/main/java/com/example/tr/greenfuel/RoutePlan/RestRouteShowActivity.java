@@ -94,8 +94,22 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     }
 
     private void setMap(Bundle savedInstanceState) {
-        startLatlng = new NaviLatLng(30.6562406723,104.0660393993);
-        endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
+
+        if(getIntent().getDoubleExtra("startLat",0f)!=0){
+            Log.i("suc","成功-------------");
+            startLatlng = new NaviLatLng(getIntent().getDoubleExtra("startLat",0f),getIntent().getDoubleExtra("startLng",0f));
+        }else{
+            Log.i("suc","失败-------------");
+            startLatlng = new NaviLatLng(30.6562406723,104.0660393993);
+        }
+        if(getIntent().getDoubleExtra("endLat",0f)!=0){
+            Log.i("suc","成功-------------");
+            endLatlng = new NaviLatLng(getIntent().getDoubleExtra("endLat",0f),getIntent().getDoubleExtra("endLng",0f));
+        }else{
+            Log.i("suc","失败-------------");
+            endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
+        }
+
         startList.clear();
         startList.add(startLatlng);
         endList.clear();
@@ -116,9 +130,9 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         CheckBox cost = (CheckBox) findViewById(R.id.cost);
         CheckBox hightspeed = (CheckBox) findViewById(R.id.hightspeed);
         CheckBox avoidhightspeed = (CheckBox) findViewById(R.id.avoidhightspeed);
-         selectroute = (LinearLayout) findViewById(R.id.selectroute);
-         selectroute2 = (LinearLayout) findViewById(R.id.selectroute2);
-         selectroute1 = (LinearLayout) findViewById(R.id.selectroute1);
+        selectroute = (LinearLayout) findViewById(R.id.selectroute);
+        selectroute2 = (LinearLayout) findViewById(R.id.selectroute2);
+        selectroute1 = (LinearLayout) findViewById(R.id.selectroute1);
         Button gpsnavi = (Button) findViewById(R.id.gpsnavi);
 
         selectroute.setOnClickListener(this);
@@ -175,8 +189,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         mAMapNavi.removeAMapNaviListener(this);
         //注意：不要调用这个destory方法，因为在当前页面进行算路，算路成功的数据全部存在此对象中。到另外一个activity中只需要开始导航即可。
         //如果用户是回退退出当前activity，可以调用下面的destory方法。
-        //mAMapNavi.destroy();
-
+        mAMapNavi.destroy();
     }
 
     @Override

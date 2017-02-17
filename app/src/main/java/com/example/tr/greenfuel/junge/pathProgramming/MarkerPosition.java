@@ -21,6 +21,7 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     private AMap aMap;
     private MapView mapView;
     private LatLng position;
+    private LatLng orginPosition;
     private Marker marker;
     private PoiSearch poiSearch;
     private PoiSearch.Query query;
@@ -55,6 +57,8 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
         mapView = (MapView) findViewById(R.id.mapView);
         aMap = mapView.getMap();
         position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+        orginPosition = new LatLng(getIntent().getDoubleExtra("startLat2",0f), getIntent().getDoubleExtra("startLng2",0f));
+        Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
         aMap.setOnMarkerDragListener(this);
         marker = aMap.addMarker(new MarkerOptions().position(position).title("北京").snippet("DefaultMarker"));
         marker.setDraggable(true);
@@ -65,7 +69,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
         poiList.setOnItemSelectedListener(this);
         dataList = new ArrayList<Map<String,Object>>();
         TYPE = getIntent().getIntExtra("type",0);
-
+        Log.i("POSITION_TYPE","MK-----:"+TYPE);
     }
 
     private void setPoi(String keyWord,LatLng lc) {
@@ -90,6 +94,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onMarkerDragEnd(Marker marker) {
+        position = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
         setPoi("",new LatLng(marker.getPosition().latitude,marker.getPosition().longitude));
         moveToLocation(marker.getPosition().latitude,marker.getPosition().longitude);
     }
@@ -98,6 +103,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     public void onPoiSearched(PoiResult poiResult, int i) {
         if (!poiResult.getPois().isEmpty()){
             Log.i("test","-------------===="+poiResult.getPois().get(0).toString());
+            Log.i("POSITION_TYPE","pos-----:"+TYPE);
             dataList.clear();
             int icon = R.drawable.point_my;
             for(PoiItem pi : poiResult.getPois()){
@@ -128,12 +134,30 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Log.i("test","----------------------111111");
+        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) view.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
         if(TYPE == 0){
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,SetPath.class);
+            ii.putExtra("orgin",t.getText());
+            Log.i("sp","mkrt----:startLat"+position.latitude);
+            ii.putExtra("Lng",position.longitude);
+            ii.putExtra("Lat",position.latitude);
+            startActivity(ii);
         }else{
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
+            //i.putExtra("orgin",t.getText());
+            ii.putExtra("endLng",position.longitude);
+            ii.putExtra("endLat",position.latitude);
+
+            Log.i("sp","mk----:startLat2"+orginPosition.latitude);
+            ii.putExtra("startLng",orginPosition.longitude);
+            ii.putExtra("startLat",orginPosition.latitude);
+            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            startActivity(ii);
+            finish();
         }
     }
     public void back(View v) {
@@ -142,12 +166,31 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        Log.i("test","----------------------111111");
+        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) view.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
         if(TYPE == 0){
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,SetPath.class);
+            ii.putExtra("orgin",t.getText());
+            Log.i("sp","mkrt----:startLat"+position.latitude);
+            ii.putExtra("Lng",position.longitude);
+            ii.putExtra("Lat",position.latitude);
+            startActivity(ii);
         }else{
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
+            //i.putExtra("orgin",t.getText());
+            ii.putExtra("endLng",position.longitude);
+            ii.putExtra("endLat",position.latitude);
+
+            Log.i("sp","mk----:startLat1"+orginPosition.latitude);
+            ii.putExtra("startLng",orginPosition.longitude);
+            ii.putExtra("startLat",orginPosition.latitude);
+            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            startActivity(ii);
+            finish();
         }
     }
 
@@ -156,11 +199,31 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     }
     public void selected(View v){
+        Log.i("test","----------------------111111");
+        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) v.findViewById(R.id.item_text);
+        Log.i("test","----------------------"+t.getText());
         if(TYPE == 0){
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,SetPath.class);
+            ii.putExtra("orgin",t.getText());
+            Log.i("sp","mkrt----:startLat"+position.latitude);
+            ii.putExtra("Lng",position.longitude);
+            ii.putExtra("Lat",position.latitude);
+            startActivity(ii);
         }else{
-            startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+            Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
+            //i.putExtra("orgin",t.getText());
+            ii.putExtra("endLng",position.longitude);
+            ii.putExtra("endLat",position.latitude);
+
+            Log.i("sp","mk----:startLat3"+orginPosition.latitude);
+            ii.putExtra("startLng",orginPosition.longitude);
+            ii.putExtra("startLat",orginPosition.latitude);
+            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            startActivity(ii);
+            finish();
         }
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import android.text.InputType;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.util.MyLocation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,6 +25,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     private ListView paths;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>>dataList;
+    private MyLocation myLocation;
     EditText origin;
     EditText terminal;
     @Override
@@ -52,6 +55,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         origin.setFocusable(false);
         terminal.setFocusable(false);
         terminal.setInputType(InputType.TYPE_NULL);
+        myLocation = new MyLocation(SetPath.this);
     }
     //获取路径信息
     private List<Map<String,Object>> getData(){
@@ -70,6 +74,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     public void setOriginPoint(View v){
         Intent i = new Intent(SetPath.this,SelectPosition.class);
         i.putExtra("POSITION_TYPE",0);
+
         startActivity(i);
         //startActivity(new Intent(SetPath.this,PoiAroundSearchActivity.class).putExtra("POSITION_TYPE",0));
     }
@@ -77,6 +82,15 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         Intent i = new Intent(SetPath.this,SelectPosition.class);
         i.putExtra("orgin",origin.getText());
         i.putExtra("POSITION_TYPE",1);
+        if(getIntent().getDoubleExtra("Lng",0f) == 0f){
+            Log.i("sp","setpmy----:startLat"+myLocation.getMyLocation().latitude);
+            i.putExtra("startLat",myLocation.getMyLocation().latitude);
+            i.putExtra("startLng",myLocation.getMyLocation().longitude);
+        }else {
+            Log.i("sp","setpto----:startLat"+getIntent().getDoubleExtra("Lat",0f));
+            i.putExtra("startLat",getIntent().getDoubleExtra("Lat",0f));
+            i.putExtra("startLng",getIntent().getDoubleExtra("Lng",0f));
+        }
         startActivity(i);
     }
 
