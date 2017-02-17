@@ -66,6 +66,10 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
                 //intent.putExtra("terminal",positionName.getText());
                 Log.i("test","==============-11"+myLocation.getMyLocation());
+                intent.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+                intent.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+                intent.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+                intent.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
                 startActivity(intent);
                 finish();
             }
@@ -252,6 +256,12 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
             intent.putExtra("startLng2",getIntent().getDoubleExtra("startLng",0f));
             Log.i("sp","sp----2"+getIntent().getDoubleExtra("startLat",0f));
         }
+        intent.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+        intent.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+        intent.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+        intent.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
+        Log.i("stragy","sep:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
         startActivity(intent);
         finish();
         view.setBackgroundResource(R.color.gary);

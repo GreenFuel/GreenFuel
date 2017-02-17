@@ -104,16 +104,20 @@
             android:layout_marginRight="15dp"
             android:layout_marginBottom="10dp"
             >
+
             <Button
+                android:id="@+id/congestion"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:text="躲避拥堵"
-
+                android:onClick="setStrategy"
                 android:background="@color/bgofdefault"
                 />
             <Button
+                android:id="@+id/cost"
                 android:layout_weight="1"
+                android:onClick="setStrategy"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
@@ -121,19 +125,23 @@
                 android:background="@color/bgofdefault"
                 />
             <Button
+                android:id="@+id/hightspeed"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
+                android:onClick="setStrategy"
                 android:layout_marginLeft="5dp"
                 android:text="不走高速"
                 android:background="@color/bgofdefault"
                 />
             <Button
+                android:id="@+id/avoidhightspeed"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginLeft="5dp"
                 android:text="高速优先"
+                android:onClick="setStrategy"
                 android:background="@color/bgofdefault"
                 />
         </LinearLayout>
@@ -159,6 +167,8 @@
         android:layout_marginTop="5dp"
         >
         <LinearLayout
+            android:id="@+id/home"
+            android:onClick="setStrategy"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:background="@color/white"
@@ -184,7 +194,9 @@
             android:background="@color/colorGray2"
             />
         <LinearLayout
+            android:id="@+id/company"
             android:layout_weight="1"
+            android:onClick="setStrategy"
             android:layout_marginLeft="20dp"
             android:background="@color/white"
             android:layout_width="match_parent"

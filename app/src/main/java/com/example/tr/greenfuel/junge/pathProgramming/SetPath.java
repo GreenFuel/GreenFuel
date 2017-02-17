@@ -3,7 +3,6 @@ package com.example.tr.greenfuel.junge.pathProgramming;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,6 +11,7 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.util.MyLocation;
@@ -23,6 +23,7 @@ import java.util.Map;
 
 public class SetPath extends AppCompatActivity implements View.OnTouchListener, View.OnFocusChangeListener {
     private ListView paths;
+    private boolean congestion, cost, hightspeed, avoidhightspeed;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>>dataList;
     private MyLocation myLocation;
@@ -91,6 +92,11 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
             i.putExtra("startLat",getIntent().getDoubleExtra("Lat",0f));
             i.putExtra("startLng",getIntent().getDoubleExtra("Lng",0f));
         }
+        i.putExtra("congestion",congestion);
+        i.putExtra("cost",cost);
+        i.putExtra("hightspeed",hightspeed);
+        i.putExtra("avoidhightspeed",avoidhightspeed);
+        Log.i("stragy","st:"+congestion+cost+hightspeed+avoidhightspeed);
         startActivity(i);
     }
 
@@ -110,5 +116,57 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         return false;
+    }
+    public void setStrategy(View view){
+        switch (view.getId()){
+            case R.id.congestion:
+                if(congestion){
+                    view.setBackgroundResource(R.color.bgofdefault);
+                    congestion = false;
+                }else {
+                    view.setBackgroundResource(R.color.colorIconBlue);
+                    congestion = true;
+                }
+                break;
+            case R.id.cost:
+                if(cost){
+                    view.setBackgroundResource(R.color.bgofdefault);
+                    cost = false;
+                }else {
+                    view.setBackgroundResource(R.color.colorIconBlue);
+                    cost = true;
+                }
+                break;
+            case R.id.hightspeed:
+                if(hightspeed){
+                    view.setBackgroundResource(R.color.bgofdefault);
+                    hightspeed = false;
+                }else {
+                    if(avoidhightspeed){
+                        Toast.makeText(this,"不能同时选择不走高速和高速优先",Toast.LENGTH_SHORT).show();
+                    }else {
+                        view.setBackgroundResource(R.color.colorIconBlue);
+                        hightspeed = true;
+                    }
+                }
+                break;
+            case R.id.avoidhightspeed:
+                if(avoidhightspeed){
+                    view.setBackgroundResource(R.color.bgofdefault);
+                    avoidhightspeed = false;
+                }else {
+                    if (hightspeed){
+                        Toast.makeText(this,"不能同时选择不走高速和高速优先",Toast.LENGTH_SHORT).show();
+                    }else {
+                        view.setBackgroundResource(R.color.colorIconBlue);
+                        avoidhightspeed = true;
+                    }
+                }
+                break;
+            case R.id.home:
+                break;
+            case R.id.company:
+                break;
+        }
     }
 }

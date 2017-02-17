@@ -56,9 +56,11 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     private void init() {
         mapView = (MapView) findViewById(R.id.mapView);
         aMap = mapView.getMap();
+        Log.i("stragy","mp:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
         position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
         orginPosition = new LatLng(getIntent().getDoubleExtra("startLat2",0f), getIntent().getDoubleExtra("startLng2",0f));
-        Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
+        //Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
         aMap.setOnMarkerDragListener(this);
         marker = aMap.addMarker(new MarkerOptions().position(position).title("北京").snippet("DefaultMarker"));
         marker.setDraggable(true);
@@ -133,7 +135,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.i("test","----------------------111111");
+        Log.i("stragy","----------------------111111");
         Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) view.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
@@ -155,7 +157,13 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             Log.i("sp","mk----:startLat2"+orginPosition.latitude);
             ii.putExtra("startLng",orginPosition.longitude);
             ii.putExtra("startLat",orginPosition.latitude);
+            ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+            ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+            ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+            ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
             //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            Log.i("stragy","mpT1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
             startActivity(ii);
             finish();
         }
@@ -166,7 +174,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.i("test","----------------------111111");
+        Log.i("stragy","----------------------111111");
         Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) view.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
@@ -189,6 +197,12 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             ii.putExtra("startLng",orginPosition.longitude);
             ii.putExtra("startLat",orginPosition.latitude);
             //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+            ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+            ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+            ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
+            Log.i("stragy","mpT2:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
             startActivity(ii);
             finish();
         }
@@ -199,7 +213,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     }
     public void selected(View v){
-        Log.i("test","----------------------111111");
+        Log.i("stragy","----------------------111111");
         Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
         TextView t = (TextView) v.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
@@ -221,7 +235,13 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             Log.i("sp","mk----:startLat3"+orginPosition.latitude);
             ii.putExtra("startLng",orginPosition.longitude);
             ii.putExtra("startLat",orginPosition.latitude);
+            ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+            ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+            ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+            ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
             //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
+            Log.i("stragy","mpT1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
             startActivity(ii);
             finish();
         }

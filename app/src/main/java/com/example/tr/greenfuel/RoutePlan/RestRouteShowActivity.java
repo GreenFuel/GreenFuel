@@ -119,17 +119,28 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         mAmap = mRouteMapView.getMap();
         mAMapNavi = AMapNavi.getInstance(getApplicationContext());
         mAMapNavi.addAMapNaviListener(this);
-        this.congestion = true;
-        this.hightspeed = true;
+
         mAmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(startLatlng.getLatitude(),startLatlng.getLongitude()), 12));
         startCalulate();
     }
 
     private void intiView() {
-        CheckBox congestion = (CheckBox) findViewById(R.id.congestion);
-        CheckBox cost = (CheckBox) findViewById(R.id.cost);
-        CheckBox hightspeed = (CheckBox) findViewById(R.id.hightspeed);
-        CheckBox avoidhightspeed = (CheckBox) findViewById(R.id.avoidhightspeed);
+        Log.i("stragy","Route1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
+                getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
+        this.congestion = getIntent().getBooleanExtra("congestion",false);
+        this.hightspeed = getIntent().getBooleanExtra("hightspeed",false);
+        this.cost = getIntent().getBooleanExtra("cost",false);
+        this.avoidhightspeed = getIntent().getBooleanExtra("avoidhightspeed",false);
+        Log.i("stragy","mpTture:"+this.congestion+this.cost+this.hightspeed+this.avoidhightspeed);
+        CheckBox congestion2 = (CheckBox) findViewById(R.id.congestion);
+        CheckBox cost2 = (CheckBox) findViewById(R.id.cost);
+        CheckBox hightspeed2 = (CheckBox) findViewById(R.id.hightspeed);
+        CheckBox avoidhightspeed2 = (CheckBox) findViewById(R.id.avoidhightspeed);
+        congestion2.setChecked(this.congestion);
+        cost2.setChecked(this.cost);
+        hightspeed2.setChecked(this.hightspeed);
+        avoidhightspeed2.setChecked(this.avoidhightspeed);
+        Log.i("stragy","mpTture2:"+this.congestion+this.cost+this.hightspeed+this.avoidhightspeed);
         selectroute = (LinearLayout) findViewById(R.id.selectroute);
         selectroute2 = (LinearLayout) findViewById(R.id.selectroute2);
         selectroute1 = (LinearLayout) findViewById(R.id.selectroute1);
@@ -139,10 +150,10 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         selectroute1.setOnClickListener(this);
         selectroute2.setOnClickListener(this);
         gpsnavi.setOnClickListener(this);
-        congestion.setOnCheckedChangeListener(this);
-        cost.setOnCheckedChangeListener(this);
-        hightspeed.setOnCheckedChangeListener(this);
-        avoidhightspeed.setOnCheckedChangeListener(this);
+        congestion2.setOnCheckedChangeListener(this);
+        cost2.setOnCheckedChangeListener(this);
+        hightspeed2.setOnCheckedChangeListener(this);
+        avoidhightspeed2.setOnCheckedChangeListener(this);
     }
 
     /**
@@ -290,10 +301,10 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
          */
         if (routeOverlays.size() == 1) {
             chooseRouteSuccess = true;
-            Toast.makeText(this, "导航距离:" + (mAMapNavi.getNaviPath()).getAllLength() + "m" + "\n" + "导航时间:" + (mAMapNavi.getNaviPath()).getAllTime() + "s", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "导航距离:" + (mAMapNavi.getNaviPath()).getAllLength() + "m" + "\n" + "导航时间:" + (mAMapNavi.getNaviPath()).getAllTime() + "s", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this,"---"+routeIndex,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"---"+routeIndex,Toast.LENGTH_SHORT).show();
         if (routeIndex < routeOverlays.size()){
         int routeID = routeOverlays.keyAt(routeIndex);
             Log.i("ID","---------routeIndex=="+routeIndex);
@@ -309,8 +320,6 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
 
             //必须告诉AMapNavi 你最后选择的哪条路
             mAMapNavi.selectRouteId(routeID);
-            Toast.makeText(this, "导航距离:" + (mAMapNavi.getNaviPaths()).get(routeID).getAllLength() + "m" + "\n" + "导航时间:" + (mAMapNavi.getNaviPaths()).get(routeID).getAllTime() + "s", Toast.LENGTH_SHORT).show();
-            //routeIndex++;
             chooseRouteSuccess = true;
         }else {
             Toast.makeText(this, "暂无此方案", Toast.LENGTH_SHORT).show();
@@ -335,7 +344,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         }
         if (strategyFlag >= 0) {
             mAMapNavi.calculateDriveRoute(startList, endList, wayList, strategyFlag);
-            Toast.makeText(getApplicationContext(), "策略:" + strategyFlag, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), "策略:" + strategyFlag, Toast.LENGTH_LONG).show();
         }
     }
     /**
