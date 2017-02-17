@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps.AMap;
@@ -77,7 +79,10 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
      * 路线计算成功标志位
      */
     private boolean calculateSuccess = false;
-    private boolean chooseRouteSuccess = false;
+    private boolean  chooseRouteSuccess =false;
+    private LinearLayout selectroute;
+    private LinearLayout selectroute1;
+    private LinearLayout selectroute2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +116,9 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         CheckBox cost = (CheckBox) findViewById(R.id.cost);
         CheckBox hightspeed = (CheckBox) findViewById(R.id.hightspeed);
         CheckBox avoidhightspeed = (CheckBox) findViewById(R.id.avoidhightspeed);
-        Button selectroute = (Button) findViewById(R.id.selectroute);
-        Button selectroute2 = (Button) findViewById(R.id.selectroute2);
-        Button selectroute1 = (Button) findViewById(R.id.selectroute1);
+         selectroute = (LinearLayout) findViewById(R.id.selectroute);
+         selectroute2 = (LinearLayout) findViewById(R.id.selectroute2);
+         selectroute1 = (LinearLayout) findViewById(R.id.selectroute1);
         Button gpsnavi = (Button) findViewById(R.id.gpsnavi);
 
         selectroute.setOnClickListener(this);
@@ -222,6 +227,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         /**
          * 单路径不需要进行路径选择，直接传入－1即可
          */
+
         drawRoutes(-1, path);
     }
 
@@ -238,6 +244,27 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         routeOverLay.setTrafficLine(true);
         routeOverLay.addToMap();
         routeOverlays.put(routeId, routeOverLay);
+        Log.i("routes","==================++++"+routeId);
+        if(routeId<=3){
+            setRoutesDetails(path,routeId);
+        }
+    }
+
+    private void setRoutesDetails(AMapNaviPath path,int index) {
+        int[] ts = {R.id.time1,R.id.time2,R.id.time3};
+        int[] ds = {R.id.dis1,R.id.dis2,R.id.dis3};
+        int[] os = {R.id.oil1,R.id.oil2,R.id.oil3};
+        TextView pathTiem = (TextView)findViewById(ts[index-1]);
+        TextView pathDis = (TextView)findViewById(ds[index-1]);
+        TextView pathOil = (TextView)findViewById(os[index-1]);
+        pathTiem.setText(String.valueOf(path.getAllTime()/60)+"分钟");
+        pathDis.setText(String.valueOf(path.getAllLength()/1000f)+"km");
+        pathOil.setText(""+getOil(path)+"g");
+
+    }
+
+    private int getOil(AMapNaviPath path) {
+        return 1000;
     }
 
     public void changeRoute(int routeIndex) {
@@ -313,12 +340,21 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.selectroute:
+                selectroute.setBackgroundResource(R.color.colorIconBlue);
+                selectroute1.setBackgroundResource(R.color.bgofdefault);
+                selectroute2.setBackgroundResource(R.color.bgofdefault);
                 changeRoute(0);
                 break;
             case R.id.selectroute1:
+                selectroute.setBackgroundResource(R.color.bgofdefault);
+                selectroute1.setBackgroundResource(R.color.colorIconBlue);
+                selectroute2.setBackgroundResource(R.color.bgofdefault);
                 changeRoute(1);
                 break;
             case R.id.selectroute2:
+                selectroute.setBackgroundResource(R.color.bgofdefault);
+                selectroute1.setBackgroundResource(R.color.bgofdefault);
+                selectroute2.setBackgroundResource(R.color.colorIconBlue);
                 changeRoute(2);
                 break;
             case R.id.gpsnavi:
