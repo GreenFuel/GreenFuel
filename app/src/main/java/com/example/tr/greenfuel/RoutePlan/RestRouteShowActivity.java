@@ -84,6 +84,29 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_rest_calculate);
+        intiView();
+        setMap(savedInstanceState);
+    }
+
+    private void setMap(Bundle savedInstanceState) {
+        startLatlng = new NaviLatLng(30.6562406723,104.0660393993);
+        endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
+        startList.clear();
+        startList.add(startLatlng);
+        endList.clear();
+        endList.add(endLatlng);
+        mRouteMapView = (MapView) findViewById(R.id.navi_view);
+        mRouteMapView.onCreate(savedInstanceState);
+        mAmap = mRouteMapView.getMap();
+        mAMapNavi = AMapNavi.getInstance(getApplicationContext());
+        mAMapNavi.addAMapNaviListener(this);
+        this.congestion = true;
+        this.hightspeed = true;
+        mAmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(startLatlng.getLatitude(),startLatlng.getLongitude()), 12));
+        startCalulate();
+    }
+
+    private void intiView() {
         CheckBox congestion = (CheckBox) findViewById(R.id.congestion);
         CheckBox cost = (CheckBox) findViewById(R.id.cost);
         CheckBox hightspeed = (CheckBox) findViewById(R.id.hightspeed);
@@ -101,21 +124,6 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         cost.setOnCheckedChangeListener(this);
         hightspeed.setOnCheckedChangeListener(this);
         avoidhightspeed.setOnCheckedChangeListener(this);
-        startLatlng = new NaviLatLng(30.6562406723,104.0660393993);
-        endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
-        startList.clear();
-        startList.add(startLatlng);
-        endList.clear();
-        endList.add(endLatlng);
-        mRouteMapView = (MapView) findViewById(R.id.navi_view);
-        mRouteMapView.onCreate(savedInstanceState);
-        mAmap = mRouteMapView.getMap();
-        mAMapNavi = AMapNavi.getInstance(getApplicationContext());
-        mAMapNavi.addAMapNaviListener(this);
-        this.congestion = true;
-        this.hightspeed = true;
-        mAmap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(startLatlng.getLatitude(),startLatlng.getLongitude()), 12));
-        startCalulate();
     }
 
     /**
