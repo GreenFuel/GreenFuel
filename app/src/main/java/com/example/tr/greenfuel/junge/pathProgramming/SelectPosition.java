@@ -191,6 +191,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
                 //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
                 MyPaths p = new MyPaths(getIntent().getStringExtra("orgin"),positionName.getText().toString(),
                         getIntent().getDoubleExtra("startLat",0f),getIntent().getDoubleExtra("startLng",0f),myPlaces.get(i).getLat(),myPlaces.get(i).getLng());
+                Log.i("route",p.toString());
                 startNavi(p);
             }
     }
@@ -226,7 +227,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
 
     @Override
     public void afterTextChanged(Editable editable) {
-        Log.i("test","----------------afterTextChanged");
+
     }
     public void openCollect(View v){
         //positions.setAdapter(simpleAdapter2);

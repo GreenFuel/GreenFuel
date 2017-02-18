@@ -31,7 +31,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     private boolean congestion, cost, hightspeed, avoidhightspeed;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>>dataList;
-    private Boolean Debug = true;
+    private Boolean Debug = false;
     private MyLocation myLocation;
     private LatLng myHome = new LatLng(30.6562406723,104.0660393993);
     private LatLng myCompany = new LatLng(30.5891985869,104.0364842722);
@@ -114,7 +114,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     }
     public void setEndPoint(View v){
         Intent i = new Intent(SetPath.this,SelectPosition.class);
-        i.putExtra("orgin",origin.getText());
+        i.putExtra("orgin",origin.getText().toString());
         i.putExtra("POSITION_TYPE",1);
         if(getIntent().getDoubleExtra("Lng",0f) == 0f){
             i.putExtra("startLat",myLocation.getMyLocation().latitude);

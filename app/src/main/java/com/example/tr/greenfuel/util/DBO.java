@@ -24,15 +24,16 @@ public class DBO {
         db = context.openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
         this.context = context;
     }
-    //插入路径
-    public void  insertToPaths(MyPaths path){
+
+    public void  insertToPaths(MyPaths path){ //插入路径
         db.execSQL("create table if not exists paths(_id integer primary key autoincrement," +
                 "oName text not null,eName text not null,oLat double not null,oLng double not null," +
                 "eLat double not null,eLng double not null)");
         db.execSQL("insert into paths(oName,eName,oLat,oLng,eLat,eLng)values('" +
                 path.getOriginName()+"','"+path.getEndName()+"',"+path.getoLat()+","+path.getoLng()+","+path.geteLat()+","+path.geteLng()+")");
     }
-    public List<MyPaths> getMyPaths(){
+
+    public List<MyPaths> getMyPaths(){  //获取历史路线
         List<MyPaths> ps = new ArrayList<MyPaths>();
         Cursor cursor=db.rawQuery("select * from paths",null);
         if(cursor!=null){
@@ -52,7 +53,7 @@ public class DBO {
         return ps;
     }
     //插入点
-    public void  insertToPlace(MyPlace palce){
+    public void  insertToPlace(MyPlace palce){  //插入点
         db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
                 "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");
         int c = palce.isCollection()?1:0;

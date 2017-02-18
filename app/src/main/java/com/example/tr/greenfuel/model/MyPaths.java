@@ -15,6 +15,9 @@ public class MyPaths {
     private Double eLat;
     private Double eLng;
 
+    public MyPaths() {
+    }
+
     public MyPaths(String originName, String endName, Double oLat, Double oLng, Double eLat, Double eLng) {
         this.originName = originName;
         this.endName = endName;

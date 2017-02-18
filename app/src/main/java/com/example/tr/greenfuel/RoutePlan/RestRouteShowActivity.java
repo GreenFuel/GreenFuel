@@ -36,6 +36,8 @@ import com.amap.api.navi.view.RouteOverLay;
 import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.model.MyPaths;
+import com.example.tr.greenfuel.util.DBO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,12 +85,13 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     private LinearLayout selectroute;
     private LinearLayout selectroute1;
     private LinearLayout selectroute2;
-
+    private MyPaths myPaths;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_rest_calculate);
+        myPaths = new MyPaths();
         intiView();
         setMap(savedInstanceState);
     }
@@ -96,17 +99,22 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     private void setMap(Bundle savedInstanceState) {
 
         if(getIntent().getDoubleExtra("startLat",0f)!=0){
-            Log.i("suc","成功-------------");
+            chooseRouteSuccess = true;
             startLatlng = new NaviLatLng(getIntent().getDoubleExtra("startLat",0f),getIntent().getDoubleExtra("startLng",0f));
+            myPaths.setoLat(getIntent().getDoubleExtra("startLat",0f));
+            myPaths.setoLng(getIntent().getDoubleExtra("startLng",0f));
         }else{
-            Log.i("suc","失败-------------");
             startLatlng = new NaviLatLng(30.6562406723,104.0660393993);
         }
         if(getIntent().getDoubleExtra("endLat",0f)!=0){
-            Log.i("suc","成功-------------");
             endLatlng = new NaviLatLng(getIntent().getDoubleExtra("endLat",0f),getIntent().getDoubleExtra("endLng",0f));
+            myPaths.seteLat(getIntent().getDoubleExtra("endLat",0f));
+            myPaths.seteLng(getIntent().getDoubleExtra("endLng",0f));
+            myPaths.setOriginName(getIntent().getStringExtra("oName"));
+            myPaths.setEndName(getIntent().getStringExtra("eName"));
+            DBO dao = new DBO(this);
+            dao.insertToPaths(myPaths);
         }else{
-            Log.i("suc","失败-------------");
             endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
         }
 
