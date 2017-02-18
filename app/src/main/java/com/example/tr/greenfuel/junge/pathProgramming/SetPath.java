@@ -1,6 +1,7 @@
 package com.example.tr.greenfuel.junge.pathProgramming;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -36,12 +37,22 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         setContentView(R.layout.activity_set_path);
         paths  = (ListView) findViewById(R.id.path_lists);
         inti();
+        getHistoryPaths();
     }
+
+    private void getHistoryPaths() {
+        SQLiteDatabase db= openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
+        db.execSQL("create table if not exists usertd(_id integer primary key autoincrement,name text not null,age integer not null,sex text not null)");
+        db.execSQL("insert into usertd(name,age,sex)values('张三',20,'man')");
+        db.execSQL("insert into usertd(name,age,sex)values('李四',20,'man')");
+        db.execSQL("insert into usertd(name,age,sex)values('王五',20,'man')");
+    }
+
     public void inti(){
         //初始化历史路径
         dataList = new ArrayList<Map<String,Object>>();
-        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text"},
-                new int[]{R.id.item_src,R.id.item_text});
+        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text","imageView"},
+                new int[]{R.id.item_src,R.id.item_text,R.id.imageView});
         paths.setAdapter(simpleAdapter);
         //编辑框设置
         origin = (EditText) findViewById(R.id.origin);
@@ -64,6 +75,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
             Map<String,Object>map=new HashMap<String,Object>();
             map.put("item_src",R.mipmap.path_flag);
             map.put("item_text", "我的位置 到 城北客运站");
+            map.put("imageView",R.mipmap.route);
             dataList.add(map);
         }
         return dataList;
@@ -77,6 +89,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         i.putExtra("POSITION_TYPE",0);
 
         startActivity(i);
+        //finish();
         //startActivity(new Intent(SetPath.this,PoiAroundSearchActivity.class).putExtra("POSITION_TYPE",0));
     }
     public void setEndPoint(View v){
@@ -98,6 +111,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         i.putExtra("avoidhightspeed",avoidhightspeed);
         Log.i("stragy","st:"+congestion+cost+hightspeed+avoidhightspeed);
         startActivity(i);
+        finish();
     }
 
     @Override

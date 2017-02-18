@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -27,9 +28,14 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Poi;
 import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
+import com.example.tr.greenfuel.model.MyPlace;
 import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
+import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.SensorEventHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener,AMap.OnPOIClickListener,
@@ -56,6 +62,15 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mapView.onCreate(savedInstanceState);   //必须重写
         //初始化aMap
         init();
+        DBO dao = new DBO(this);
+        dao.insertToPlace(new MyPlace("TEST",0.2,0.3,false));
+
+        List<MyPlace> ps = new ArrayList<MyPlace>();
+        ps =dao.getMyPlace();
+        Log.i("info",""+ps.size());
+        if(ps.size()>0){
+            Log.i("info",ps.get(0).toString());
+        }
     }
 
     private void findViews(){
