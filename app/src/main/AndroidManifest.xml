@@ -49,6 +49,7 @@
         <activity android:name=".mine.MineActivity"></activity>
         <activity android:name=".junge.pathProgramming.SelectPosition" />
         <activity android:name=".RoutePlan.RestRouteShowActivity"></activity>
+        <activity android:name=".loginRegister.LoginActivity"></activity>
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 

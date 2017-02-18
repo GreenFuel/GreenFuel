@@ -27,5 +27,12 @@
     <string name="from_camera">拍照上传</string>
     <string name="from_library">相册上传</string>
     <string name="cancel">取消</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+    <string name="forget_password">忘记密码？</string>
+    <string name="agree_protocol">我已阅读并同意</string>
+    <string name="service_items">服务条款</string>
 
 </resources>

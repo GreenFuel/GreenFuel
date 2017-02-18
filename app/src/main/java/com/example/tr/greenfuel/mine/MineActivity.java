@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.CustomRoundedImageView;
+import com.example.tr.greenfuel.loginRegister.LoginActivity;
 
 import java.io.FileNotFoundException;
 
@@ -87,7 +88,9 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
 
     //登录或注册
     public void loginRegister(View v){
-
+        System.out.println("1");
+        startActivity(new Intent(MineActivity.this, LoginActivity.class));
+        System.out.println("2");
     }
 
     public void setting(View v){
