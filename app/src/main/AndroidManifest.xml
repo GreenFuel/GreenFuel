@@ -46,6 +46,7 @@
         <activity android:name=".poiSearch.PoiAroundSearchActivity" />
         <activity android:name=".RoutePlan.RouteActivity" />
         <activity android:name=".junge.pathProgramming.SetPath" />
+        <activity android:name=".mine.MineActivity"></activity>
         <activity android:name=".junge.pathProgramming.SelectPosition" />
         <activity android:name=".RoutePlan.RestRouteShowActivity"></activity>
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
