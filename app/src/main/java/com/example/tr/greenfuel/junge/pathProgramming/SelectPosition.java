@@ -21,7 +21,10 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
+import com.example.tr.greenfuel.model.MyPaths;
+import com.example.tr.greenfuel.model.MyPlace;
 import com.example.tr.greenfuel.poiSearch.NearPoiSearchResultActivity;
+import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.MyLocation;
 
 import java.util.ArrayList;
@@ -35,17 +38,34 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     private SimpleAdapter simpleAdapter;
     private LinearLayout poiList;
     private List<Map<String,Object>> dataList;
+    private Boolean DEGUG = true;
     private Intent i;
     private EditText searchText;
     private  int POSITION_TYPE;
     private TextView positionName;
     private MyLocation myLocation;
     private boolean ISCOLLECT=false;
+    private DBO dao;
+    private List<MyPlace> myPlaces = new ArrayList<MyPlace>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_position);
+        dao = new DBO(this);
+        dao.clearPlace();
+        isDebug(DEGUG);
         init();
+    }
+    public  void isDebug(Boolean debug){
+        if(debug){
+            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
+            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
+            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
+            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
+            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
+            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
+        }
     }
     public void init(){
         myLocation = new MyLocation(SelectPosition.this);
@@ -54,18 +74,13 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         auto_poi_name = (ListView) findViewById(R.id.auto_poi_name);
         dataList = new ArrayList<Map<String,Object>>();
         getHistorySearch();
-        //positions.setAdapter(simpleAdapter2);
         //设置list监听
         positions.setOnItemClickListener(this);
-        //auto_poi_name.setOnItemClickListener(t);
         auto_poi_name.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 positionName = (TextView)view.findViewById(R.id.item_text);
                 Intent intent = new Intent(adapterView.getContext(), NearPoiSearchResultActivity.class).putExtra("keyWord", positionName.getText());
-                //intent.putExtra("orgin",getIntent().getStringExtra("orgin"));
-                //intent.putExtra("terminal",positionName.getText());
-                Log.i("test","==============-11"+myLocation.getMyLocation());
                 intent.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
                 intent.putExtra("cost",getIntent().getBooleanExtra("cost",false));
                 intent.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
@@ -82,19 +97,31 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     }
 
     private void getHistorySearch() {
-        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text"},
+        dataList.clear();
+        myPlaces.clear();
+        myPlaces = dao.getMyPlace(false);
+        for(MyPlace p : myPlaces){
+            Map<String,Object>map=new HashMap<String,Object>();
+            map.put("item_src",R.drawable.search_input);
+            map.put("item_text", p.getName());
+            dataList.add(map);
+        }
+        simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_paths,new String[]{"item_src","item_text"},
                 new int[]{R.id.item_src,R.id.item_text});
         positions.setAdapter(simpleAdapter);
     }
 
     private void getCollect(){
         dataList.clear();
-        for(int i=0;i<20;i++){
+        myPlaces.clear();
+        myPlaces = dao.getMyPlace(true);
+        for(MyPlace p : myPlaces){
             Map<String,Object>map=new HashMap<String,Object>();
             map.put("item_src",R.drawable.point_collect);
-            map.put("item_text", "西南交大");
+            map.put("item_text", p.getName());
             dataList.add(map);
         }
+
         simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_paths,new String[]{"item_src","item_text"},
                 new int[]{R.id.item_src,R.id.item_text});
         positions.setAdapter(simpleAdapter);
@@ -112,17 +139,6 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         }
         searchText.setOnFocusChangeListener(this);
         searchText.addTextChangedListener(this);
-    }
-
-    private List<Map<String,Object>> getData(){
-        dataList.clear();
-        for(int i=0;i<20;i++){
-            Map<String,Object>map=new HashMap<String,Object>();
-            map.put("item_src",R.mipmap.search_input);
-            map.put("item_text", "城北客运站");
-            dataList.add(map);
-        }
-        return dataList;
     }
 
     public void setAutoSearch(String name){
@@ -166,14 +182,16 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
             if(POSITION_TYPE == 0){
                 Intent intent = new Intent(SelectPosition.this,SetPath.class);
                 intent.putExtra("orgin",positionName.getText());
+                intent.putExtra("Lng",myPlaces.get(i).getLng());
+                intent.putExtra("Lat",myPlaces.get(i).getLat());
                 startActivity(intent);
                 finish();
                 //i.putExtra()
             }else{   //开启路径规划
                 //Intent intent = new Intent(SelectPosition.this,PoiByKeyWordsActivity.class);
-                Intent intent = new Intent(SelectPosition.this,RestRouteShowActivity.class);
-                startActivity(intent);
-                finish();
+                MyPaths p = new MyPaths(getIntent().getStringExtra("orgin"),positionName.getText().toString(),
+                        getIntent().getDoubleExtra("startLat",0f),getIntent().getDoubleExtra("startLng",0f),myPlaces.get(i).getLat(),myPlaces.get(i).getLng());
+                startNavi(p);
             }
     }
 
@@ -242,31 +260,42 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
         Intent intent = new Intent(view.getContext(),MarkerPosition.class);
         intent.putExtra("type",POSITION_TYPE);
-        Log.i("POSITION_TYPE","pos-----:"+POSITION_TYPE);
         intent.putExtra("Lat",myLocation.getMyLocation().latitude);
         intent.putExtra("Lng",myLocation.getMyLocation().longitude);
-
+        intent.putExtra("oName",getIntent().getStringExtra("orgin"));
         if(getIntent().getDoubleExtra("startLat",0f) == 0f){
-            Log.i("sp","sp----:my"+myLocation.getMyLocation().latitude);
             intent.putExtra("startLat2",myLocation.getMyLocation().latitude);
             intent.putExtra("startLng2",myLocation.getMyLocation().longitude);
         }else {
-            Log.i("sp","sp----2"+getIntent().getDoubleExtra("startLat",0f));
             intent.putExtra("startLat2",getIntent().getDoubleExtra("startLat",0f));
             intent.putExtra("startLng2",getIntent().getDoubleExtra("startLng",0f));
-            Log.i("sp","sp----2"+getIntent().getDoubleExtra("startLat",0f));
         }
         intent.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
         intent.putExtra("cost",getIntent().getBooleanExtra("cost",false));
         intent.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
         intent.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
-        Log.i("stragy","sep:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
-                getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
         startActivity(intent);
         finish();
         view.setBackgroundResource(R.color.gary);
     }
     public void selected(View view){
         startActivity(new Intent(view.getContext(),SetPath.class).putExtra("orgin","我的位置"));
+        finish();
+    }
+    public void startNavi(MyPaths p){
+        Log.i("paths","mk----:startLat2"+p.geteLng());
+        Intent ii = new Intent(SelectPosition.this, RestRouteShowActivity.class);
+        ii.putExtra("oName",p.getOriginName());
+        ii.putExtra("eName",p.getEndName());
+        ii.putExtra("endLng",p.geteLng());
+        ii.putExtra("endLat",p.geteLat());
+        ii.putExtra("startLng",p.getoLng());
+        ii.putExtra("startLat",p.getoLat());
+        ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
+        ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
+        ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
+        ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
+        startActivity(ii);
+        //finish();
     }
 }

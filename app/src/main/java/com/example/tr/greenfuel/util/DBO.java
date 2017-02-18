@@ -18,10 +18,9 @@ import static android.content.Context.MODE_PRIVATE;
  */
 
 public class DBO {
-    SQLiteDatabase db;//=// openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
+    SQLiteDatabase db;
     Context context;
     public DBO(Context context) {
-        //db=SQLiteDatabase.openOrCreateDatabase("/data/data/com.lingdududu.db/databases/stu.db",null);
         db = context.openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
         this.context = context;
     }
@@ -38,9 +37,12 @@ public class DBO {
         Cursor cursor=db.rawQuery("select * from paths",null);
         if(cursor!=null){
             while(cursor.moveToNext()){
-                MyPaths p = new MyPaths(cursor.getString(cursor.getColumnIndex("oName")),cursor.getString(cursor.getColumnIndex("eName")),
-                        cursor.getDouble(cursor.getColumnIndex("oLat")),cursor.getDouble(cursor.getColumnIndex("oLng")),
-                        cursor.getDouble(cursor.getColumnIndex("eLat")),cursor.getDouble(cursor.getColumnIndex("eLng")));
+                MyPaths p = new MyPaths(cursor.getString(cursor.getColumnIndex("oName")),
+                        cursor.getString(cursor.getColumnIndex("eName")),
+                        cursor.getDouble(cursor.getColumnIndex("oLat")),
+                        cursor.getDouble(cursor.getColumnIndex("oLng")),
+                        cursor.getDouble(cursor.getColumnIndex("eLat")),
+                        cursor.getDouble(cursor.getColumnIndex("eLng")));
                 ps.add(p);
                 Log.i("info",p.toString());
                 Log.i("info","!!!!!!!!!!!!!!!!1");
@@ -53,30 +55,23 @@ public class DBO {
     public void  insertToPlace(MyPlace palce){
         db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
                 "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");
+        int c = palce.isCollection()?1:0;
         db.execSQL("insert into places(name,Lng,Lat,isCollection)values('" +
-                palce.getName()+"',"+palce.getLng()+","+palce.getLat()+","+0+")");
-        //db.execSQL("insert into places(name,Lng,Lat,isCollection)values('张三',20,2.3,1)");
+                palce.getName()+"',"+palce.getLng()+","+palce.getLat()+","+c+")");
     }
-    public List<MyPlace> getMyPlace(){
+
+    public List<MyPlace> getMyPlace(boolean b){   //表示是否为收藏的点
         List<MyPlace> ps = new ArrayList<MyPlace>();
-        //db.enableWriteAheadLogging();
-        Cursor cursor = db.query("places",null,null,null,null,null,null);//db.rawQuery("select * from palces",null);
-        Log.i("info","?????!!!!!!!!1");
+        Cursor cursor = db.query("places",null,null,null,null,null,null);
         if(cursor!=null){
-            Log.i("info","?????!!!!!!!!2--"+cursor.getColumnCount()+"|||"+cursor.getCount());
-            Log.i("info","?????!!!!!!!!2-next-"+cursor.moveToNext());
             while(cursor.moveToNext()){
-                Log.i("info","?????!!!!!!!!3");
                 boolean cc =  cursor.getInt(cursor.getColumnIndex("isCollection"))>0?true:false;
                 MyPlace p = new MyPlace(cursor.getString(cursor.getColumnIndex("name")), cursor.getDouble(cursor.getColumnIndex("Lat")),
                         cursor.getDouble(cursor.getColumnIndex("Lng")),cc);
-                ps.add(p);
-                Log.i("info",p.toString());
-                Log.i("info","!!!!!!!!!!!!!!!!1");
+                if(b == cc)
+                    ps.add(p);
             }
             cursor.close();
-        }else{
-            Log.i("info","?????!!!!!!!!1");
         }
         return ps;
     }

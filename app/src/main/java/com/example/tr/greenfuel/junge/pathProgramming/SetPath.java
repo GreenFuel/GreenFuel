@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.amap.api.maps.model.LatLng;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
 import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.MyLocation;
@@ -23,15 +26,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SetPath extends AppCompatActivity implements View.OnTouchListener, View.OnFocusChangeListener {
+public class SetPath extends AppCompatActivity implements View.OnTouchListener, View.OnFocusChangeListener, AdapterView.OnItemClickListener {
     private ListView paths;
     private boolean congestion, cost, hightspeed, avoidhightspeed;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>>dataList;
-    private Boolean Debug = false;
+    private Boolean Debug = true;
     private MyLocation myLocation;
+    private LatLng myHome = new LatLng(30.6562406723,104.0660393993);
+    private LatLng myCompany = new LatLng(30.5891985869,104.0364842722);
     private DBO dao;
-
+    private List<MyPaths> ps = new ArrayList<MyPaths>();
     EditText origin;
     EditText terminal;
     @Override
@@ -45,8 +50,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     }
 
     private void getHistoryPaths() {
-
-        List<MyPaths> ps = new ArrayList<MyPaths>();
+        ps = new ArrayList<MyPaths>();
         ps = dao.getMyPaths();
         dataList = new ArrayList<Map<String,Object>>();
         dataList.clear();
@@ -60,19 +64,19 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_paths,new String[]{"item_src","item_text","imageView"},
                 new int[]{R.id.item_src,R.id.item_text,R.id.imageView});
         paths.setAdapter(simpleAdapter);
+        paths.setOnItemClickListener(this);
 
     }
     public void addMorePaths(){
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
-        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
+        dao.insertToPaths(new MyPaths("TEST","TT",30.6562406723,104.0660393993,30.5891985869,104.0364842722));
     }
     public void inti(){
         //初始化历史路径
@@ -113,11 +117,9 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         i.putExtra("orgin",origin.getText());
         i.putExtra("POSITION_TYPE",1);
         if(getIntent().getDoubleExtra("Lng",0f) == 0f){
-            Log.i("sp","setpmy----:startLat"+myLocation.getMyLocation().latitude);
             i.putExtra("startLat",myLocation.getMyLocation().latitude);
             i.putExtra("startLng",myLocation.getMyLocation().longitude);
         }else {
-            Log.i("sp","setpto----:startLat"+getIntent().getDoubleExtra("Lat",0f));
             i.putExtra("startLat",getIntent().getDoubleExtra("Lat",0f));
             i.putExtra("startLng",getIntent().getDoubleExtra("Lng",0f));
         }
@@ -194,13 +196,37 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 }
                 break;
             case R.id.home:
+                startNavi(new MyPaths("我的位置","家",myLocation.getMyLocation().latitude,
+                        myLocation.getMyLocation().longitude,myHome.latitude,myHome.longitude));
                 break;
             case R.id.company:
+                startNavi(new MyPaths("我的位置","公司",myLocation.getMyLocation().latitude,
+                        myLocation.getMyLocation().longitude,myCompany.latitude,myCompany.longitude));
                 break;
         }
     }
     public void clearPaths(View view){
         dao.clearPaths();
         getHistoryPaths();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        startNavi(ps.get(i));
+    }
+    public void startNavi(MyPaths p){
+        Log.i("paths","mk----:startLat2"+p.geteLng());
+        Intent ii = new Intent(SetPath.this, RestRouteShowActivity.class);
+        ii.putExtra("oName",p.getOriginName());
+        ii.putExtra("eName",p.getEndName());
+        ii.putExtra("endLng",p.geteLng());
+        ii.putExtra("endLat",p.geteLat());
+        ii.putExtra("startLng",p.getoLng());
+        ii.putExtra("startLat",p.getoLat());
+        ii.putExtra("congestion",congestion);
+        ii.putExtra("cost",cost);
+        ii.putExtra("hightspeed",hightspeed);
+        ii.putExtra("avoidhightspeed",avoidhightspeed);
+        startActivity(ii);
     }
 }
