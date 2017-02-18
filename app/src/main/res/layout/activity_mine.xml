@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/colorIconBlueTransparent">
+        android:background="@color/colorIconBlue">
         <Button
             android:layout_marginTop="10dp"
             android:onClick="back"
@@ -25,16 +25,19 @@
             />
         <com.example.tr.greenfuel.customView.CustomRoundedImageView
             android:id="@+id/user_head_image"
+            android:clickable="true"
             android:layout_width="70dp"
             android:layout_height="70dp"
             custom:cornerRadius="10dp"
             custom:type="circle"
-            custom:imgSrc="@drawable/user_head"
+            custom:imgSrc="@mipmap/ad3"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="40dp"
             />
 
         <TextView
+            android:clickable="true"
+            android:onClick="loginRegister"
             android:layout_alignLeft="@+id/user_head_image"
             android:layout_marginTop="50dp"
             android:layout_marginLeft="90dp"

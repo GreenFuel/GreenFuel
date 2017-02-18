@@ -24,5 +24,8 @@
     <string name="is_searching">正在搜索</string>
     <string name="no_result_curr_city">当前城市无结果</string>
     <string name="login_register">登录/注册</string>
+    <string name="from_camera">拍照上传</string>
+    <string name="from_library">相册上传</string>
+    <string name="cancel">取消</string>
 
 </resources>
