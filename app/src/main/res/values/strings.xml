@@ -23,5 +23,6 @@
     <string name="go_here">去这儿</string>
     <string name="is_searching">正在搜索</string>
     <string name="no_result_curr_city">当前城市无结果</string>
+    <string name="login_register">登录/注册</string>
 
 </resources>

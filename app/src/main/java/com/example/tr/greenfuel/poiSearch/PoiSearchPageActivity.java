@@ -20,6 +20,7 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.MainActivity;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.util.MySQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     private AutoCompleteTextView autoKeyWord;
     private List<String> autoResult;
 
+    private MySQLiteOpenHelper mySQLiteOpenHelper;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,9 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     }
 
     private void initData() {
+        //第二参数：数据库名字，第三个参数为空表示使用默认的CursorFactory,最后参数是数据库版本号
+        mySQLiteOpenHelper = new MySQLiteOpenHelper(this,"PoiSearchPage.db3",null,1);
+
         contents = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             contents.add("搜索:" + i);

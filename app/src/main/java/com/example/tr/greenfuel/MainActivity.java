@@ -27,6 +27,7 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Poi;
 import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
+import com.example.tr.greenfuel.mine.MineActivity;
 import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
@@ -278,5 +279,9 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         markerOptions.icon(BitmapDescriptorFactory.fromView(poiTextView));
         poiTagMarker = aMap.addMarker(markerOptions);
         //poiTagMarker.setPosition(poi.getCoordinate());
+    }
+
+    public void goMine(View v){//转到我的页面
+        startActivity(new Intent(this,MineActivity.class));
     }
 }
