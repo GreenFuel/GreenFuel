@@ -1,10 +1,15 @@
 package com.example.tr.greenfuel.junge.pathProgramming;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.Interpolator;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -13,6 +18,8 @@ import android.widget.TextView;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.Projection;
+import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -28,7 +35,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDragListener, PoiSearch.OnPoiSearchListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
+public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDragListener, PoiSearch.OnPoiSearchListener, AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener, AMap.OnCameraChangeListener {
     private AMap aMap;
     private MapView mapView;
     private LatLng position;
@@ -50,7 +57,8 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     }
 
     private void moveToLocation(double lat, double lng) {
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng), 15));
+        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lat,lng),aMap.getCameraPosition().zoom));
+
     }
 
     private void init() {
@@ -62,7 +70,8 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
         orginPosition = new LatLng(getIntent().getDoubleExtra("startLat2",0f), getIntent().getDoubleExtra("startLng2",0f));
         //Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
         aMap.setOnMarkerDragListener(this);
-        marker = aMap.addMarker(new MarkerOptions().position(position).title("北京").snippet("DefaultMarker"));
+        aMap.setOnCameraChangeListener(this);
+        marker = aMap.addMarker(new MarkerOptions().position(position));
         marker.setDraggable(true);
         //Poi
         setPoi("",position);
@@ -72,6 +81,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
         dataList = new ArrayList<Map<String,Object>>();
         TYPE = getIntent().getIntExtra("type",0);
         Log.i("POSITION_TYPE","MK-----:"+TYPE);
+        Log.i("POSITION_TYPE","MK-||||||||||||----:"+aMap.getCameraPosition().target.latitude);
     }
 
     private void setPoi(String keyWord,LatLng lc) {
@@ -104,8 +114,6 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
         if (!poiResult.getPois().isEmpty()){
-            Log.i("test","-------------===="+poiResult.getPois().get(0).toString());
-            Log.i("POSITION_TYPE","pos-----:"+TYPE);
             dataList.clear();
             int icon = R.drawable.point_my;
             for(PoiItem pi : poiResult.getPois()){
@@ -124,7 +132,6 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             poiList.setAdapter(simpleAdapter);
             poiList.setOnItemClickListener(this);
             poiList.setItemsCanFocus(true);
-            //poiList.setVisibility(ListView.INVISIBLE);
         }
     }
 
@@ -135,38 +142,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.i("stragy","----------------------111111");
-        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
-        TextView t = (TextView) view.findViewById(R.id.item_text);
-        Log.i("test","----------------------"+t.getText());
-        if(TYPE == 0){
-            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
-            Intent ii = new Intent(MarkerPosition.this,SetPath.class);
-            ii.putExtra("orgin",t.getText());
-            Log.i("sp","mkrt----:startLat"+position.latitude);
-            ii.putExtra("Lng",position.longitude);
-            ii.putExtra("Lat",position.latitude);
-            startActivity(ii);
-        }else{
-            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
-            Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
-            //i.putExtra("orgin",t.getText());
-            ii.putExtra("endLng",position.longitude);
-            ii.putExtra("endLat",position.latitude);
-
-            Log.i("sp","mk----:startLat2"+orginPosition.latitude);
-            ii.putExtra("startLng",orginPosition.longitude);
-            ii.putExtra("startLat",orginPosition.latitude);
-            ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
-            ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
-            ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
-            ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
-            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
-            Log.i("stragy","mpT1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
-                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
-            startActivity(ii);
-            finish();
-        }
+        startNavi(view);
     }
     public void back(View v) {
         finish();
@@ -174,38 +150,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.i("stragy","----------------------111111");
-        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
-        TextView t = (TextView) view.findViewById(R.id.item_text);
-        Log.i("test","----------------------"+t.getText());
-        if(TYPE == 0){
-            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
-            Intent ii = new Intent(MarkerPosition.this,SetPath.class);
-            ii.putExtra("orgin",t.getText());
-            Log.i("sp","mkrt----:startLat"+position.latitude);
-            ii.putExtra("Lng",position.longitude);
-            ii.putExtra("Lat",position.latitude);
-            startActivity(ii);
-        }else{
-            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
-            Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
-            //i.putExtra("orgin",t.getText());
-            ii.putExtra("endLng",position.longitude);
-            ii.putExtra("endLat",position.latitude);
-
-            Log.i("sp","mk----:startLat1"+orginPosition.latitude);
-            ii.putExtra("startLng",orginPosition.longitude);
-            ii.putExtra("startLat",orginPosition.latitude);
-            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
-            ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
-            ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
-            ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
-            ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
-            Log.i("stragy","mpT2:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
-                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
-            startActivity(ii);
-            finish();
-        }
+        startNavi(view);
     }
 
     @Override
@@ -213,35 +158,77 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
 
     }
     public void selected(View v){
-        Log.i("stragy","----------------------111111");
-        Log.i("POSITION_TYPE","mKTO-----:"+TYPE);
-        TextView t = (TextView) v.findViewById(R.id.item_text);
+        startNavi(v);
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        marker.setPosition(cameraPosition.target);
+    }
+
+    @Override
+    public void onCameraChangeFinish(CameraPosition cameraPosition) {
+        marker.setPosition(cameraPosition.target);
+        position = new LatLng(marker.getPosition().latitude,marker.getPosition().longitude);
+        setPoi("",new LatLng(marker.getPosition().latitude,marker.getPosition().longitude));
+        moveToLocation(marker.getPosition().latitude,marker.getPosition().longitude);
+        //marker.setAnimation();
+        jumpPoint(marker);
+    }
+    /**
+     * marker点击时跳动一下
+     */
+    public void jumpPoint(final Marker marker) {
+        final Handler handler = new Handler();
+        final long start = SystemClock.uptimeMillis();
+        Projection proj = aMap.getProjection();
+        Point startPoint = proj.toScreenLocation(position);
+        startPoint.offset(0, -100);
+        final LatLng startLatLng = proj.fromScreenLocation(startPoint);
+        final long duration = 1000;
+
+        final Interpolator interpolator = new BounceInterpolator();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                float t = interpolator.getInterpolation((float) elapsed
+                        / duration);
+                double lng = t * position.longitude + (1 - t)
+                        * startLatLng.longitude;
+                double lat = t * position.latitude + (1 - t)
+                        * startLatLng.latitude;
+                marker.setPosition(new LatLng(lat, lng));
+                //aMap.invalidate();// 刷新地图
+                if (t < 1.0) {
+                    handler.postDelayed(this, 16);
+                }
+            }
+        });
+    }
+    public void startNavi(View view){
+        TextView t = (TextView) view.findViewById(R.id.item_text);
         Log.i("test","----------------------"+t.getText());
-        if(TYPE == 0){
+        if(TYPE == 0) {
             //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
             Intent ii = new Intent(MarkerPosition.this,SetPath.class);
             ii.putExtra("orgin",t.getText());
-            Log.i("sp","mkrt----:startLat"+position.latitude);
             ii.putExtra("Lng",position.longitude);
             ii.putExtra("Lat",position.latitude);
             startActivity(ii);
-        }else{
-            //startActivity(new Intent(MarkerPosition.this,SetPath.class).putExtra("orgin",t.getText()));
+        }else {
             Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
-            //i.putExtra("orgin",t.getText());
+            ii.putExtra("oName",getIntent().getStringExtra("oName"));
+            ii.putExtra("eName",t.getText());
             ii.putExtra("endLng",position.longitude);
             ii.putExtra("endLat",position.latitude);
-
-            Log.i("sp","mk----:startLat3"+orginPosition.latitude);
+            Log.i("sp","mk----:startLat2"+orginPosition.latitude);
             ii.putExtra("startLng",orginPosition.longitude);
             ii.putExtra("startLat",orginPosition.latitude);
             ii.putExtra("congestion",getIntent().getBooleanExtra("congestion",false));
             ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
             ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
             ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
-            //position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
-            Log.i("stragy","mpT1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
-                    getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
             startActivity(ii);
             finish();
         }
