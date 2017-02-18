@@ -1,7 +1,6 @@
 package com.example.tr.greenfuel.junge.pathProgramming;
 
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -15,6 +14,8 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.model.MyPaths;
+import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.MyLocation;
 
 import java.util.ArrayList;
@@ -27,7 +28,10 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     private boolean congestion, cost, hightspeed, avoidhightspeed;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>>dataList;
+    private Boolean Debug = false;
     private MyLocation myLocation;
+    private DBO dao;
+
     EditText origin;
     EditText terminal;
     @Override
@@ -41,19 +45,41 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
     }
 
     private void getHistoryPaths() {
-        SQLiteDatabase db= openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
-        db.execSQL("create table if not exists usertd(_id integer primary key autoincrement,name text not null,age integer not null,sex text not null)");
-        db.execSQL("insert into usertd(name,age,sex)values('张三',20,'man')");
-        db.execSQL("insert into usertd(name,age,sex)values('李四',20,'man')");
-        db.execSQL("insert into usertd(name,age,sex)values('王五',20,'man')");
-    }
 
-    public void inti(){
-        //初始化历史路径
+        List<MyPaths> ps = new ArrayList<MyPaths>();
+        ps = dao.getMyPaths();
         dataList = new ArrayList<Map<String,Object>>();
-        simpleAdapter = new SimpleAdapter(this,getData(),R.layout.list_paths,new String[]{"item_src","item_text","imageView"},
+        dataList.clear();
+        for(MyPaths p : ps){
+            Map<String,Object>map=new HashMap<String,Object>();
+            map.put("item_src",R.mipmap.path_flag);
+            map.put("item_text", p.getOriginName()+" 到 "+p.getEndName());
+            map.put("imageView",R.mipmap.route);
+            dataList.add(map);
+        }
+        simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_paths,new String[]{"item_src","item_text","imageView"},
                 new int[]{R.id.item_src,R.id.item_text,R.id.imageView});
         paths.setAdapter(simpleAdapter);
+
+    }
+    public void addMorePaths(){
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+        dao.insertToPaths(new MyPaths("TEST","TT",0.2,0.3,0.3,0.4));
+    }
+    public void inti(){
+        //初始化历史路径
+        dao = new DBO(SetPath.this);
+        if(Debug){
+            addMorePaths();
+        }
         //编辑框设置
         origin = (EditText) findViewById(R.id.origin);
         terminal = (EditText) findViewById(R.id.terminal);
@@ -69,17 +95,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         terminal.setInputType(InputType.TYPE_NULL);
         myLocation = new MyLocation(SetPath.this);
     }
-    //获取路径信息
-    private List<Map<String,Object>> getData(){
-        for(int i=0;i<20;i++){
-            Map<String,Object>map=new HashMap<String,Object>();
-            map.put("item_src",R.mipmap.path_flag);
-            map.put("item_text", "我的位置 到 城北客运站");
-            map.put("imageView",R.mipmap.route);
-            dataList.add(map);
-        }
-        return dataList;
-    }
+
     //点击事件
     public void back(View v){
        finish();
@@ -182,5 +198,9 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
             case R.id.company:
                 break;
         }
+    }
+    public void clearPaths(View view){
+        dao.clearPaths();
+        getHistoryPaths();
     }
 }

@@ -1,6 +1,5 @@
 package com.example.tr.greenfuel.util;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,21 +21,17 @@ public class DBO {
     SQLiteDatabase db;//=// openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
     Context context;
     public DBO(Context context) {
+        //db=SQLiteDatabase.openOrCreateDatabase("/data/data/com.lingdududu.db/databases/stu.db",null);
         db = context.openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
+        this.context = context;
     }
     //插入路径
     public void  insertToPaths(MyPaths path){
         db.execSQL("create table if not exists paths(_id integer primary key autoincrement," +
                 "oName text not null,eName text not null,oLat double not null,oLng double not null," +
                 "eLat double not null,eLng double not null)");
-        ContentValues values=new ContentValues();
-        values.put("oName",path.getOriginName());
-        values.put("eName",path.getEndName());
-        values.put("oLat",path.getoLat());
-        values.put("oLat",path.getoLng());
-        values.put("eLat",path.geteLat());
-        values.put("eLng",path.geteLng());
-        db.insert("paths",null,values);
+        db.execSQL("insert into paths(oName,eName,oLat,oLng,eLat,eLng)values('" +
+                path.getOriginName()+"','"+path.getEndName()+"',"+path.getoLat()+","+path.getoLng()+","+path.geteLat()+","+path.geteLng()+")");
     }
     public List<MyPaths> getMyPaths(){
         List<MyPaths> ps = new ArrayList<MyPaths>();
@@ -56,25 +51,20 @@ public class DBO {
     }
     //插入点
     public void  insertToPlace(MyPlace palce){
-        db.execSQL("create table if not exists palces(_id integer primary key autoincrement," +
+        db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
                 "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");
-        ContentValues values=new ContentValues();
-        values.put("name",palce.getName());
-        values.put("Lat",palce.getLat());
-        values.put("Lng",palce.getLng());
-        if(palce.isCollection()){
-            values.put("Lng",1);
-        }else {
-            values.put("Lng",0);
-        }
-        db.insert("palces",null,values);
+        db.execSQL("insert into places(name,Lng,Lat,isCollection)values('" +
+                palce.getName()+"',"+palce.getLng()+","+palce.getLat()+","+0+")");
+        //db.execSQL("insert into places(name,Lng,Lat,isCollection)values('张三',20,2.3,1)");
     }
     public List<MyPlace> getMyPlace(){
         List<MyPlace> ps = new ArrayList<MyPlace>();
-        Cursor cursor=db.query("palces",null,"_id>?",new String[]{"0"},null,null,"name");//db.rawQuery("select * from palces",null);
+        //db.enableWriteAheadLogging();
+        Cursor cursor = db.query("places",null,null,null,null,null,null);//db.rawQuery("select * from palces",null);
         Log.i("info","?????!!!!!!!!1");
         if(cursor!=null){
-            Log.i("info","?????!!!!!!!!2");
+            Log.i("info","?????!!!!!!!!2--"+cursor.getColumnCount()+"|||"+cursor.getCount());
+            Log.i("info","?????!!!!!!!!2-next-"+cursor.moveToNext());
             while(cursor.moveToNext()){
                 Log.i("info","?????!!!!!!!!3");
                 boolean cc =  cursor.getInt(cursor.getColumnIndex("isCollection"))>0?true:false;
@@ -89,6 +79,12 @@ public class DBO {
             Log.i("info","?????!!!!!!!!1");
         }
         return ps;
+    }
+    public void clearPaths(){
+        db.execSQL("delete from paths where _id>0");
+    }
+    public void clearPlace(){
+        db.execSQL("delete from places where _id>0");
     }
 }
 

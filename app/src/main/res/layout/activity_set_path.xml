@@ -151,6 +151,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/strategy"
+        android:layout_above="@+id/clear"
         >
         <LinearLayout
             android:layout_width="match_parent"
@@ -226,11 +227,41 @@
         android:layout_below="@+id/homeAndCompany"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="360dp"
+        android:layout_height="325dp"
         android:id="@+id/path_lists"
         >
     </ListView>
     </LinearLayout>
      </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/clear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        >
+        <LinearLayout
+            android:id="@+id/clearpath"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:onClick="clearPaths"
+            android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="清除历史路线"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/clear"
+            android:layout_gravity="center"
+            />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>
