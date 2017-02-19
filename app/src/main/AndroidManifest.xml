@@ -19,6 +19,10 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 用于读取手机当前的状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".junge.MyApp"
@@ -29,9 +33,12 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="68d1d17198bcc4b455b1246cdaa01c8d" />
+            android:value="c4f139b20831d267048d55a804d39e0c" />
         <!-- android:value="68d1d17198bcc4b455b1246cdaa01c8d" -->
         <!-- android:value="c4f139b20831d267048d55a804d39e0c" -->
+        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
+        <service android:name="com.amap.api.location.APSService" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -39,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".junge.GPSNaviActivity" />
         <activity android:name=".poiSearch.PoiSearchPageActivity" />
         <activity android:name=".nearFunction.NearActivity" />
@@ -52,11 +60,14 @@
         <activity android:name=".RoutePlan.RestRouteShowActivity"/>
         <activity android:name=".loginRegister.FillPersonInfoActivity"/>
         <activity android:name=".loginRegister.LoginActivity"/>
-        <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
-        <service android:name="com.amap.api.location.APSService" />
-
         <activity android:name=".poiSearch.PoiByKeyWordsActivity" />
         <activity android:name=".junge.pathProgramming.MarkerPosition"/>
+        <!--短信验证-->
+        <activity
+            android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
     </application>
 
 </manifest>

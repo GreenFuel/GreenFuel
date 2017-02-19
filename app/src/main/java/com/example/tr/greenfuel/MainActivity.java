@@ -32,6 +32,8 @@ import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
+import cn.smssdk.SMSSDK;
+
 public class MainActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener,AMap.OnPOIClickListener,
         AMap.OnMarkerClickListener {
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         Log.i("info","size:"+ps.size());
         //dao.clearPaths();
         */
+
     }
 
     private void findViews(){
