@@ -9,10 +9,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+
     <!-- 用于提高GPS定位速度 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 读取缓存数据 -->
@@ -49,6 +49,7 @@
         <activity android:name=".mine.MineActivity"></activity>
         <activity android:name=".junge.pathProgramming.SelectPosition" />
         <activity android:name=".RoutePlan.RestRouteShowActivity"></activity>
+        <activity android:name=".RoutePlan.RouteNaviActivity"></activity>
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 

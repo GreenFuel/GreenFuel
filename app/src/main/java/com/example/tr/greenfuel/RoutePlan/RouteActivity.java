@@ -1,22 +1,59 @@
 package com.example.tr.greenfuel.RoutePlan;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
+import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviView;
 import com.amap.api.navi.enums.NaviType;
+import com.amap.api.navi.model.NaviInfo;
+import com.amap.api.navi.view.NextTurnTipView;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.customView.SpringProgressView;
 import com.example.tr.greenfuel.junge.BaseActivity;
 
 public class RouteActivity extends BaseActivity {
+    private NextTurnTipView mNextTurnTipView;
+    private SpringProgressView oilRate;//油耗率
+    private SpringProgressView pfRate;//排放率
+    private TextView nowLeftM;
+    private TextView allLeftM;
+    private TextView nowRouteName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_route);
+        setContentView(R.layout.activity_custom_next_turn_tip_view);
         mAMapNaviView = (AMapNaviView) findViewById(R.id.navi_view);
         mAMapNaviView.onCreate(savedInstanceState);
         mAMapNaviView.setAMapNaviViewListener(this);
+        //自定义UI
+        oilRate = (SpringProgressView) findViewById(R.id.oil_pro);
+        oilRate.setMaxCount(1000.0f);
+        oilRate.setCurrentCount(653);
+        oilRate = (SpringProgressView) findViewById(R.id.pf_pro);
+        oilRate.setMaxCount(1000.0f);
+        oilRate.setCurrentCount(753);
+        nowLeftM = (TextView) findViewById(R.id.now_left);
+        allLeftM = (TextView) findViewById(R.id.all_left);
+        nowRouteName = (TextView) findViewById(R.id.now_route_name);
+        //设置布局完全不可见
+        com.amap.api.navi.AMapNaviViewOptions options = mAMapNaviView.getViewOptions();
+        options.setLayoutVisible(false);
+        mAMapNaviView.setViewOptions(options);
+
+        mNextTurnTipView = (NextTurnTipView) findViewById(R.id.myDirectionView);
+        mAMapNaviView.setLazyNextTurnTipView(mNextTurnTipView);
+
+
+        boolean gps=getIntent().getBooleanExtra("gps", false);
+        mAMapNavi.setEmulatorNaviSpeed(60);
+        if(gps){
+            mAMapNavi.startNavi(AMapNavi.GPSNaviMode);
+        }else{
+            mAMapNavi.startNavi(AMapNavi.EmulatorNaviMode);
+        }
     }
     @Override
     public void onInitNaviSuccess() {
@@ -46,7 +83,16 @@ public class RouteActivity extends BaseActivity {
     @Override
     public void onCalculateRouteSuccess() {
         super.onCalculateRouteSuccess();
-        mAMapNavi.startNavi(NaviType.GPS);
-        //mAMapNavi.getNaviPaths();
+        mAMapNavi.startNavi(NaviType.EMULATOR);
+    }
+
+    @Override
+    public void onNaviInfoUpdate(NaviInfo naviinfo) {
+        super.onNaviInfoUpdate(naviinfo);
+        nowLeftM.setText(String.valueOf(naviinfo.getCurStepRetainDistance())+"米");
+        nowRouteName.setText(naviinfo.getCurrentRoadName().toString());
+        allLeftM.setText(naviinfo.getPathRetainDistance()/1000f+"公里  "+
+                naviinfo.getPathRetainTime()/3600+"小时"+naviinfo.getPathRetainTime()/60%60+"分钟");
+
     }
 }

@@ -68,10 +68,10 @@ public class TTSController implements AMapNaviListener {
     public void init() {
         String text = mContext.getString(R.string.app_id);
         if ("57b3c4a9".equals(text)) {
-            throw new IllegalArgumentException("你不应该用Demo中默认KEY,去讯飞官网申请吧!");
+            //throw new IllegalArgumentException("你不应该用Demo中默认KEY,去讯飞官网申请吧!");
         }
         System.out.println("---------------\n"+mContext+"\n---------------");
-        SpeechUtility.createUtility(mContext, "appid=" + text);
+        SpeechUtility.createUtility(mContext, "appid=" + "58a1aa3e");
 
         // 初始化合成对象.
         mTts = SpeechSynthesizer.createSynthesizer(mContext, mTtsInitListener);

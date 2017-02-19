@@ -19,6 +19,7 @@ import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
 import com.amap.api.maps.Projection;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.CameraPosition;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
@@ -71,7 +72,9 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
         //Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
         aMap.setOnMarkerDragListener(this);
         aMap.setOnCameraChangeListener(this);
-        marker = aMap.addMarker(new MarkerOptions().position(position));
+        marker = aMap.addMarker(new MarkerOptions().position(position)
+                    .icon(BitmapDescriptorFactory
+                            .fromResource(R.drawable.place_marker)));
         marker.setDraggable(true);
         //Poi
         setPoi("",position);
