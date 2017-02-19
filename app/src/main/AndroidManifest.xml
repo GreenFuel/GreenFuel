@@ -9,10 +9,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
-
     <!-- 用于提高GPS定位速度 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 读取缓存数据 -->
@@ -29,7 +29,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="68d1d17198bcc4b455b1246cdaa01c8d" />
+            android:value="c4f139b20831d267048d55a804d39e0c" />
         <!-- android:value="68d1d17198bcc4b455b1246cdaa01c8d" -->
         <!-- android:value="c4f139b20831d267048d55a804d39e0c" -->
         <activity android:name=".MainActivity">
@@ -44,17 +44,19 @@
         <activity android:name=".nearFunction.NearActivity" />
         <activity android:name=".poiSearch.NearPoiSearchResultActivity" />
         <activity android:name=".poiSearch.PoiAroundSearchActivity" />
-        <activity android:name=".RoutePlan.RouteActivity" />
+        <activity android:name=".loginRegister.RegisterActivity"/>
+        <activity android:name=".RoutePlan.RouteActivity"/>
         <activity android:name=".junge.pathProgramming.SetPath" />
-        <activity android:name=".mine.MineActivity"></activity>
+        <activity android:name=".mine.MineActivity"/>
         <activity android:name=".junge.pathProgramming.SelectPosition" />
-        <activity android:name=".RoutePlan.RestRouteShowActivity"></activity>
-        <activity android:name=".RoutePlan.RouteNaviActivity"></activity>
+        <activity android:name=".RoutePlan.RestRouteShowActivity"/>
+        <activity android:name=".loginRegister.FillPersonInfoActivity"/>
+        <activity android:name=".loginRegister.LoginActivity"/>
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 
         <activity android:name=".poiSearch.PoiByKeyWordsActivity" />
-        <activity android:name=".junge.pathProgramming.MarkerPosition"></activity>
+        <activity android:name=".junge.pathProgramming.MarkerPosition"/>
     </application>
 
 </manifest>
