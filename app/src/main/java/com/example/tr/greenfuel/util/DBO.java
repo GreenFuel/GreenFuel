@@ -34,6 +34,9 @@ public class DBO {
     }
 
     public List<MyPaths> getMyPaths(){  //获取历史路线
+        db.execSQL("create table if not exists paths(_id integer primary key autoincrement," +
+                "oName text not null,eName text not null,oLat double not null,oLng double not null," +
+                "eLat double not null,eLng double not null)");
         List<MyPaths> ps = new ArrayList<MyPaths>();
         Cursor cursor=db.rawQuery("select * from paths",null);
         if(cursor!=null){
@@ -62,6 +65,8 @@ public class DBO {
     }
 
     public List<MyPlace> getMyPlace(boolean b){   //表示是否为收藏的点
+        db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
+                "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");
         List<MyPlace> ps = new ArrayList<MyPlace>();
         Cursor cursor = db.query("places",null,null,null,null,null,null);
         if(cursor!=null){
