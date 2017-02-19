@@ -34,5 +34,15 @@
     <string name="forget_password">忘记密码？</string>
     <string name="agree_protocol">我已阅读并同意</string>
     <string name="service_items">服务条款</string>
+    <string name="input_password">输入密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="check_code">验证码</string>
+    <string name="get_check_code">获取验证码</string>
+    <string name="next_step">下一步</string>
+    <string name="person_info">个人资料</string>
+    <string name="user_name">用户昵称</string>
+    <string name="car_brand">车辆品牌</string>
+    <string name="car_type">车辆型号</string>
+    <string name="emission_standard">排放标准</string>
 
 </resources>

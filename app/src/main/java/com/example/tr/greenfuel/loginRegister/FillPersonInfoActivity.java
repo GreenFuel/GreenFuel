@@ -1,6 +1,5 @@
 package com.example.tr.greenfuel.loginRegister;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,48 +11,54 @@ import android.widget.CompoundButton;
 import com.example.tr.greenfuel.R;
 
 /**
- * Created by tangpeng on 2017/2/18.
+ * Created by tangpeng on 2017/2/19.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class FillPersonInfoActivity extends AppCompatActivity {
 
-    private Button login;
     private CheckBox agreeProtocol;
+    private Button register;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-
+        setContentView(R.layout.activity_fill_person_info);
         initViews();
     }
 
-    public void initViews(){
-        login = (Button)findViewById(R.id.login);
+    private void initViews(){
         agreeProtocol = (CheckBox)findViewById(R.id.agreeProtocol);
+        register = (Button)findViewById(R.id.register);
+        register.setClickable(agreeProtocol.isChecked());
 
-        agreeProtocol.setChecked(true);
         agreeProtocol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    login.setClickable(isChecked);
+                register.setClickable(isChecked);
             }
         });
     }
 
-    //转到注册
-    public void register(View v){
-        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
-    }
-
-    public void forgetPassword(View v){
+    //选择品牌
+    public  void choseCarBrand(View v){
 
     }
-    public void back(View v){
-        finish();
+
+    //选择车型
+    public  void choseCarType(View v){
+
+    }
+    //选择排放标准
+    public  void choseEmissionStandard(View v){
+
     }
 
     //查看服务条款
     public void checkServiceItems(View v){
 
+    }
+
+    public void back(View v){
+      finish();
     }
 }
