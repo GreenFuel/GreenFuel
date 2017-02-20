@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_marginTop="5dp"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:orientation="horizontal"
             >
             <Button
@@ -48,7 +48,7 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="45dp"
             android:orientation="horizontal"
             >
             <Button
@@ -57,13 +57,14 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:background="@mipmap/add"
+                android:visibility="gone"
                 android:id="@+id/add" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGray3"
                 android:layout_gravity="center"
-                android:layout_marginLeft="6dp"
+                android:layout_marginLeft="42dp"
                 android:text="到"
                 />
             <EditText
@@ -86,78 +87,63 @@
         android:layout_marginTop="5dp"
         android:id="@+id/strategy"
         >
-        <TextView
-            android:layout_marginLeft="15dp"
-            android:layout_width="match_parent"
-            android:layout_marginTop="5dp"
-            android:layout_height="wrap_content"
-            android:text="规划偏好"
-            android:layout_marginBottom="5dp"
-            android:textColor="@color/black"
 
-            />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             >
 
             <Button
                 android:id="@+id/congestion"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:text="躲避拥堵"
                 android:onClick="setStrategy"
-                android:background="@color/bgofdefault"
+                android:background="@drawable/button_gray"
+                android:drawableTop="@drawable/yd_off"
                 />
             <Button
                 android:id="@+id/cost"
                 android:layout_weight="1"
                 android:onClick="setStrategy"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="避免收费"
-                android:background="@color/bgofdefault"
-                />
-            <Button
-                android:id="@+id/hightspeed"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:onClick="setStrategy"
-                android:layout_marginLeft="5dp"
-                android:text="不走高速"
-                android:background="@color/bgofdefault"
+                android:background="@drawable/button_gray"
+                android:drawableTop="@drawable/sf2_off"
                 />
             <Button
                 android:id="@+id/avoidhightspeed"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:onClick="setStrategy"
+                android:layout_marginLeft="5dp"
+                android:text="不走高速"
+                android:background="@drawable/button_gray"
+                android:drawableTop="@drawable/nogs_off"
+                />
+            <Button
+                android:id="@+id/hightspeed"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:text="高速优先"
                 android:onClick="setStrategy"
-                android:background="@color/bgofdefault"
+                android:background="@drawable/button_gray"
+                android:drawableTop="@drawable/gs_off"
                 />
         </LinearLayout>
     </LinearLayout>
     <!--家公司-->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/strategy"
-        android:layout_above="@+id/clear"
-        >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
     <LinearLayout
         android:background="@color/white"
         android:id="@+id/homeAndCompany"
@@ -217,17 +203,27 @@
             </TextView>
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_above="@+id/clear"
+        android:layout_below="@+id/homeAndCompany"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@+id/homeAndCompany"
+            >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:layout_marginTop="5dp"
         android:orientation="vertical">
     <ListView
-        android:layout_below="@+id/homeAndCompany"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="325dp"
+        android:layout_height="match_parent"
         android:id="@+id/path_lists"
         >
     </ListView>

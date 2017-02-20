@@ -1,6 +1,7 @@
 package com.example.tr.greenfuel.junge.pathProgramming;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -9,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -150,47 +152,65 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         return false;
     }
     public void setStrategy(View view){
+        Button button = (Button) findViewById(view.getId());
         switch (view.getId()){
             case R.id.congestion:
                 if(congestion){
-                    view.setBackgroundResource(R.color.bgofdefault);
+                    view.setBackgroundResource(R.drawable.button_gray);
+                    button.setTextColor(Color.BLACK);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.yd_off), null, null);
                     congestion = false;
                 }else {
-                    view.setBackgroundResource(R.color.colorIconBlue);
+                    view.setBackgroundResource(R.drawable.button_blue);
                     congestion = true;
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.yd_on), null, null);
+                    button.setTextColor(Color.WHITE);
                 }
                 break;
             case R.id.cost:
                 if(cost){
-                    view.setBackgroundResource(R.color.bgofdefault);
+                    view.setBackgroundResource(R.drawable.button_gray);
+                    button.setTextColor(Color.BLACK);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf2_off), null, null);
                     cost = false;
                 }else {
-                    view.setBackgroundResource(R.color.colorIconBlue);
+                    view.setBackgroundResource(R.drawable.button_blue);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf2_on), null, null);
+                    button.setTextColor(Color.WHITE);
                     cost = true;
                 }
                 break;
             case R.id.hightspeed:
                 if(hightspeed){
-                    view.setBackgroundResource(R.color.bgofdefault);
+                    view.setBackgroundResource(R.drawable.button_gray);
+                    button.setTextColor(Color.BLACK);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.gs_off), null, null);
+                    //button.setDrawingCacheBackgroundColor(R.drawable.yd_on);
                     hightspeed = false;
                 }else {
                     if(avoidhightspeed){
                         Toast.makeText(this,"不能同时选择不走高速和高速优先",Toast.LENGTH_SHORT).show();
                     }else {
-                        view.setBackgroundResource(R.color.colorIconBlue);
+                        view.setBackgroundResource(R.drawable.button_blue);
+                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.gs_on), null, null);
                         hightspeed = true;
+                        button.setTextColor(Color.WHITE);
                     }
                 }
                 break;
             case R.id.avoidhightspeed:
                 if(avoidhightspeed){
-                    view.setBackgroundResource(R.color.bgofdefault);
+                    view.setBackgroundResource(R.drawable.button_gray);
+                    button.setTextColor(Color.BLACK);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.nogs_off), null, null);
                     avoidhightspeed = false;
                 }else {
                     if (hightspeed){
                         Toast.makeText(this,"不能同时选择不走高速和高速优先",Toast.LENGTH_SHORT).show();
                     }else {
-                        view.setBackgroundResource(R.color.colorIconBlue);
+                        view.setBackgroundResource(R.drawable.button_blue);
+                        button.setTextColor(Color.WHITE);
+                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.nogs_on), null, null);
                         avoidhightspeed = true;
                     }
                 }

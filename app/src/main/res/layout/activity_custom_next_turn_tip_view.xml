@@ -63,6 +63,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
             >
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -88,6 +91,7 @@
                         android:layout_height="20dp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,6 +117,16 @@
                         android:layout_height="20dp" />
                 </LinearLayout>
             </LinearLayout>
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="建议速度：46km/h"
+                android:layout_marginBottom="10dp"
+                android:textSize="20sp"
+                />
         </LinearLayout>
     </LinearLayout>
 
