@@ -1,12 +1,16 @@
 package com.example.tr.greenfuel.loginRegister;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.tr.greenfuel.R;
 
@@ -19,6 +23,9 @@ public class FillPersonInfoActivity extends AppCompatActivity {
     private CheckBox agreeProtocol;
     private Button register;
 
+    private TextView textEmissionType,textCarBrand,textCarType;
+    private EditText editUserName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +37,10 @@ public class FillPersonInfoActivity extends AppCompatActivity {
         agreeProtocol = (CheckBox)findViewById(R.id.agreeProtocol);
         register = (Button)findViewById(R.id.register);
         register.setClickable(agreeProtocol.isChecked());
+        textEmissionType = (TextView)findViewById(R.id.textEmissionType);
+        textCarBrand = (TextView)findViewById(R.id.textCarBrand);
+        textCarType = (TextView)findViewById(R.id.textCarType);
+        editUserName = (EditText)findViewById(R.id.editUserName);
 
         agreeProtocol.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -48,9 +59,22 @@ public class FillPersonInfoActivity extends AppCompatActivity {
     public  void choseCarType(View v){
 
     }
+
     //选择排放标准
     public  void choseEmissionStandard(View v){
+        new AlertDialog.Builder(this).setItems(new String[]{"国1","国2","国3","国4","国5"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
 
+                switch (which){
+                    case 0: textEmissionType.setText("国1");break;
+                    case 1: textEmissionType.setText("国2");break;
+                    case 2: textEmissionType.setText("国3");break;
+                    case 3: textEmissionType.setText("国4");break;
+                    case 4: textEmissionType.setText("国5");break;
+                }
+            }
+        }).create().show();
     }
 
     //查看服务条款

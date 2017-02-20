@@ -42,6 +42,10 @@ public class RegisterActivity extends AppCompatActivity {
                     getCheckCode.setText(secondCount+"s后重发");
                     getCheckCode.setTextColor(getResources().getColor(R.color.colorGray2));
                 }
+            }else if(msg.what == 2){
+                checkCode.setHint("已验证通过");
+                checkCode.setFocusable(false);
+                getCheckCode.setClickable(false);
             }
         }
     };
@@ -62,6 +66,15 @@ public class RegisterActivity extends AppCompatActivity {
                         System.out.println("验证码验证成功");
                         isChecked = true;
                     } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {//获得验证码成功
+                        System.out.println("EVENT_GET_VERIFICATION_CODE:"+1);
+                        boolean smart = (boolean)data;
+                        System.out.println("EVENT_GET_VERIFICATION_CODE:"+2);
+                        System.out.println("smart:"+smart);
+                        if(smart){
+                            isChecked = true;
+                            handler.sendEmptyMessage(2);
+                        }
+                        System.out.println(3);
                         System.out.println("获得验证码成功");
                     } else if (event == SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES) {//获取支持的国家列表成功，data.toString获取
                         System.out.println("获得国家列表成功");
@@ -131,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
     //下一步，先验证输入的短信验证验证码是否正确
     public void goNextStep(View v) {
         String code = checkCode.getText().toString().trim();
-        if (code != null && code.length() == 4) {
+        if ((code != null && code.length() == 4)|| !checkCode.isFocusable()) {
             SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);
             if(isChecked) {//是否验证成功
                 startActivity(new Intent(RegisterActivity.this, FillPersonInfoActivity.class));
