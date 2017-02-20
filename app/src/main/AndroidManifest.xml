@@ -52,22 +52,25 @@
         <activity android:name=".nearFunction.NearActivity" />
         <activity android:name=".poiSearch.NearPoiSearchResultActivity" />
         <activity android:name=".poiSearch.PoiAroundSearchActivity" />
-        <activity android:name=".loginRegister.RegisterActivity"/>
-        <activity android:name=".RoutePlan.RouteActivity"/>
+        <activity android:name=".loginRegister.RegisterActivity" />
+        <activity android:name=".RoutePlan.RouteActivity" />
         <activity android:name=".junge.pathProgramming.SetPath" />
-        <activity android:name=".mine.MineActivity"/>
+        <activity android:name=".mine.MineActivity" />
         <activity android:name=".junge.pathProgramming.SelectPosition" />
-        <activity android:name=".RoutePlan.RestRouteShowActivity"/>
-        <activity android:name=".loginRegister.FillPersonInfoActivity"/>
-        <activity android:name=".loginRegister.LoginActivity"/>
+        <activity android:name=".RoutePlan.RestRouteShowActivity" />
+        <activity android:name=".loginRegister.FillPersonInfoActivity" />
+        <activity android:name=".loginRegister.LoginActivity" />
         <activity android:name=".poiSearch.PoiByKeyWordsActivity" />
-        <activity android:name=".junge.pathProgramming.MarkerPosition"/>
+        <activity android:name=".junge.pathProgramming.MarkerPosition" />
+        <activity android:name=".mine.EmissionOrderActivity" />
+        <activity android:name=".mine.HistoryDataActivity" />
+        <activity android:name=".mine.SavePointActivity" />
         <!--短信验证-->
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
     </application>
 
 </manifest>

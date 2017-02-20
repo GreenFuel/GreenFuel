@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/login_bg">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/colorIconBlue">
+        <Button
+            android:layout_marginTop="10dp"
+            android:onClick="back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_bg_back_white_blue"
+            android:id="@+id/button" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/save_point"
+            android:gravity="center"
+            android:textSize="@dimen/lTextSize"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:id="@+id/textView" />
+    </RelativeLayout>
+
+</LinearLayout>

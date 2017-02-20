@@ -42,11 +42,11 @@ public class LoginActivity extends AppCompatActivity {
 
     //转到注册
     public void register(View v){
-        startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
+        startActivity(new Intent(LoginActivity.this,RegisterActivity.class).putExtra("fromActivity",0));
     }
 
     public void forgetPassword(View v){
-
+        startActivity(new Intent(LoginActivity.this,RegisterActivity.class).putExtra("fromActivity",1));
     }
     public void back(View v){
         finish();

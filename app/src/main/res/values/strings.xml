@@ -50,4 +50,8 @@
     <string name="emission_order">排放榜单</string>
     <string name="history_data">历史数据</string>
     <string name="save_point">收藏点</string>
+    <string name="forget_password1">忘记密码</string>
+    <string name="confirm">确认</string>
+    <string name="history_fuel_consumption">历史油耗</string>
+    <string name="history_emission">历史排放</string>
 </resources>

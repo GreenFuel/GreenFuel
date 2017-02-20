@@ -25,12 +25,12 @@ public class FillPersonInfoActivity extends AppCompatActivity {
 
     private TextView textEmissionType,textCarBrand,textCarType;
     private EditText editUserName;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fill_person_info);
         initViews();
+
     }
 
     private void initViews(){

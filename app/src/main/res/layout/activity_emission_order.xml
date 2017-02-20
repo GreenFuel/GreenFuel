@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="@color/colorIconBlue">
+        <Button
+            android:layout_marginTop="10dp"
+            android:onClick="back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_bg_back_white_blue"
+            android:id="@+id/button" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/emission_order"
+            android:gravity="center"
+            android:textSize="@dimen/lTextSize"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+    <com.example.tr.greenfuel.customView.ViewPagerIndicator
+        android:id="@+id/id_viewpager_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:orientation="horizontal"
+        custom:visible_tab_count="3"
+        >
+    </com.example.tr.greenfuel.customView.ViewPagerIndicator>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/darkGrey"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/id_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
+</LinearLayout>

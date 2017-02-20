@@ -143,7 +143,7 @@
         android:background="@color/darkGrey"/>
 
     <LinearLayout
-        android:onClick="choseCarBrand"
+        android:onClick="goEmissionOrder"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:onClick="choseCarBrand"
+        android:onClick="goHistoryData"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:onClick="choseCarBrand"
+        android:onClick="goSavePoint"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

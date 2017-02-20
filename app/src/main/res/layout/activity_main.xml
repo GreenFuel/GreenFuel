@@ -131,7 +131,7 @@
         android:orientation="horizontal"
         android:layout_marginRight="5dp"
         android:gravity="center_vertical"
-        android:background="@drawable/rec_bg_corner"
+        android:background="@drawable/rec_bg_corner_white"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="5dp"
@@ -160,7 +160,7 @@
         android:drawableTop="@mipmap/route_situation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rec_bg_corner"
+        android:background="@drawable/rec_bg_corner_white"
         android:text="@string/route_situation"
         android:textSize="@dimen/tTextSize"
         />

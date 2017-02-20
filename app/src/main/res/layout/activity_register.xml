@@ -17,6 +17,7 @@
             android:background="@drawable/btn_bg_back_white_blue"
             android:id="@+id/button" />
         <TextView
+            android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/register"

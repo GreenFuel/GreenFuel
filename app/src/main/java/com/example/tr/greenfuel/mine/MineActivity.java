@@ -23,7 +23,7 @@ import java.io.FileNotFoundException;
  * Created by tangpeng on 2017/2/18.
  */
 
-public class MineActivity extends AppCompatActivity implements View.OnClickListener{
+public class MineActivity extends AppCompatActivity implements View.OnClickListener {
     private CustomRoundedImageView userHead;  //用户头像
 
     @Override
@@ -33,27 +33,31 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         initViews();
     }
 
-    private void initViews(){
-        userHead = (CustomRoundedImageView)findViewById(R.id.user_head_image);
+    private void initViews() {
+        userHead = (CustomRoundedImageView) findViewById(R.id.user_head_image);
         userHead.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.user_head_image:
-                new AlertDialog.Builder(this).setItems(new String[]{"拍照","相册","取消"}, new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(this).setItems(new String[]{"拍照", "相册", "取消"}, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
-                            case 0:Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //启动相机照相获取照片
-                                startActivityForResult(intent,1);break;
+                        switch (which) {
+                            case 0:
+                                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //启动相机照相获取照片
+                                startActivityForResult(intent, 1);
+                                break;
                             case 1:
                                 Intent intent1 = new Intent();
                                 intent1.setType("image/*"); //设置要获取的内容为图片类型
                                 intent1.setAction(Intent.ACTION_GET_CONTENT);   //设置动作为得到内容
-                                startActivityForResult(intent1,2);break;
-                            case 2: dialog.dismiss();
+                                startActivityForResult(intent1, 2);
+                                break;
+                            case 2:
+                                dialog.dismiss();
                         }
                     }
                 }).create().show();
@@ -64,39 +68,51 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode == RESULT_OK){
-            if(requestCode == 1) {//拍照返回
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 1) {//拍照返回
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 if (userHead != null && bitmap != null) {
                     userHead.setBitmap(bitmap);
                 }
-            }else if(requestCode == 2){//相册返回
-                    Uri uri = data.getData();   //图片的uri
-                    ContentResolver resolver = getContentResolver();
-                    try {
-                        Bitmap bitmap1 = BitmapFactory.decodeStream(resolver.openInputStream(uri));
-                        if (userHead != null && bitmap1 != null) {
-                            userHead.setBitmap(bitmap1);
-                        }
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                        System.out.println("获取图片异常");
+            } else if (requestCode == 2) {//相册返回
+                Uri uri = data.getData();   //图片的uri
+                ContentResolver resolver = getContentResolver();
+                try {
+                    Bitmap bitmap1 = BitmapFactory.decodeStream(resolver.openInputStream(uri));
+                    if (userHead != null && bitmap1 != null) {
+                        userHead.setBitmap(bitmap1);
                     }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    System.out.println("获取图片异常");
                 }
             }
         }
+    }
+
+    public void goEmissionOrder(View v) {//尾气排放榜单
+        startActivity(new Intent(MineActivity.this, EmissionOrderActivity.class));
+    }
+
+    public void goHistoryData(View v) {//查看历史数据
+        startActivity(new Intent(MineActivity.this, HistoryDataActivity.class));
+    }
+
+    public void goSavePoint(View v) {//收藏点
+        startActivity(new Intent(MineActivity.this, SavePointActivity.class));
+    }
 
     //登录或注册
-    public void loginRegister(View v){
-        System.out.println("1");
+    public void loginRegister(View v) {
         startActivity(new Intent(MineActivity.this, LoginActivity.class));
-        System.out.println("2");
     }
 
-    public void setting(View v){
+    //转到设置
+    public void setting(View v) {
 
     }
-    public void back(View v){
+
+    public void back(View v) {
         finish();
     }
 }
