@@ -26,6 +26,7 @@
     </RelativeLayout>
     <LinearLayout
         android:clickable="true"
+        android:onClick="goHistoryFuelConsumption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -51,6 +52,7 @@
     </LinearLayout>
     <LinearLayout
         android:clickable="true"
+        android:onClick="goHistoryEmission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"

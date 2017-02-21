@@ -11,19 +11,11 @@ import com.example.tr.greenfuel.R;
  * Created by tangpeng on 2017/2/20.
  */
 
-public class HistoryDataActivity extends AppCompatActivity {
+public class HistoryFuelConsumptionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_history_data);
-    }
-
-    public void goHistoryEmission(View v){
-
-    }
-
-    public void goHistoryFuelConsumption(View v){
-
+        setContentView(R.layout.activity_history_fuel_consumption);
     }
 
     public void back(View v){

@@ -1,15 +1,18 @@
 package com.example.tr.greenfuel.poiSearch;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +23,11 @@ import com.amap.api.services.help.InputtipsQuery;
 import com.amap.api.services.help.Tip;
 import com.example.tr.greenfuel.MainActivity;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.model.SearchHistoryClass;
 import com.example.tr.greenfuel.util.MySQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -39,6 +44,11 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     private List<String> autoResult;
 
     private MySQLiteOpenHelper mySQLiteOpenHelper;
+    private List<SearchHistoryClass> newSearchRecord = new ArrayList<>();   //新的搜索记录
+    ArrayList<SearchHistoryClass> searchHistoryList;    //SQLite中保存的搜索历史
+
+    private Button clearRecord; //清除搜索记录
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +65,12 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
         autoKeyWord.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                SearchHistoryClass searchHistory = new SearchHistoryClass(autoResult.get(position),System.currentTimeMillis());
+                newSearchRecord.add(searchHistory);
+                addToContents(autoResult.get(position));
+                clearRecord.setVisibility(View.VISIBLE);    //使清除按钮可见
+
                 startActivity(new Intent(PoiSearchPageActivity.this, NearPoiSearchResultActivity.class).putExtra("keyWord", autoResult.get(position)).putExtra("fromActivity", 1));
             }
         });
@@ -63,13 +79,119 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     private void initData() {
         //第二参数：数据库名字，第三个参数为空表示使用默认的CursorFactory,最后参数是数据库版本号
         mySQLiteOpenHelper = new MySQLiteOpenHelper(this,"PoiSearchPage.db3",null,1);
+        //从SQLite获取数据并按照时间排序
+        searchHistoryList = cursor2ArrayList(getSearchHistory());
+        Collections.sort(searchHistoryList);
+        System.out.println(searchHistoryList.toString());
+        if(searchHistoryList.size() > 100){//如果记录已经多余100条则，删除100条以后的记录
+             new Thread(){
+                 @Override
+                 public void run() {
+                     super.run();
+                     deleteRecordFromSQLite();
+                 }
+             }.start();
+        }
 
         contents = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            contents.add("搜索:" + i);
+        for (int i = 0; i < searchHistoryList.size(); i++) {
+            contents.add(searchHistoryList.get(i).getContent());
         }
+
         histories = new ArrayAdapter<String>(this, R.layout.listview_search_history, contents);
         listViewHistory.setAdapter(histories);
+        clearRecord = new Button(this);
+        clearRecord.setText("清除搜索记录");
+        clearRecord.setGravity(Gravity.CENTER);
+        clearRecord.setBackgroundResource(R.color.transparent);
+        clearRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(PoiSearchPageActivity.this,"清除",Toast.LENGTH_SHORT).show();
+                clearAllRecord();
+                contents.clear();
+                histories.notifyDataSetChanged();
+                if(contents.size() <= 0){
+                    clearRecord.setVisibility(View.GONE);
+                }
+            }
+        });
+        listViewHistory.addFooterView(clearRecord);
+        if(contents.size() <= 0){
+            clearRecord.setVisibility(View.GONE);
+        }
+    }
+
+    //将刚刚查询的内容添加到listview中
+    private void addToContents(String str){
+        boolean isNew = true;   //该内容在之前的列表是否存在
+        int index = -1;         //旧记录的下标
+        for(int i = 0 ; i < contents.size() ; i++){
+            if(contents.get(i).equals(str)){
+                isNew = false;
+                index = i;
+                break;
+            }
+        }
+        if(isNew){//没有存在与列表中
+            contents.add(0,str);
+        }else{
+            contents.remove(index);
+            contents.add(0,str);
+        }
+        histories.notifyDataSetChanged();
+    }
+
+    //清除所有的记录
+    private void clearAllRecord(){
+        mySQLiteOpenHelper.getReadableDatabase().execSQL("delete from search_histories where recent_time > 0",new Object[]{});
+    }
+
+    //删除多余的历史纪录
+    private void deleteRecordFromSQLite() {
+        mySQLiteOpenHelper.getReadableDatabase().execSQL("delete from search_histories where recent_time < ?",new Object[]{searchHistoryList.get(99).getRecentTime()});
+    }
+
+    //获取搜索历史记录
+    private Cursor getSearchHistory(){
+        return mySQLiteOpenHelper.getReadableDatabase().rawQuery("select * from search_histories",new String[]{});
+    }
+
+    //将cursor封装成ArrayList<SearchHistoryClass>
+    private ArrayList<SearchHistoryClass> cursor2ArrayList(Cursor cursor){
+        ArrayList<SearchHistoryClass> searchHistoryList = new ArrayList<>();
+        if(cursor != null && cursor.getCount() > 0){
+            cursor.moveToFirst();   //指针指向第一行数据
+            while(cursor.moveToNext()){
+                SearchHistoryClass searchHistoryClass = new SearchHistoryClass(cursor.getString(1),cursor.getInt(0));
+                searchHistoryList.add(searchHistoryClass);
+            }
+        }
+        return searchHistoryList;
+    }
+
+    //向search_histories表增加数据
+    private void addToSQLite(){
+        if(newSearchRecord != null && newSearchRecord.size() > 0){
+            for(SearchHistoryClass searchHistory: newSearchRecord)
+            {
+                int count = 100;    //默认历史记录最多一百条
+                boolean exist = false;
+                count = Math.min(count,searchHistoryList.size());
+                for(int i = 0 ; i < count; i++){
+                    if(searchHistory.getContent().equals(searchHistoryList.get(i).getContent())){
+                        exist = true;
+                        break;
+                    }
+                }
+                if(exist){//更新已经存在的搜索记录对应的时间
+                    mySQLiteOpenHelper.getReadableDatabase().execSQL("update search_histories set recent_time = ? where content = ?",new Object[]{searchHistory.getRecentTime(),searchHistory.getContent()});
+                }
+                else {//插入新的搜索记录
+                    mySQLiteOpenHelper.getReadableDatabase().execSQL("insert into search_histories values(?,?)",new Object[]{searchHistory.getRecentTime(),searchHistory.getContent()});
+                }
+            }
+        }
     }
 
     public void back(View v) {
@@ -80,7 +202,11 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     public void search(View v) {
         String keyWords = autoKeyWord.getText().toString();
         if (keyWords != null && !keyWords.trim().equals("")) {
-            System.out.println("keyWords:" + keyWords);
+
+            SearchHistoryClass searchHistory = new SearchHistoryClass(keyWords,System.currentTimeMillis());
+            newSearchRecord.add(searchHistory);
+            addToContents(keyWords);
+            clearRecord.setVisibility(View.VISIBLE);    //使清除按钮可见
             startActivity(new Intent(PoiSearchPageActivity.this, NearPoiSearchResultActivity.class).putExtra("keyWord", keyWords).putExtra("fromActivity", 1));
         } else {
             Toast.makeText(this, "请输入关键字", Toast.LENGTH_SHORT).show();
@@ -88,17 +214,13 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     }
 
     @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {    }
 
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
         String keyWord = s.toString().trim();
         if (keyWord != null && !keyWord.equals("")) {
             InputtipsQuery inputtipsQuery = new InputtipsQuery(keyWord, MainActivity.cityName);
-            //inputtipsQuery.setCityLimit(true);
-            //System.out.println("cityName:" + MainActivity.cityName);
             Inputtips inputtips = new Inputtips(PoiSearchPageActivity.this, inputtipsQuery);
             inputtips.setInputtipsListener(this);
             inputtips.requestInputtipsAsyn();
@@ -106,8 +228,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     }
 
     @Override
-    public void afterTextChanged(Editable s) {
-    }
+    public void afterTextChanged(Editable s) {    }
 
     //自动查询补充回调
     @Override
@@ -117,7 +238,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
             autoResult = strings;
             for (int j = 0; j < list.size(); j++) {
                 strings.add(list.get(j).getName());
-                System.out.println(list.get(j).getDistrict() + " : " + list.get(j).getAddress() + " ===> " + list.get(j).describeContents());
+                //System.out.println(list.get(j).getDistrict() + " : " + list.get(j).getAddress() + " ===> " + list.get(j).describeContents());
             }
             ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.auto_complete_search, strings);
             autoKeyWord.setAdapter(arrayAdapter);
@@ -127,7 +248,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
         }
     }
 
-    //8中查询
+    //8种查询
     public void doSearch(View v) {
         Intent intent = new Intent(PoiSearchPageActivity.this, NearPoiSearchResultActivity.class);
         intent.putExtra("keyWord", ((TextView) v).getText().toString());
@@ -135,7 +256,19 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
         startActivity(intent);
     }
 
-    private void test(){
-        System.out.println("测试一下");
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        new Thread(){
+            @Override
+            public void run() {
+                super.run();
+                addToSQLite();
+                //关闭数据库连接
+                if(mySQLiteOpenHelper != null){
+                    mySQLiteOpenHelper.close();
+                }
+            }
+        }.start();
     }
 }

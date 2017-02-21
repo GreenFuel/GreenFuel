@@ -25,6 +25,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         //第一次使用数据库，创建表
         db.execSQL(CREATE_TABLE_SEARCH_HISTORIES);
+        System.out.println("以创建数据表");
     }
 
     @Override
