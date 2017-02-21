@@ -152,9 +152,11 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
         return false;
     }
     public void setStrategy(View view){
-        Button button = (Button) findViewById(view.getId());
+        //if(){}
+        Button button;
         switch (view.getId()){
             case R.id.congestion:
+                button = (Button) findViewById(view.getId());
                 if(congestion){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
@@ -168,19 +170,21 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 }
                 break;
             case R.id.cost:
+                button = (Button) findViewById(view.getId());
                 if(cost){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf2_off), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf_off), null, null);
                     cost = false;
                 }else {
                     view.setBackgroundResource(R.drawable.button_blue);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf2_on), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf_on), null, null);
                     button.setTextColor(Color.WHITE);
                     cost = true;
                 }
                 break;
             case R.id.hightspeed:
+                button = (Button) findViewById(view.getId());
                 if(hightspeed){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
@@ -199,6 +203,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 }
                 break;
             case R.id.avoidhightspeed:
+                button = (Button) findViewById(view.getId());
                 if(avoidhightspeed){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
