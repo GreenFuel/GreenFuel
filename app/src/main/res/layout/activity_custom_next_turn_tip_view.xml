@@ -118,15 +118,51 @@
                 </LinearLayout>
             </LinearLayout>
             <TextView
+                android:id="@+id/speed_advice"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="建议速度：46km/h"
+                android:layout_marginBottom="5dp"
+                android:textSize="20sp"
+                />
+            <TextView
+                android:id="@+id/now_speed"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:text="当前速度：0km/h"
                 android:layout_marginBottom="10dp"
                 android:textSize="20sp"
                 />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="速度分析"
+                    android:textColor="@color/white"
+                    />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    >
+                    <com.example.tr.greenfuel.customView.SpringProgressView
+                        android:id="@+id/speed_analyze"
+                        android:layout_width="match_parent"
+                        android:layout_height="20dp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
