@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,9 +33,16 @@ import com.amap.api.services.core.SuggestionCity;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
+import com.example.tr.greenfuel.model.MyPaths;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.tr.greenfuel.R.id.avoidhightspeed;
+import static com.example.tr.greenfuel.R.id.congestion;
+import static com.example.tr.greenfuel.R.id.cost;
+import static com.example.tr.greenfuel.R.id.hightspeed;
 
 /**
  * Created by tangpeng on 2017/2/14.
@@ -529,6 +537,25 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
     }
 
     public void goHere(View v){
-        Toast.makeText(this, "选择导航方案", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "选择导航方案", Toast.LENGTH_SHORT).show();
+        MyPaths p = new MyPaths("我的位置",detailMarker.getTitle().toString(),
+                this.aMapLocation.getLatitude(),this.aMapLocation.getLongitude(),
+                detailMarker.getPosition().latitude,detailMarker.getPosition().longitude);
+        startNavi(p);
+    }
+    public void startNavi(MyPaths p){
+        Log.i("paths","mk----:startLat2"+p.geteLng());
+        Intent ii = new Intent(this, RestRouteShowActivity.class);
+        ii.putExtra("oName",p.getOriginName());
+        ii.putExtra("eName",p.getEndName());
+        ii.putExtra("endLng",p.geteLng());
+        ii.putExtra("endLat",p.geteLat());
+        ii.putExtra("startLng",p.getoLng());
+        ii.putExtra("startLat",p.getoLat());
+        ii.putExtra("congestion",congestion);
+        ii.putExtra("cost",cost);
+        ii.putExtra("hightspeed",hightspeed);
+        ii.putExtra("avoidhightspeed",avoidhightspeed);
+        startActivity(ii);
     }
 }

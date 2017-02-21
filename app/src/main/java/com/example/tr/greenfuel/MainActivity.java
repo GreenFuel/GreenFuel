@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckedTextView;
@@ -26,13 +27,18 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.Poi;
+import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
 import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
 import com.example.tr.greenfuel.mine.MineActivity;
+import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
-import cn.smssdk.SMSSDK;
+import static com.example.tr.greenfuel.R.id.avoidhightspeed;
+import static com.example.tr.greenfuel.R.id.congestion;
+import static com.example.tr.greenfuel.R.id.cost;
+import static com.example.tr.greenfuel.R.id.hightspeed;
 
 public class MainActivity extends AppCompatActivity implements LocationSource,
         AMapLocationListener,AMap.OnPOIClickListener,
@@ -257,11 +263,16 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     //点击marker调用
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(this, "marker被点击", Toast.LENGTH_SHORT).show();
+        Log.i("paths","mk----:startLat2"+marker.getPosition().latitude+"::"+marker.getPosition().longitude);
+        MyPaths p = new MyPaths("我的位置",marker.getTitle().toString(),
+                this.aMapLocation.getLatitude(),this.aMapLocation.getLongitude(),
+                marker.getPosition().latitude,marker.getPosition().longitude);
+        startNavi(p);
         if(marker.equals(poiTagMarker)){
             marker.destroy();
         }
         //aMap.clear();
+
         return false;
     }
 
@@ -280,11 +291,27 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(poi.getCoordinate());    // 获取POI坐标
         markerOptions.icon(BitmapDescriptorFactory.fromView(poiTextView));
+        markerOptions.title(poi.getName());
         poiTagMarker = aMap.addMarker(markerOptions);
         //poiTagMarker.setPosition(poi.getCoordinate());
     }
 
     public void goMine(View v){//转到我的页面
         startActivity(new Intent(this,MineActivity.class));
+    }
+    public void startNavi(MyPaths p){
+        Log.i("paths","mk----:startLat2"+p.geteLng());
+        Intent ii = new Intent(MainActivity.this, RestRouteShowActivity.class);
+        ii.putExtra("oName",p.getOriginName());
+        ii.putExtra("eName",p.getEndName());
+        ii.putExtra("endLng",p.geteLng());
+        ii.putExtra("endLat",p.geteLat());
+        ii.putExtra("startLng",p.getoLng());
+        ii.putExtra("startLat",p.getoLat());
+        ii.putExtra("congestion",congestion);
+        ii.putExtra("cost",cost);
+        ii.putExtra("hightspeed",hightspeed);
+        ii.putExtra("avoidhightspeed",avoidhightspeed);
+        startActivity(ii);
     }
 }
