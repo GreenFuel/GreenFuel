@@ -38,10 +38,10 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
 
     private ListView listViewHistory;
     private ArrayAdapter<String> histories;
-    private List<String> contents;
+    private List<String> contents;  //listview的内容
 
     private AutoCompleteTextView autoKeyWord;
-    private List<String> autoResult;
+    private List<String> autoResult;    //输入自动提示列表
 
     private MySQLiteOpenHelper mySQLiteOpenHelper;
     private List<SearchHistoryClass> newSearchRecord = new ArrayList<>();   //新的搜索记录
@@ -68,6 +68,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
 
                 SearchHistoryClass searchHistory = new SearchHistoryClass(autoResult.get(position),System.currentTimeMillis());
                 newSearchRecord.add(searchHistory);
+                //System.out.println("点击Item:"+newSearchRecord.toString());
                 addToContents(autoResult.get(position));
                 clearRecord.setVisibility(View.VISIBLE);    //使清除按钮可见
 
@@ -100,6 +101,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
 
         histories = new ArrayAdapter<String>(this, R.layout.listview_search_history, contents);
         listViewHistory.setAdapter(histories);
+
         clearRecord = new Button(this);
         clearRecord.setText("清除搜索记录");
         clearRecord.setGravity(Gravity.CENTER);
@@ -161,8 +163,8 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
     private ArrayList<SearchHistoryClass> cursor2ArrayList(Cursor cursor){
         ArrayList<SearchHistoryClass> searchHistoryList = new ArrayList<>();
         if(cursor != null && cursor.getCount() > 0){
-            cursor.moveToFirst();   //指针指向第一行数据
-            while(cursor.moveToNext()){
+            //cursor.moveToFirst();   //指针指向第一行数据，如果在存数据之前执行moveToNext就可以不用这条
+            while(cursor.moveToNext()){//是否含有下一条数据
                 SearchHistoryClass searchHistoryClass = new SearchHistoryClass(cursor.getString(1),cursor.getInt(0));
                 searchHistoryList.add(searchHistoryClass);
             }
@@ -170,7 +172,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
         return searchHistoryList;
     }
 
-    //向search_histories表增加数据
+    //向search_histories数据表增加数据
     private void addToSQLite(){
         if(newSearchRecord != null && newSearchRecord.size() > 0){
             for(SearchHistoryClass searchHistory: newSearchRecord)
@@ -186,9 +188,10 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
                 }
                 if(exist){//更新已经存在的搜索记录对应的时间
                     mySQLiteOpenHelper.getReadableDatabase().execSQL("update search_histories set recent_time = ? where content = ?",new Object[]{searchHistory.getRecentTime(),searchHistory.getContent()});
-                }
-                else {//插入新的搜索记录
+                    //System.out.println("更新数据："+searchHistory.getContent());
+                }else {//插入新的搜索记录
                     mySQLiteOpenHelper.getReadableDatabase().execSQL("insert into search_histories values(?,?)",new Object[]{searchHistory.getRecentTime(),searchHistory.getContent()});
+                    //System.out.println("插入数据："+searchHistory.getContent());
                 }
             }
         }
@@ -205,6 +208,7 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
 
             SearchHistoryClass searchHistory = new SearchHistoryClass(keyWords,System.currentTimeMillis());
             newSearchRecord.add(searchHistory);
+            //System.out.println("点击搜索:"+newSearchRecord.toString());
             addToContents(keyWords);
             clearRecord.setVisibility(View.VISIBLE);    //使清除按钮可见
             startActivity(new Intent(PoiSearchPageActivity.this, NearPoiSearchResultActivity.class).putExtra("keyWord", keyWords).putExtra("fromActivity", 1));
@@ -263,11 +267,13 @@ public class PoiSearchPageActivity extends AppCompatActivity implements TextWatc
             @Override
             public void run() {
                 super.run();
+                //System.out.println("开始："+newSearchRecord.toString());
                 addToSQLite();
                 //关闭数据库连接
                 if(mySQLiteOpenHelper != null){
                     mySQLiteOpenHelper.close();
                 }
+                //System.out.println("结束："+"关闭数据库");
             }
         }.start();
     }
