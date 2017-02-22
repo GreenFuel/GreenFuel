@@ -37,6 +37,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private SensorManager sensorManager;
     private double acc = 0;//加速度
     private double angle = 0;//角度
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
 
             }
         });
+
         initSensor();
         mAMapNaviView = (AMapNaviView) findViewById(R.id.navi_view);
         mAMapNaviView.onCreate(savedInstanceState);

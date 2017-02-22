@@ -25,9 +25,11 @@ import com.amap.api.navi.AMapNaviListener;
 import com.amap.api.navi.model.AMapLaneInfo;
 import com.amap.api.navi.model.AMapNaviCross;
 import com.amap.api.navi.model.AMapNaviInfo;
+import com.amap.api.navi.model.AMapNaviLink;
 import com.amap.api.navi.model.AMapNaviLocation;
 import com.amap.api.navi.model.AMapNaviPath;
 import com.amap.api.navi.model.AMapNaviStaticInfo;
+import com.amap.api.navi.model.AMapNaviStep;
 import com.amap.api.navi.model.AMapNaviTrafficFacilityInfo;
 import com.amap.api.navi.model.AimLessModeCongestionInfo;
 import com.amap.api.navi.model.AimLessModeStat;
@@ -37,8 +39,10 @@ import com.amap.api.navi.view.RouteOverLay;
 import com.autonavi.tbt.NaviStaticInfo;
 import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.tr.greenfuel.R;
+import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.util.DBO;
+import com.example.tr.greenfuel.util.FuelCalculate;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -250,6 +254,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
         for (int i = 0; i < ints.length; i++) {
             AMapNaviPath path = paths.get(ints[i]);
+
             if (path != null) {
                 drawRoutes(ints[i], path);
             }
@@ -299,7 +304,14 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         TextView pathOil = (TextView)findViewById(os[index-1]);
         pathTiem.setText(String.valueOf(path.getAllTime()/60)+"分钟");
         pathDis.setText(String.valueOf(path.getAllLength()/1000f)+"km");
-        pathOil.setText(""+getOil(path)+"g");
+        ArrayList<Travelingdata> trs = new ArrayList<Travelingdata>();
+        for(AMapNaviStep step : path.getSteps()){
+            for(AMapNaviLink link :step.getLinks()){
+                trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
+            }
+
+        }
+        pathOil.setText(""+ FuelCalculate.CarFuelConsumptionCal(1,trs)+"g");
 
     }
 
