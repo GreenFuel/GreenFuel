@@ -1,6 +1,7 @@
 package com.example.tr.greenfuel.RoutePlan;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -85,6 +86,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     private LinearLayout selectroute;
     private LinearLayout selectroute1;
     private LinearLayout selectroute2;
+    private ProgressDialog pDialog;
     private MyPaths myPaths;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +135,10 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     }
 
     private void intiView() {
+        pDialog=new ProgressDialog(this);
+        pDialog.setCancelable(false);
+        pDialog.show();
+        pDialog.setContentView(R.layout.progress_dialog);
         Log.i("stragy","Route1:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
                 getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
         this.congestion = getIntent().getBooleanExtra("congestion",false);
@@ -208,7 +214,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         mAMapNavi.removeAMapNaviListener(this);
         //注意：不要调用这个destory方法，因为在当前页面进行算路，算路成功的数据全部存在此对象中。到另外一个activity中只需要开始导航即可。
         //如果用户是回退退出当前activity，可以调用下面的destory方法。
-        //mAMapNavi.destroy();
+        mAMapNavi.destroy();
     }
 
     @Override
@@ -239,6 +245,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     @Override
     public void onCalculateMultipleRoutesSuccess(int[] ints) {
         //清空上次计算的路径列表。
+        hidePDialog();
         routeOverlays.clear();
         HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
         for (int i = 0; i < ints.length; i++) {
@@ -266,6 +273,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     @Override
     public void onCalculateRouteFailure(int arg0) {
         calculateSuccess = false;
+        hidePDialog();
         Toast.makeText(getApplicationContext(), "计算路线失败，errorcode＝" + arg0, Toast.LENGTH_SHORT).show();
     }
 
@@ -548,6 +556,13 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     @Override
     public void updateAimlessModeStatistics(AimLessModeStat arg0) {
 
+
+    }
+    private void hidePDialog() {
+        if (pDialog != null) {
+            pDialog.dismiss();
+            pDialog = null;
+        }
 
     }
 }

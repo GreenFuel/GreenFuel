@@ -180,4 +180,13 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //sensorManager.cancelTriggerSensor();
+        if(sensorManager != null){
+            sensorManager.unregisterListener(this);
+        }
+    }
 }
