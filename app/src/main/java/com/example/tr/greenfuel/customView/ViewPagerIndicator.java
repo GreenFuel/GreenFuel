@@ -32,7 +32,7 @@ public class ViewPagerIndicator extends LinearLayout {
 
     private int mTriangleWidth,mTriangleHeight; //三角形的宽度和高度
 
-    private static final float RADIO_TRIANGLE_WIDTH = 1/6f; //三角形的底边的长度占一个tab宽的 1/6
+    private float RADIO_TRIANGLE_WIDTH = 1/6f; //三角形的底边的长度占一个tab宽的 1/6
 
     private int mInitTranslateX;    //三角形初始时的X坐标的偏移位置
     private int mTranslateX;    //三角形跟随手指滑动时的移动距离
@@ -54,6 +54,9 @@ public class ViewPagerIndicator extends LinearLayout {
 
     public OnPageChangeListener mListener;
 
+    public void setRadioTriangleWidth(float rate){
+        RADIO_TRIANGLE_WIDTH = rate;
+    }
     public ViewPagerIndicator(Context context) {
         this(context,null);
     }

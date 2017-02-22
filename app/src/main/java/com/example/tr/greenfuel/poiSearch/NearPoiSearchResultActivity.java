@@ -170,6 +170,7 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
             {
                 poiSearch.setBound(new PoiSearch.SearchBound(latLonPoint, 5000, true));// 设置搜索区域为以lp点为圆心，其周围5000米范围
             }
+
             poiSearch.searchPOIAsyn(); // 异步搜索
         }else{
 

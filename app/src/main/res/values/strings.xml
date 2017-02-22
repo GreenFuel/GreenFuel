@@ -54,4 +54,6 @@
     <string name="confirm">确认</string>
     <string name="history_fuel_consumption">历史油耗</string>
     <string name="history_emission">历史排放</string>
+    <string name="more_histories">更多历史纪录</string>
+    <string name="clear_histories">清空历史纪录</string>
 </resources>
