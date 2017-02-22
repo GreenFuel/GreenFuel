@@ -476,11 +476,14 @@ public class NearPoiSearchResultActivity extends AppCompatActivity implements
 
         //移动镜头到当前视角(使得包括所有的poi)
         public void zoomToSpan() {
-            if (mPoiItems != null && mPoiItems.size() > 0) {
+            if (mPoiItems != null && mPoiItems.size() >= 2) {
                 if (map == null)
                     return;
                 LatLngBounds bounds = getLatLngBounds();
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+            }else if (mPoiItems != null && mPoiItems.size() < 2){
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mPoiItems.get(0).getLatLonPoint().getLatitude(),
+                        mPoiItems.get(0).getLatLonPoint().getLongitude()),10));
             }
         }
 
