@@ -252,13 +252,32 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         hidePDialog();
         routeOverlays.clear();
         HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
+        AMapNaviPath minPath = null;
+        int oh = Integer.MAX_VALUE;
+        int index = 1;
         for (int i = 0; i < ints.length; i++) {
             AMapNaviPath path = paths.get(ints[i]);
-
-            if (path != null) {
-                drawRoutes(ints[i], path);
+            ArrayList<Travelingdata> trs = new ArrayList<Travelingdata>();
+            for(AMapNaviStep step : path.getSteps()){
+                for(AMapNaviLink link :step.getLinks()){
+                    trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
+                }
+            }
+            //pathOil.setText(""+ (int)FuelCalculate.CarFuelConsumptionCal(1,trs)+"毫升");
+            if(oh>(int)FuelCalculate.CarFuelConsumptionCal(1,trs)){
+                if(minPath !=null){
+                    drawRoutes(++index, minPath);
+                }
+                oh = (int)FuelCalculate.CarFuelConsumptionCal(1,trs);
+                minPath = path;
+                setRoutesDetails(minPath,1);
+            }else if (path != null) {
+                //drawRoutes(ints[i], path);
+                drawRoutes(++index, path);
             }
         }
+        drawRoutes(1, minPath);
+
     }
 
     @Override
@@ -309,10 +328,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
             for(AMapNaviLink link :step.getLinks()){
                 trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
             }
-
         }
-        pathOil.setText(""+ FuelCalculate.CarFuelConsumptionCal(1,trs)+"g");
-
+        pathOil.setText(""+ (int)FuelCalculate.CarFuelConsumptionCal(1,trs)+"毫升");
     }
 
     private int getOil(AMapNaviPath path) {

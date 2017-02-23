@@ -12,8 +12,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviView;
@@ -22,13 +27,19 @@ import com.amap.api.navi.model.NaviInfo;
 import com.amap.api.navi.view.NextTurnTipView;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.SpringProgressView;
+import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.junge.BaseActivity;
+import com.example.tr.greenfuel.util.EmissionCalculate;
+import com.example.tr.greenfuel.util.FuelCalculate;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class RouteActivity extends BaseActivity implements SensorEventListener{
     private NextTurnTipView mNextTurnTipView;
     private SpringProgressView oilRate;//油耗率
     private SpringProgressView pfRate;//排放率
-    private SpringProgressView speedAnalyze;//排放率
+    private SpringProgressView speedAnalyze;//速度分析
     private TextView nowLeftM;
     private TextView allLeftM;
     private TextView nowRouteName;
@@ -37,7 +48,16 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private SensorManager sensorManager;
     private double acc = 0;//加速度
     private double angle = 0;//角度
-
+    private double speed = 0;
+    private Date time = null;
+    private ArrayList<Travelingdata> ts;
+    private boolean STARTNAVI = false;
+    private AlertDialog dialog;
+    private Date startTime = new Date(System.currentTimeMillis());
+    private double distanceMin = Integer.MAX_VALUE;
+    private double distanceMax = Integer.MIN_VALUE;
+    private double fuelConsumption = 0;
+    private double carbonEmission = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +79,10 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             public void onLocationChanged(Location location) {
                 Log.i("speed", "onLocationChanged: "+location.getSpeed());
                 loc = location;
+                speed = location.getSpeed()*3.6;
                 TextView now = (TextView)findViewById(R.id.now_speed);
                 now.setText("当前速度"+location.getSpeed()*3.6);
+                STARTNAVI = true;
             }
 
             @Override
@@ -78,6 +100,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
 
             }
         });
+        ts = new ArrayList<Travelingdata>();
 
         initSensor();
         mAMapNaviView = (AMapNaviView) findViewById(R.id.navi_view);
@@ -163,6 +186,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         nowRouteName.setText(naviinfo.getCurrentRoadName().toString());
         allLeftM.setText(naviinfo.getPathRetainDistance()/1000f+"公里  "+
                 naviinfo.getPathRetainTime()/3600+"小时"+naviinfo.getPathRetainTime()/60%60+"分钟");
+        if(naviinfo.getPathRetainDistance() < distanceMin){
+            distanceMin = naviinfo.getPathRetainDistance();
+        }
+        if(naviinfo.getPathRetainDistance() > distanceMax){
+            distanceMax = naviinfo.getPathRetainDistance();
+        }
 
     }
 
@@ -174,6 +203,33 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         if(sensorEvent.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION){
             Log.i("acc","angle"+angle+"加速度:"+acc+"\tcos"+Math.cos(2f*3.14159/360f*angle));
             acc = sensorEvent.values[1]*Math.cos(2f*3.14159/360f*angle);
+            if(time == null){
+                time = new Date(System.currentTimeMillis());
+            }
+            long t = time.getTime();
+            time.setTime(System.currentTimeMillis());
+            if(Math.abs(acc)<0.1){
+                acc = 0;
+            }
+            Log.i("acc","d:_-----------------:v"+speed+"  t:"+(time.getTime()-t));
+            Log.i("acc","d:_-----------------:ps--"+EmissionCalculate.COEmissionCal(0,0)*(time.getTime()-t)/1000f);
+
+            Log.i("acc","d:_-----------------:v"+speed+"  cc:"+EmissionCalculate.cEmissionCal(80)/100000);
+            ts.clear();
+            ts.add(new Travelingdata((int) speed,1f,1));
+            Log.i("acc","oil:--"+(int)FuelCalculate.CarFuelConsumptionCal(1,ts));
+            //pfRate.setCurrentCount((float) (EmissionCalculate.COEmissionCal(acc,speed)*(time.getTime()-t)/10f));
+            pfRate.setCurrentCount((int)EmissionCalculate.cEmissionCal(speed)/100000);
+            oilRate.setCurrentCount((int)FuelCalculate.CarFuelConsumptionCal(1,ts)/10);
+            carbonEmission += EmissionCalculate.cEmissionCal(speed)/1000;
+            fuelConsumption += FuelCalculate.CarFuelConsumptionCal(1,ts)/10;
+            if(!STARTNAVI){
+                pfRate.setCurrentCount(0);
+                oilRate.setCurrentCount(0);
+                speedAnalyze.setCurrentCount(0);
+                carbonEmission = 0;
+                fuelConsumption = 0;
+            }
         }
 
     }
@@ -190,5 +246,30 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         if(sensorManager != null){
             sensorManager.unregisterListener(this);
         }
+    }
+    public void endNavi(View v){
+        LayoutInflater inflater = LayoutInflater.from (this);
+       View view = inflater.inflate(R.layout.analyze_dialog,null);
+        Button detail= (Button) view.findViewById(R.id.detail);
+        detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(RouteActivity.this, "查看详情", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
+        TextView t = (TextView) view.findViewById(R.id.time);
+        TextView dis = (TextView) view.findViewById(R.id.distance);
+        TextView oil = (TextView) view.findViewById(R.id.fule_consumption);
+        TextView cemmision = (TextView) view.findViewById(R.id.carbon_emmision);
+
+        t.setText("耗时："+((System.currentTimeMillis()-startTime.getTime())/1000/3600)+"小时"+((System.currentTimeMillis()-startTime.getTime())/1000/60%60)+"分钟");
+        dis.setText("驾驶行程："+(distanceMax-distanceMin)+"km");
+        oil.setText("总共耗油："+fuelConsumption);
+        cemmision.setText("碳排放量："+carbonEmission);
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setView(view);
+        dialog = builder.create();
+        dialog.show();
     }
 }

@@ -20,6 +20,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class DBO {
     SQLiteDatabase db;
     Context context;
+
     public DBO(Context context) {
         db = context.openOrCreateDatabase("mytest.db",MODE_PRIVATE,null);
         this.context = context;

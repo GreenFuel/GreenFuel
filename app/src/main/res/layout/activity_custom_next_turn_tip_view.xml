@@ -165,12 +165,13 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
+<!---->
     <com.amap.api.navi.AMapNaviView
         android:layout_below="@+id/info"
         android:id="@+id/navi_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/left_info"
         />
 
     <LinearLayout
@@ -184,9 +185,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"
             android:background="@color/white"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -208,6 +206,18 @@
                 android:text="2.406公里  0小时8分钟"
                 android:textSize="20sp"
                 />
+
+            <Button
+                android:layout_marginLeft="5dp"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_blue"
+                android:text="结束导航"
+                android:textSize="12sp"
+                android:onClick="endNavi"
+                android:id="@+id/button2" />
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
