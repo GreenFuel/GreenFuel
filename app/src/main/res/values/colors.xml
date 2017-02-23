@@ -18,6 +18,7 @@
     <color name="darkGrey"> #C0C0C0</color>
     <color name="login_bg"> #f0f2f4</color>
     <color name="gary">#898989</color>
+    <color name="gary6">#bfbfbf</color>
     <color name="color_bottom_text_normal">#9da0a4</color>
     <color name="white">#ffffff</color><!--白色 -->
     <color name="ivory">#fffff0</color><!--象牙色 -->

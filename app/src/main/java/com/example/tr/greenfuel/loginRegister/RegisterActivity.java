@@ -165,7 +165,8 @@ public class RegisterActivity extends AppCompatActivity {
             if(DEBUG || isChecked) {//是否验证成功
                 if(fromActivity == 0)
                 {//转到 “个人资料”
-                    startActivity(new Intent(RegisterActivity.this, FillPersonInfoActivity.class));
+                    startActivity(new Intent(RegisterActivity.this, FillPersonInfoActivity.class).putExtra("phone",phone.getText().toString().trim())
+                            .putExtra("password",passwordAgain.getText().toString().trim()));
                 }else if(fromActivity == 1){//修改密码
 
                 }

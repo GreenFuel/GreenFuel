@@ -89,6 +89,7 @@ public class CustomLetterSearchView extends View {
         if(pos >= letters.length){
             pos = letters.length - 1;
         }
+        //System.out.println("pos:"+pos);
         switch (action){
             case MotionEvent.ACTION_UP:
             //当手指抬起时，设置view的背景为透明

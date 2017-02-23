@@ -56,6 +56,7 @@
     <string name="history_emission">历史排放</string>
     <string name="more_histories">更多历史纪录</string>
     <string name="clear_histories">清空历史纪录</string>
+    <string name="load_failed">数据加载失败</string>
 
 
     <string-array name="car_brand">

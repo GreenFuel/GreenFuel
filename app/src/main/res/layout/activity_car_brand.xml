@@ -17,6 +17,7 @@
             android:background="@drawable/btn_bg_back_white_blue"
             android:id="@+id/button" />
         <TextView
+            android:id="@+id/titles"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/car_brand"
@@ -49,6 +50,27 @@
                 android:gravity="center"
                 android:visibility="invisible"
                 android:layout_centerInParent="true"/>
+            <LinearLayout
+                android:id="@+id/layout_load_failed"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:visibility="invisible">
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@mipmap/load_failed"/>
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gary6"
+                    android:textSize="@dimen/lTextSize"
+                    android:text="@string/load_failed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </RelativeLayout>
         <com.example.tr.greenfuel.customView.CustomLetterSearchView
             android:id="@+id/customview_letter_search"

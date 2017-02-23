@@ -74,7 +74,8 @@ public class CarBrandListViewAdapter extends BaseAdapter {
     }
 
     private int getSectionFromPosition(int position){//根据position获得对应项的首字母的ascii码值
-        return carBrandList.get(position).getSortLetter().charAt(0);
+        //System.out.println("getSectionFromPosition:"+carBrandList.get(position).getSortLetter());
+        return (int)carBrandList.get(position).getSortLetter().charAt(0);
     }
 
     class ViewHolder{//保持对listview每一项中的子控件的引用

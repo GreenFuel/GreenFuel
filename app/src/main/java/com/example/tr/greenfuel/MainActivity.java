@@ -71,7 +71,14 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         Log.i("info","size:"+ps.size());
         //dao.clearPaths();
         */
-
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable ex) {
+                System.out.println("异常："+ex.getMessage());
+                ex.printStackTrace(System.out);
+                System.out.println(thread.getName());
+            }
+        });
     }
 
     private void findViews(){
