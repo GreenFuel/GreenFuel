@@ -62,6 +62,7 @@
     <string name="input_car_id">车牌识别号</string>
     <string name="input_engine_id">发动机号</string>
     <string name="search_now">立即查询</string>
+    <string name="search_result">查询结果</string>
 
     <string-array name="province">
         <item>京</item>

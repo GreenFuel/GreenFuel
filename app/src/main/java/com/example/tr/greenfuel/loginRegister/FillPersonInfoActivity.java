@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,6 +50,18 @@ public class FillPersonInfoActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
     private RequestQueue requestQueue;
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 1) {//注册成功
+                Toast.makeText(FillPersonInfoActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
+            } else if (msg.what == 2) {//注册失败
+                Toast.makeText(FillPersonInfoActivity.this, "注册失败！", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,26 +117,46 @@ public class FillPersonInfoActivity extends AppCompatActivity {
         String carBrand = parentCar.getBrandName();
         String carType = childCar.getBrandName();
 
-        String jsonStr = "{\"dri_phone\":" + "\"" + driPhone + "\"," +
-                "carBrand\":" + "\"" + carBrand + "\"," +
-                "carType\":" + "\"" + carType + "\"," +
-                "carEmissionStd\":" + "\"" + txtEmission + "\"," +
+        String jsonStr = "{\"driPhone\":" + "\"" + driPhone + "\"," +
+                "\"driName\":" + "\"" + userNameStr + "\"," +
+                "\"driPassword\":" + "\"" + pass + "\"," +
+                "\"carBrand\":" + "\"" + carBrand + "\"," +
+                "\"carType\":" + "\"" + carType + "\"," +
+                "\"carEmissionStd\":" + "\"" + txtEmission + "\"" +
                 "}";
         JSONObject jsonObject = null;
         try {
             jsonObject = new JSONObject(jsonStr);
         } catch (JSONException e) {
             e.printStackTrace();
-            System.out.println("JSON转换失败");
+            System.out.println("JSON转换失败1");
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BASIC_URL + AIM_URL, jsonObject, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject jsonObject) {
+                try {
+                    System.out.println(jsonObject.toString());
+                    int driId = jsonObject.getInt("driId");
+                    int msg = jsonObject.getInt("msg");
+                    if (msg == 0) {
+                        handler.sendEmptyMessage(2);
+                        System.out.println("msg值不对");
+                    } else if (msg == 1) {
+                        handler.sendEmptyMessage(1);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    System.out.println("JSON转换失败2");
+                }
                 dismissProgressDialog();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                System.out.println("onErrorResponse");
+//                if(volleyError != null)
+//                    System.out.println(volleyError.getMessage());
+                handler.sendEmptyMessage(2);
                 dismissProgressDialog();
             }
         });
@@ -138,7 +172,7 @@ public class FillPersonInfoActivity extends AppCompatActivity {
     //选择车型
     public void choseCarType(View v) {
         if (parentCar != null && !textCarBrand.getText().toString().trim().equals("")) {
-            System.out.println("传过去的值：" + ",parentid：" + parentCar.getId() + ",carBrand：" + parentCar.getBrandName());
+            //System.out.println("传过去的值：" + ",parentid：" + parentCar.getId() + ",carBrand：" + parentCar.getBrandName());
             startActivityForResult(new Intent(FillPersonInfoActivity.this, CarBrandActivity.class).putExtra("fromActivity", 2)
                     .putExtra("parentid", parentCar.getId()).putExtra("carBrand", parentCar.getBrandName()), 2);
         } else {
@@ -148,24 +182,24 @@ public class FillPersonInfoActivity extends AppCompatActivity {
 
     //选择排放标准
     public void choseEmissionStandard(View v) {
-        new AlertDialog.Builder(this).setItems(new String[]{"国1", "国2", "国3", "国4", "国5"}, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(this).setItems(new String[]{"国一", "国二", "国三", "国四", "国五"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        textEmissionType.setText("国1");
+                        textEmissionType.setText("国一");
                         break;
                     case 1:
-                        textEmissionType.setText("国2");
+                        textEmissionType.setText("国二");
                         break;
                     case 2:
-                        textEmissionType.setText("国3");
+                        textEmissionType.setText("国三");
                         break;
                     case 3:
-                        textEmissionType.setText("国4");
+                        textEmissionType.setText("国四");
                         break;
                     case 4:
-                        textEmissionType.setText("国5");
+                        textEmissionType.setText("国五");
                         break;
                 }
             }
@@ -199,7 +233,7 @@ public class FillPersonInfoActivity extends AppCompatActivity {
     private void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("正在加载数据");
+            progressDialog.setMessage("注册中...");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
         }
