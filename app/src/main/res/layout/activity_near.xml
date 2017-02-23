@@ -21,6 +21,7 @@
             android:text="@string/near"
             android:gravity="center"
             android:textSize="@dimen/lTextSize"
+            android:textStyle="bold"
             android:textColor="@color/colorDark"/>
     </RelativeLayout>
 

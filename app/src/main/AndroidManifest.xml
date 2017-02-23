@@ -67,6 +67,7 @@
         <activity android:name=".mine.HistoryEmissionActivity"/>
         <activity android:name=".mine.HistoryFuelConsumptionActivity"/>
         <activity android:name=".loginRegister.aboutCar.CarBrandActivity"/>
+        <activity android:name=".nearFunction.WeiZhangActivity"/>
         <!--短信验证-->
         <activity
             android:name="com.mob.tools.MobUIShell"

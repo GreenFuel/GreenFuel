@@ -166,8 +166,9 @@ public class NearActivity extends AppCompatActivity {
         finish();
     }
 
-    public void searchWeiZhang(View v){//违章查询
-
+    //违章查询
+    public void searchWeiZhang(View v){
+        startActivity(new Intent(NearActivity.this,WeiZhangActivity.class));
     }
 
     //8种查询
