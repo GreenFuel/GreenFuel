@@ -56,4 +56,22 @@
     <string name="history_emission">历史排放</string>
     <string name="more_histories">更多历史纪录</string>
     <string name="clear_histories">清空历史纪录</string>
+
+
+    <string-array name="car_brand">
+        <item>大众</item>
+        <item>一汽</item>
+        <item>长城</item>
+        <item>兰博基尼</item>
+        <item>法拉利</item>
+        <item>保时捷</item>
+        <item>宝马</item>
+        <item>奔驰</item>
+        <item>奥迪</item>
+        <item>劳斯莱斯</item>
+        <item>比亚迪</item>
+        <item>北京现代</item>
+        <item>五菱</item>
+        <item>哈弗</item>
+    </string-array>
 </resources>

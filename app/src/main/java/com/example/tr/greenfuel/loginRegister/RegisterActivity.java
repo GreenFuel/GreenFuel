@@ -30,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String APP_KEY = "1b6e5e14dc960";
     private static final String APP_SECRET = "bd2f9b1def8a8fe821e49f330b7f8c11";
-
+    private static  final boolean DEBUG = true;
     private boolean isChecked = false;  //验证码是否正确
     private int secondCount;    //计秒器
     Handler handler = new Handler(){
@@ -159,9 +159,10 @@ public class RegisterActivity extends AppCompatActivity {
     //下一步，先验证输入的短信验证验证码是否正确
     public void goNextStep(View v) {
         String code = checkCode.getText().toString().trim();
-        if ((code != null && code.length() == 4)|| !checkCode.isFocusable()) {
-            SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);
-            if(isChecked) {//是否验证成功
+        if (DEBUG || (code != null && code.length() == 4)|| !checkCode.isFocusable()) {
+            if(!DEBUG)
+             SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);
+            if(DEBUG || isChecked) {//是否验证成功
                 if(fromActivity == 0)
                 {//转到 “个人资料”
                     startActivity(new Intent(RegisterActivity.this, FillPersonInfoActivity.class));

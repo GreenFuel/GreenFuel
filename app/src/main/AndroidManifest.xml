@@ -66,6 +66,7 @@
         <activity android:name=".mine.SavePointActivity" />
         <activity android:name=".mine.HistoryEmissionActivity"/>
         <activity android:name=".mine.HistoryFuelConsumptionActivity"/>
+        <activity android:name=".loginRegister.aboutCar.CarBrandActivity"/>
         <!--短信验证-->
         <activity
             android:name="com.mob.tools.MobUIShell"
