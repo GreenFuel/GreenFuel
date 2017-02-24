@@ -28,10 +28,39 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/darkGrey"/>
-    <ListView
-        android:id="@+id/listview_search_result"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/transparent"
-        />
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/listview_search_result"
+            android:divider="@null"
+            android:cacheColorHint="@color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            />
+        <LinearLayout
+            android:id="@+id/layout_load_failed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_centerInParent="true"
+            android:visibility="invisible">
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/load_failed"/>
+            <TextView
+                android:id="@+id/textview_load_data"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/gary6"
+                android:textSize="@dimen/lTextSize"
+                android:text="@string/load_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
 </LinearLayout>

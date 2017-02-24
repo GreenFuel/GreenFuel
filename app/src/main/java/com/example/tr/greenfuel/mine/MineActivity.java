@@ -109,7 +109,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
 
     //转到设置
     public void setting(View v) {
-
+        startActivity(new Intent(MineActivity.this,SettingActivity.class));
     }
 
     public void back(View v) {

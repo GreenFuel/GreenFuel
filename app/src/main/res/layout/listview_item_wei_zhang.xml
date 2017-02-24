@@ -1,7 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/rec_bg_corner_white">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/textview_time"
+            android:text="2015-10-11 15:33"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="@dimen/mTextSize"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <ImageView
+        android:id="@+id/imageview_address"
+        android:layout_below="@+id/textview_time"
+        android:src="@mipmap/near1"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        />
+        <TextView
+            android:id="@+id/textview_address"
+            android:layout_below="@+id/textview_time"
+            android:layout_toRightOf="@+id/imageview_address"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:textSize="@dimen/mTextSize"
+            android:layout_width="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/imageview_weizhang"
+            android:layout_below="@+id/textview_address"
+            android:src="@mipmap/weizhang"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            />
+        <TextView
+            android:id="@+id/textview_content"
+            android:paddingBottom="5dp"
+            android:layout_below="@+id/textview_address"
+            android:layout_toRightOf="@+id/imageview_weizhang"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:textSize="@dimen/mTextSize"
+            android:layout_width="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/textview_line"
+            android:layout_below="@+id/textview_content"
+            android:layout_width="match_parent"
+            android:background="@color/darkGrey"
+            android:layout_height="1dp" />
+        <TextView
+            android:id="@+id/textview1"
+            android:padding="10dp"
+            android:textSize="@dimen/mTextSize"
+            android:text="@string/fine"
+            android:layout_below="@+id/textview_line"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/textview_fine"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/mTextSize"
+            android:textColor="@color/tomato"
+            android:layout_toRightOf="@+id/textview1"
+            android:layout_below="@+id/textview_line"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_marginLeft="80dp"
+            android:id="@+id/textview2"
+            android:padding="10dp"
+            android:textSize="@dimen/mTextSize"
+            android:text="@string/fine"
+            android:layout_below="@+id/textview_line"
+            android:layout_toRightOf="@+id/textview_fine"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/textview_diminish_score"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingRight="10dp"
+            android:textSize="@dimen/mTextSize"
+            android:textColor="@color/tomato"
+            android:layout_toRightOf="@+id/textview2"
+            android:layout_below="@+id/textview_line"
+            android:layout_width="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </LinearLayout>

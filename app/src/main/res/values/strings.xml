@@ -63,6 +63,14 @@
     <string name="input_engine_id">发动机号</string>
     <string name="search_now">立即查询</string>
     <string name="search_result">查询结果</string>
+    <string name="fine">罚款：</string>
+    <string name="diminish_score">扣分：</string>
+    <string name="setting">设置</string>
+    <string name="system_notification">系统通知</string>
+    <string name="app_update">应用升级</string>
+    <string name="about_app">关于</string>
+    <string name="exit_login">退出登录</string>
+
 
     <string-array name="province">
         <item>京</item>
