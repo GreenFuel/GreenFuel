@@ -10,7 +10,6 @@
         android:padding="5dp">
         <TextView
             android:id="@+id/textview_time"
-            android:text="2015-10-11 15:33"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
             android:paddingBottom="5dp"
@@ -89,7 +88,7 @@
             android:id="@+id/textview2"
             android:padding="10dp"
             android:textSize="@dimen/mTextSize"
-            android:text="@string/fine"
+            android:text="@string/diminish_score"
             android:layout_below="@+id/textview_line"
             android:layout_toRightOf="@+id/textview_fine"
             android:layout_width="wrap_content"

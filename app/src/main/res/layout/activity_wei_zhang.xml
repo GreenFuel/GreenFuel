@@ -59,7 +59,7 @@
                     android:background="@color/darkGrey"
                     />
 
-                <EditText
+                <AutoCompleteTextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginTop="5dp"
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/darkGrey"/>
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/carId"
                 android:layout_width="match_parent"
                 android:padding="10dp"
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/darkGrey"/>
-            <EditText
+            <AutoCompleteTextView
                 android:id="@+id/engineId"
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
