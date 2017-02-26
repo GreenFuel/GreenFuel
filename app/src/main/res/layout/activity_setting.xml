@@ -125,4 +125,5 @@
         android:layout_marginRight="10dp"
         android:background="@drawable/corner_rec_bg_blue_press"
         android:textColor="@color/white"/>
+
 </LinearLayout>

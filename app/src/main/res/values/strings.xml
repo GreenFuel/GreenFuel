@@ -70,6 +70,8 @@
     <string name="app_update">应用升级</string>
     <string name="about_app">关于</string>
     <string name="exit_login">退出登录</string>
+    <string name="my_order">我的排名:</string>
+    <string name="emission_consumption">排放量:</string>
 
 
     <string-array name="province">

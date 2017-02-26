@@ -38,6 +38,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="2dp"
         android:background="@color/darkGrey"/>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/id_viewpager"
         android:layout_width="match_parent"
