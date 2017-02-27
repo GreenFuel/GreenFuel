@@ -107,4 +107,5 @@
         <item>宁</item>
         <item>新</item>
     </string-array>
+    <string name="title_activity_charts">Charts</string>
 </resources>
