@@ -49,15 +49,13 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
             switch (msg.what) {
                 case 1:
                     initAdapter();
-                    System.out.println("初始化adapter");
                     break; //获取数据成功
                 case 2:
                     waterDropListView.stopRefresh();
-                    System.out.println("停止刷新");
                     break; //刷新停止
                 case 3:
                     waterDropListView.stopLoadMore();
-                    System.out.println("停止加载");
+                    addDataToListView();
                     break; //加载停止
             }
         }
@@ -118,6 +116,20 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
         simpleAdapter.notifyDataSetChanged();
     }
 
+
+    //测试上啦加载
+    private void addDataToListView(){
+        for (int i = 0; i < 30; i++) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("order", (i + 1) + "");
+            map.put("name", "张三" + i);
+            map.put("emissionConsumption", i * 10 + "");
+            map.put("imageURL", "http://cdn.sinacloud.net/tp-first-232217/zheyuan1.png?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488269868&ssig=Bldx6%2F2hN3");
+            mapList.add(map);
+        }
+        simpleAdapter.notifyDataSetChanged();
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -143,14 +155,9 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
     @Override
     public void onRefresh() {
         System.out.println("下拉");
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(1000);
-                mHandler.sendEmptyMessage(2);
-            }
-        }.start();
+        mapList.clear();
+        initAdapter();
+        mHandler.sendEmptyMessage(2);
     }
 
     //上拉加载
