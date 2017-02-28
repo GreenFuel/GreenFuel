@@ -11,7 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
+import android.widget.ImageView;
 
 import com.example.tr.greenfuel.R;
 
@@ -19,7 +19,7 @@ import com.example.tr.greenfuel.R;
  * Created by tangpeng on 2017/2/18.
  */
 
-public class CustomRoundedImageView extends View {
+public class CustomRoundedImageView extends ImageView {
 
     private Bitmap imgSrc;
     private int type;   //图片类型
@@ -93,7 +93,7 @@ public class CustomRoundedImageView extends View {
     }
 
     //动态设置图像
-    public void setBitmap(Bitmap bitmap){
+    public void setImageBitmap(Bitmap bitmap){
         if(type == TYPE_CIRLE){
             int min = Math.min(mWidth,mHeight);
             //如果长度不一致，按照短边压缩

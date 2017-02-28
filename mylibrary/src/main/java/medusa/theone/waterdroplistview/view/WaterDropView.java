@@ -30,9 +30,9 @@ public class WaterDropView extends View {
 
     private Paint mPaint;
     private Path mPath;
-    private float mMaxCircleRadius;
-    private float mMinCircleRaidus;
-    private Bitmap arrowBitmap;
+    private float mMaxCircleRadius;//
+    private float mMinCircleRaidus;//
+    private Bitmap arrowBitmap;//
     private final static int BACK_ANIM_DURATION = 180;
     private final static float STROKE_WIDTH = 2;
 
@@ -68,7 +68,7 @@ public class WaterDropView extends View {
                     bottomCircle.setY(a.getDimensionPixelSize(R.styleable.WaterDropView_topcircle_y, 0));
                 }*/
                 if(a.hasValue(R.styleable.WaterDropView_waterdrop_color)){
-                   int waterDropColor =  a.getColor(R.styleable.WaterDropView_waterdrop_color, Color.GRAY);
+                    int waterDropColor =  a.getColor(R.styleable.WaterDropView_waterdrop_color, Color.GRAY);
                     mPaint.setColor(waterDropColor);
                 }
                 if (a.hasValue(R.styleable.WaterDropView_max_circle_radius)) {
@@ -123,14 +123,14 @@ public class WaterDropView extends View {
     protected void onDraw(Canvas canvas) {
 
         makeBezierPath();
-        mPaint.setColor(Color.RED);
-        mPaint.setAlpha(200);
+//        mPaint.setColor(Color.RED);
+//        mPaint.setAlpha(200);
         canvas.drawPath(mPath, mPaint);
-        mPaint.setColor(Color.GRAY);
-        mPaint.setAlpha(50);
+//        mPaint.setColor(Color.GRAY);
+//        mPaint.setAlpha(50);
         canvas.drawCircle(topCircle.getX(), topCircle.getY(), topCircle.getRadius(), mPaint);
         canvas.drawCircle(bottomCircle.getX(), bottomCircle.getY(), bottomCircle.getRadius(), mPaint);
-        canvas.drawBitmap(arrowBitmap, topCircle.getX() - topCircle.getRadius(), topCircle.getY() - topCircle.getRadius(), mPaint);
+//        canvas.drawBitmap(arrowBitmap, topCircle.getX() - topCircle.getRadius(), topCircle.getY() - topCircle.getRadius(), mPaint);
         RectF bitmapArea = new RectF(topCircle.getX()-0.5f*topCircle.getRadius(),topCircle.getY()-0.5f*topCircle.getRadius(),topCircle.getX()+ 0.5f*topCircle.getRadius(),topCircle.getY()+0.5f*topCircle.getRadius());
         canvas.drawBitmap(arrowBitmap,null,bitmapArea,mPaint);
         super.onDraw(canvas);
@@ -139,6 +139,7 @@ public class WaterDropView extends View {
 
     private void makeBezierPath() {
         mPath.reset();
+
         double angle = getAngle();
         float top_x1 = (float) (topCircle.getX() - topCircle.getRadius() * Math.cos(angle));
         float top_y1 = (float) (topCircle.getY() + topCircle.getRadius() * Math.sin(angle));
@@ -173,6 +174,7 @@ public class WaterDropView extends View {
 
     /**
      *
+     *
      * @return
      */
     private double getAngle() {
@@ -183,6 +185,9 @@ public class WaterDropView extends View {
     }
 
     /**
+     *
+     *
+     *
      *
      * @return
      */
@@ -199,6 +204,7 @@ public class WaterDropView extends View {
     }
 
     /**
+     *
      *
      * @param percent between[0,1]
      */
@@ -232,3 +238,4 @@ public class WaterDropView extends View {
         return mPaint.getColor();
     }
 }
+

@@ -1,38 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:padding="10dp"
             android:text="@string/my_order"
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/lTextSize"
-            android:gravity="center_vertical"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/lTextSize" />
+
         <TextView
-            android:text="1111"
             android:id="@+id/my_order"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:text="@string/unknown_order"
             android:textColor="@color/tomato"
-            android:textStyle="bold"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/lTextSize"
+            android:textStyle="bold" />
     </LinearLayout>
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="1dp"
-    android:background="@color/darkGrey"/>
 
-    <medusa.theone.waterdroplistview.view.WaterDropListView
-        android:cacheColorHint="@color/transparent"
-        android:id="@+id/listview_emission_order"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/darkGrey" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </medusa.theone.waterdroplistview.view.WaterDropListView>
+        <medusa.theone.waterdroplistview.view.WaterDropListView
+            android:id="@+id/listview_emission_order"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:cacheColorHint="@color/transparent" />
+
+        <LinearLayout
+            android:id="@+id/layout_load_failed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="invisible">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@mipmap/load_failed" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/load_failed"
+                android:textColor="@color/gary6"
+                android:textSize="@dimen/lTextSize"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

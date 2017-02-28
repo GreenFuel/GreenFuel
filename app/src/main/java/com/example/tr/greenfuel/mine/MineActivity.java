@@ -72,7 +72,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
             if (requestCode == 1) {//拍照返回
                 Bitmap bitmap = (Bitmap) data.getExtras().get("data");
                 if (userHead != null && bitmap != null) {
-                    userHead.setBitmap(bitmap);
+                    userHead.setImageBitmap(bitmap);
                 }
             } else if (requestCode == 2) {//相册返回
                 Uri uri = data.getData();   //图片的uri
@@ -80,7 +80,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     Bitmap bitmap1 = BitmapFactory.decodeStream(resolver.openInputStream(uri));
                     if (userHead != null && bitmap1 != null) {
-                        userHead.setBitmap(bitmap1);
+                        userHead.setImageBitmap(bitmap1);
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();

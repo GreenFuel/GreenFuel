@@ -52,7 +52,7 @@
             android:layout_height="80dp"
             custom:cornerRadius="10dp"
             custom:type="circle"
-            custom:imgSrc="@mipmap/ad3"
+            custom:imgSrc="@mipmap/load_failed"
             android:layout_marginBottom="20dp"
             android:layout_above="@+id/login_register"
             android:layout_centerHorizontal="true" />

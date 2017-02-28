@@ -47,6 +47,8 @@ public class EmissionOrderActivity extends AppCompatActivity {
             VpSimpleFragment fragment = VpSimpleFragment.newInstance(title);
             fragmentList.add(fragment);
         }
+
+        mViewPager.setOffscreenPageLimit(2);    //设置缓存的fragment个数
         mViewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
