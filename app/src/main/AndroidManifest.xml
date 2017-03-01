@@ -45,7 +45,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".drivingAdvice.Charts"></activity>
         <activity android:name=".junge.GPSNaviActivity" />
         <activity android:name=".poiSearch.PoiSearchPageActivity" />
         <activity android:name=".nearFunction.NearActivity" />
