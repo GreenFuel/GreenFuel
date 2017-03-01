@@ -36,7 +36,7 @@ import org.json.JSONObject;
 
 public class FillPersonInfoActivity extends AppCompatActivity {
 
-    private static final String BASIC_URL = "http://192.168.1.128:8080/lcx/servlet";
+    private static final String BASIC_URL = "http://192.168.1.125:8080/lcx/servlet";
     private static final String AIM_URL = "/DriverRegister";
 
     private CheckBox agreeProtocol;
@@ -57,6 +57,8 @@ public class FillPersonInfoActivity extends AppCompatActivity {
             super.handleMessage(msg);
             if (msg.what == 1) {//注册成功
                 Toast.makeText(FillPersonInfoActivity.this, "注册成功！", Toast.LENGTH_SHORT).show();
+                setResult(1);
+                finish();
             } else if (msg.what == 2) {//注册失败
                 Toast.makeText(FillPersonInfoActivity.this, "注册失败！", Toast.LENGTH_SHORT).show();
             }
@@ -136,12 +138,10 @@ public class FillPersonInfoActivity extends AppCompatActivity {
             public void onResponse(JSONObject jsonObject) {
                 try {
                     System.out.println(jsonObject.toString());
-                    int driId = jsonObject.getInt("driId");
                     int msg = jsonObject.getInt("msg");
-                    if (msg == 0) {
-                        handler.sendEmptyMessage(2);
-                        System.out.println("msg值不对");
-                    } else if (msg == 1) {
+                    if (msg == 0) {//注册失败或重复注册
+                        Toast.makeText(FillPersonInfoActivity.this, jsonObject.getString("notice"), Toast.LENGTH_SHORT).show();
+                    } else if (msg == 1) {//注册成功
                         handler.sendEmptyMessage(1);
                     }
                 } catch (JSONException e) {

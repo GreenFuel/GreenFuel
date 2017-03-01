@@ -47,7 +47,7 @@
         android:orientation="vertical"
         android:background="@color/colorWhite">
         <EditText
-            android:id="@+id/phone"
+            android:id="@+id/edit_phone"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="5dp"
             android:paddingTop="10dp"
@@ -68,7 +68,7 @@
             android:layout_height="1dp"
             android:background="@color/darkGrey"/>
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/edit_password"
             android:maxLines="1"
             android:inputType="textPassword"
             android:maxLength="16"
@@ -83,6 +83,7 @@
             android:hint="@string/password"
             android:textColorHint="@color/darkGrey"/>
     </LinearLayout>
+
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"

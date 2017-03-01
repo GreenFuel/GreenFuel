@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     public static final String LOCATION_MARKER_FLAG = "myLocation";
     public static String cityName = "";
 
+    public static boolean hasLogin = false;
+
     private MapView mapView = null;
     private AMap aMap;
 

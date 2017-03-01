@@ -30,23 +30,22 @@ public class RegisterActivity extends AppCompatActivity {
 
     private static final String APP_KEY = "1b6e5e14dc960";
     private static final String APP_SECRET = "bd2f9b1def8a8fe821e49f330b7f8c11";
-    private static  final boolean DEBUG = true;
+    private static final boolean DEBUG = true;
     private boolean isChecked = false;  //验证码是否正确
     private int secondCount;    //计秒器
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 1)
-            {
-                if(secondCount == 0){
+            if (msg.what == 1) {
+                if (secondCount == 0) {
                     getCheckCode.setTextColor(getResources().getColor(R.color.colorIconBlue));
                     getCheckCode.setText("获取验证码");
-                }else{
-                    getCheckCode.setText(secondCount+"s后重发");
+                } else {
+                    getCheckCode.setText(secondCount + "s后重发");
                     getCheckCode.setTextColor(getResources().getColor(R.color.colorGray2));
                 }
-            }else if(msg.what == 2){
+            } else if (msg.what == 2) {
                 checkCode.setHint("已验证通过");
                 checkCode.setFocusable(false);
                 getCheckCode.setClickable(false);
@@ -60,11 +59,11 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         initViews();
-        fromActivity = getIntent().getIntExtra("fromActivity",0);
-        if(fromActivity == 0){
+        fromActivity = getIntent().getIntExtra("fromActivity", 0);
+        if (fromActivity == 0) {
             title.setText("注册");
             nextStep.setText("下一步");
-        }else{
+        } else {
             title.setText("忘记密码");
             nextStep.setText("确认");
         }
@@ -79,11 +78,11 @@ public class RegisterActivity extends AppCompatActivity {
                         System.out.println("验证码验证成功");
                         isChecked = true;
                     } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE) {//获得验证码成功
-                        System.out.println("EVENT_GET_VERIFICATION_CODE:"+1);
-                        boolean smart = (boolean)data;
-                        System.out.println("EVENT_GET_VERIFICATION_CODE:"+2);
-                        System.out.println("smart:"+smart);
-                        if(smart){
+                        System.out.println("EVENT_GET_VERIFICATION_CODE:" + 1);
+                        boolean smart = (boolean) data;
+                        System.out.println("EVENT_GET_VERIFICATION_CODE:" + 2);
+                        System.out.println("smart:" + smart);
+                        if (smart) {
                             isChecked = true;
                             handler.sendEmptyMessage(2);
                         }
@@ -108,8 +107,8 @@ public class RegisterActivity extends AppCompatActivity {
         password = (EditText) findViewById(R.id.set_password);
         passwordAgain = (EditText) findViewById(R.id.confirm_password);
         checkCode = (EditText) findViewById(R.id.checkCode);
-        title = (TextView)findViewById(R.id.title);
-        nextStep = (Button)findViewById(R.id.nextStep);
+        title = (TextView) findViewById(R.id.title);
+        nextStep = (Button) findViewById(R.id.nextStep);
 
         getCheckCode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,11 +120,11 @@ public class RegisterActivity extends AppCompatActivity {
                     if (psdAgainStr != null && psdAgainStr.equals(psdStr)) {//向服务器请求的服务
                         SMSSDK.getVerificationCode("86", phoneStr);
                         secondCount = 65;
-                        new Thread(){
+                        new Thread() {
                             @Override
                             public void run() {
                                 super.run();
-                                while(secondCount > 0){
+                                while (secondCount > 0) {
                                     secondCount--;
                                     handler.sendEmptyMessage(1);
                                     try {
@@ -159,22 +158,33 @@ public class RegisterActivity extends AppCompatActivity {
     //下一步，先验证输入的短信验证验证码是否正确
     public void goNextStep(View v) {
         String code = checkCode.getText().toString().trim();
-        if (DEBUG || (code != null && code.length() == 4)|| !checkCode.isFocusable()) {
-            if(!DEBUG)
-             SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);
-            if(DEBUG || isChecked) {//是否验证成功
-                if(fromActivity == 0)
-                {//转到 “个人资料”
-                    startActivity(new Intent(RegisterActivity.this, FillPersonInfoActivity.class).putExtra("phone",phone.getText().toString().trim())
-                            .putExtra("password",passwordAgain.getText().toString().trim()));
-                }else if(fromActivity == 1){//修改密码
+        if (DEBUG || (code != null && code.length() == 4) || !checkCode.isFocusable()) {
+            if (!DEBUG)
+                SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);
+            if (DEBUG || isChecked) {//是否验证成功
+                if (fromActivity == 0) {//转到 “个人资料”
+                    startActivityForResult(new Intent(RegisterActivity.this, FillPersonInfoActivity.class).putExtra("phone", phone.getText().toString().trim())
+                            .putExtra("password", passwordAgain.getText().toString().trim()), 1);
+                } else if (fromActivity == 1) {//修改密码
 
                 }
-            }else{
+            } else {
                 Toast.makeText(this, "验证码错误", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(this, "请输入完整的验证码", Toast.LENGTH_SHORT).show();
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == 1) {
+            if (requestCode == 1) {
+                finish();
+            }
+        }
+    }
+
+
 }

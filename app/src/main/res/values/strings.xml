@@ -44,9 +44,9 @@
     <string name="car_brand">车辆品牌</string>
     <string name="car_type">车辆型号</string>
     <string name="emission_standard">排放标准</string>
-    <string name="today_fuel_consumption">累计油耗(升)</string>
-    <string name="save_fuel">节约油耗(升)</string>
-    <string name="today_emission">尾气排放(千克)</string>
+    <string name="today_fuel_consumption">累计油耗(ml)</string>
+    <string name="save_fuel">节约油耗(ml)</string>
+    <string name="today_emission">尾气排放(g)</string>
     <string name="emission_order">排放榜单</string>
     <string name="history_data">历史数据</string>
     <string name="save_point">收藏点</string>
