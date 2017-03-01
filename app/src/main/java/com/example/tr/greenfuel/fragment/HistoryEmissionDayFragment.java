@@ -27,7 +27,7 @@ import java.util.List;
  * Created by tangpeng on 2017/2/28.
  */
 
-public class HistoryFuelDayFragment extends Fragment implements Spinner.OnItemSelectedListener {
+public class HistoryEmissionDayFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
     private Spinner spinnerMonth;
     private Spinner spinnerYear;
@@ -101,7 +101,7 @@ public class HistoryFuelDayFragment extends Fragment implements Spinner.OnItemSe
         }
         //Collections.sort(entryList, new EntryXComparator());  x的坐标值必须是升序
 
-        LineDataSet lineDataSet1 = new LineDataSet(entryList, "油耗");    //对折线的文字说明
+        LineDataSet lineDataSet1 = new LineDataSet(entryList, "尾气排放");    //对折线的文字说明
         lineDataSet1.setAxisDependency(YAxis.AxisDependency.LEFT);
         lineDataSet1.setColor(Color.GREEN);    //线段颜色
         lineDataSet1.setValueTextColor(Color.RED);   //顶点的颜色

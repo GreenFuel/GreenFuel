@@ -10,7 +10,8 @@ import android.view.View;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.ViewPagerIndicator;
-import com.example.tr.greenfuel.fragment.VpSimpleFragment;
+import com.example.tr.greenfuel.fragment.HistoryEmissionDayFragment;
+import com.example.tr.greenfuel.fragment.HistoryEmissionMonthFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,10 +41,8 @@ public class HistoryEmissionActivity extends AppCompatActivity {
     }
 
     private void initData(){
-        for(String str:tabTitles){
-            VpSimpleFragment fragment = VpSimpleFragment.newInstance(str);
-            fragmentList.add(fragment);
-        }
+        fragmentList.add(new HistoryEmissionDayFragment());
+        fragmentList.add(new HistoryEmissionMonthFragment());
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
