@@ -25,6 +25,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 public class Charts extends AppCompatActivity {
+    /**
     private PieChart pieChart;
     private LineChart lineChart;
     private BarChart barChart;
@@ -66,7 +67,7 @@ public class Charts extends AppCompatActivity {
         /**
          * 将一个饼形图分成四部分， 四部分的数值比例为14:14:34:38
          * 所以 14代表的百分比就是14%
-         */
+
         float quarterly1 = 22;
         float quarterly2 = 33;
         float quarterly3 = 46;
@@ -78,7 +79,7 @@ public class Charts extends AppCompatActivity {
         //yValues.add(new Entry(quarterly4, 3));
 
         //y轴的集合
-        PieDataSet pieDataSet = new PieDataSet(yValues, "排放物"/*显示在比例图上*/);
+        PieDataSet pieDataSet = new PieDataSet(yValues, "排放物"/*显示在比例图上);
         pieDataSet.setSliceSpace(0f); //设置个饼状图之间的距离
         pieDataSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
 
@@ -218,4 +219,5 @@ public class Charts extends AppCompatActivity {
         }
         return value;
     }
+    */
 }

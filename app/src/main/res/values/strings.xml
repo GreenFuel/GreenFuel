@@ -73,6 +73,8 @@
     <string name="my_order">我的排名:</string>
     <string name="emission_consumption">排放量:</string>
     <string name="unknown_order">- -</string>
+    <string name="select_month">选择月份：</string>
+    <string name="select_year">选择年份：</string>
 
 
     <string-array name="province">
@@ -107,6 +109,32 @@
         <item>藏</item>
         <item>宁</item>
         <item>新</item>
+    </string-array>
+
+    <string-array name="year">
+        <item>2017年</item>
+        <item>2016年</item>
+        <item>2015年</item>
+        <item>2014年</item>
+        <item>2013年</item>
+        <item>2012年</item>
+        <item>2011年</item>
+        <item>2010年</item>
+    </string-array>
+
+    <string-array name="month">
+        <item>一月</item>
+        <item>二月</item>
+        <item>三月</item>
+        <item>四月</item>
+        <item>五月</item>
+        <item>六月</item>
+        <item>七月</item>
+        <item>八月</item>
+        <item>九月</item>
+        <item>十月</item>
+        <item>十一月</item>
+        <item>十二月</item>
     </string-array>
     <string name="title_activity_charts">Charts</string>
 </resources>

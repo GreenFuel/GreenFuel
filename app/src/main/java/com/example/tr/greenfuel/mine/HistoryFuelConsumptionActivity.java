@@ -10,7 +10,8 @@ import android.view.View;
 
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.ViewPagerIndicator;
-import com.example.tr.greenfuel.fragment.VpSimpleFragment;
+import com.example.tr.greenfuel.fragment.HistoryFuelDayFragment;
+import com.example.tr.greenfuel.fragment.HistoryFuelMonthFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class HistoryFuelConsumptionActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ViewPagerIndicator viewPagerIndicator;
-    private List<String> tabTitle = Arrays.asList(new String[]{"每日","每月"});
+    private List<String> tabTitle = Arrays.asList(new String[]{"每日", "每月"});
     private List<Fragment> fragmentList = new ArrayList<>();
 
     @Override
@@ -35,16 +36,15 @@ public class HistoryFuelConsumptionActivity extends AppCompatActivity {
         initData();
     }
 
-    private void initViews(){
-        viewPager = (ViewPager)findViewById(R.id.id_viewpager);
-        viewPagerIndicator = (ViewPagerIndicator)findViewById(R.id.id_viewpager_indicator);
+    private void initViews() {
+        viewPager = (ViewPager) findViewById(R.id.id_viewpager);
+        viewPagerIndicator = (ViewPagerIndicator) findViewById(R.id.id_viewpager_indicator);
     }
 
-    private void initData(){
-        for(String str:tabTitle){
-            VpSimpleFragment fragment = VpSimpleFragment.newInstance(str);
-            fragmentList.add(fragment);
-        }
+    private void initData() {
+        fragmentList.add(new HistoryFuelDayFragment());
+        fragmentList.add(new HistoryFuelMonthFragment());
+
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -56,13 +56,13 @@ public class HistoryFuelConsumptionActivity extends AppCompatActivity {
                 return fragmentList.size();
             }
         });
-        viewPagerIndicator.setRadioTriangleWidth(1/8f); //设置三角形底边的宽度
+        viewPagerIndicator.setRadioTriangleWidth(1 / 15f); //设置三角形底边的宽度
         viewPagerIndicator.setVisibleTanCount(2);   //设置可见的tab数量
         viewPagerIndicator.setItemTitles(tabTitle); //动态设置tab
-        viewPagerIndicator.setViewPager(viewPager,0);   //与viewpager关联
+        viewPagerIndicator.setViewPager(viewPager, 0);   //与viewpager关联
     }
 
-    public void back(View v){
+    public void back(View v) {
         finish();
     }
 }

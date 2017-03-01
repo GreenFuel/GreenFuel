@@ -55,7 +55,7 @@ public class HistoryEmissionActivity extends AppCompatActivity {
                 return fragmentList.size();
             }
         });
-        viewPagerIndicator.setRadioTriangleWidth(1/8f); //设置三角形底边的宽度
+        viewPagerIndicator.setRadioTriangleWidth(1/15f); //设置三角形底边的宽度
         viewPagerIndicator.setVisibleTanCount(2);
         viewPagerIndicator.setItemTitles(tabTitles);
         viewPagerIndicator.setViewPager(viewPager,0);
