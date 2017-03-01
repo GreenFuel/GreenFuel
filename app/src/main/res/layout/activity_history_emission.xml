@@ -30,7 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        custom:visible_tab_count="2"
+        custom:visible_tab_count="3"
         >
     </com.example.tr.greenfuel.customView.ViewPagerIndicator>
     <TextView

@@ -134,7 +134,7 @@ public class HistoryEmissionDayFragment extends Fragment implements Spinner.OnIt
         yAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return (int) value + "ml";
+                return (int) value + "g";
             }
         });
         lineChart.getAxisLeft().setAxisMinimum(0f);

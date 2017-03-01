@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import com.example.tr.greenfuel.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,16 +23,13 @@ import java.util.List;
  * Created by tangpeng on 2017/2/28.
  */
 
-public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItemSelectedListener{
+public class HistoryFuelYearFragment extends Fragment {
 
-    private Spinner spinnerYear;
     private BarChart barChart;
 
-    private String[] xAxisName = new String[]{"一月", "二月", "三月", "四月", "五月", "六月",
-            "七月", "八月", "九月", "十月", "十一月", "十二月"};
+    private String[] xAxisName = new String[]{"2010年", "2011年", "2012年", "2013年", "2014年", "2015年", "2016年", "2017年"};
 
-    public HistoryFuelMonthFragment() {
-
+    public HistoryFuelYearFragment() {
     }
 
     private void setXAxis() {
@@ -76,22 +71,12 @@ public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItem
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_history_fuel_month, null);
-        spinnerYear = (Spinner) rootView.findViewById(R.id.spinner_year);
-        spinnerYear.setOnItemSelectedListener(this);
+        View rootView = inflater.inflate(R.layout.fragment_history_fuel_year, null);
+
         barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
         setXAxis();
         initData();
         return rootView;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        initData();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

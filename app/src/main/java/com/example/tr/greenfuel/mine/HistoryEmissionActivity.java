@@ -12,6 +12,7 @@ import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.ViewPagerIndicator;
 import com.example.tr.greenfuel.fragment.HistoryEmissionDayFragment;
 import com.example.tr.greenfuel.fragment.HistoryEmissionMonthFragment;
+import com.example.tr.greenfuel.fragment.HistoryEmissionYearFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ public class HistoryEmissionActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ViewPagerIndicator viewPagerIndicator;
-    private List<String> tabTitles = Arrays.asList(new String[]{"每日","每月"});
+    private List<String> tabTitles = Arrays.asList(new String[]{"每日","每月","每年"});
     private List<Fragment> fragmentList = new ArrayList<>();
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +44,8 @@ public class HistoryEmissionActivity extends AppCompatActivity {
     private void initData(){
         fragmentList.add(new HistoryEmissionDayFragment());
         fragmentList.add(new HistoryEmissionMonthFragment());
+        fragmentList.add(new HistoryEmissionYearFragment());
+
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
@@ -54,8 +57,8 @@ public class HistoryEmissionActivity extends AppCompatActivity {
                 return fragmentList.size();
             }
         });
-        viewPagerIndicator.setRadioTriangleWidth(1/15f); //设置三角形底边的宽度
-        viewPagerIndicator.setVisibleTanCount(2);
+        viewPagerIndicator.setRadioTriangleWidth(1/10f); //设置三角形底边的宽度
+        viewPagerIndicator.setVisibleTanCount(3);
         viewPagerIndicator.setItemTitles(tabTitles);
         viewPagerIndicator.setViewPager(viewPager,0);
     }

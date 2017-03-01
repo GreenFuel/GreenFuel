@@ -6,8 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
 
 import com.example.tr.greenfuel.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -25,16 +23,13 @@ import java.util.List;
  * Created by tangpeng on 2017/2/28.
  */
 
-public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItemSelectedListener{
+public class HistoryEmissionYearFragment extends Fragment {
 
-    private Spinner spinnerYear;
     private BarChart barChart;
 
-    private String[] xAxisName = new String[]{"一月", "二月", "三月", "四月", "五月", "六月",
-            "七月", "八月", "九月", "十月", "十一月", "十二月"};
+    private String[] xAxisName = new String[]{"2010年","2011年","2012年","2013年","2014年","2015年","2016年","2017年"};
 
-    public HistoryFuelMonthFragment() {
-
+    public HistoryEmissionYearFragment() {
     }
 
     private void setXAxis() {
@@ -50,7 +45,7 @@ public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItem
         barChart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
-                return (int)(value)+"ml";
+                return (int)(value)+"g";
             }
         });
         barChart.getAxisLeft().setAxisMinimum(0f); // start at zero
@@ -62,7 +57,7 @@ public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItem
         for (int i = 0; i < xAxisName.length; i++) {
             barEntries.add(new BarEntry(i, (float) Math.random() * 100));
         }
-        BarDataSet dataSet = new BarDataSet(barEntries, "油耗");
+        BarDataSet dataSet = new BarDataSet(barEntries, "尾气排放");
         dataSet.setColors(new int[]{R.color.springgreen, R.color.yellow, R.color.red, R.color.deepskyblue}, getActivity());
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.9f); //由x坐标值已经决定了两个bar之间的间隙为1，所以这里设置bar的宽度为0.9，则bar之间的宽度就为0.1了
@@ -76,22 +71,12 @@ public class HistoryFuelMonthFragment extends Fragment implements Spinner.OnItem
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_history_fuel_month, null);
-        spinnerYear = (Spinner) rootView.findViewById(R.id.spinner_year);
-        spinnerYear.setOnItemSelectedListener(this);
+        View rootView = inflater.inflate(R.layout.fragment_history_fuel_year, null);
+
         barChart = (BarChart) rootView.findViewById(R.id.bar_chart);
         setXAxis();
         initData();
         return rootView;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        initData();
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

@@ -47,6 +47,12 @@ public class HistoryEmissionMonthFragment extends Fragment implements Spinner.On
                 return xAxisName[(int) value];
             }
         });
+        barChart.getAxisLeft().setValueFormatter(new IAxisValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, AxisBase axis) {
+                return (int)(value)+"g";
+            }
+        });
         barChart.getAxisLeft().setAxisMinimum(0f); // start at zero
         barChart.getAxisRight().setEnabled(false);
     }
