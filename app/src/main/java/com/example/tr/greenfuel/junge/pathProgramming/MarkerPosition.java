@@ -30,6 +30,9 @@ import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.RoutePlan.RestRouteShowActivity;
+import com.example.tr.greenfuel.mine.SavePointActivity;
+import com.example.tr.greenfuel.model.MyPlace;
+import com.example.tr.greenfuel.util.DBO;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,8 +68,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
     private void init() {
         mapView = (MapView) findViewById(R.id.mapView);
         aMap = mapView.getMap();
-        Log.i("stragy","mp:"+getIntent().getBooleanExtra("congestion",false)+getIntent().getBooleanExtra("cost",false)+
-                getIntent().getBooleanExtra("hightspeed",false)+getIntent().getBooleanExtra("avoidhightspeed",false));
+
         position = new LatLng(getIntent().getDoubleExtra("Lat",0f), getIntent().getDoubleExtra("Lng",0f));
         orginPosition = new LatLng(getIntent().getDoubleExtra("startLat2",0f), getIntent().getDoubleExtra("startLng2",0f));
         //Log.i("sp","---in-------"+getIntent().getDoubleExtra("startLat2",0f)+"  ori   "+orginPosition.latitude+" ddd  "+getIntent().getDoubleExtra("Lat",0f));
@@ -128,8 +130,11 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             if(TYPE ==0){
                 simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_poi_orgin,new String[]{"item_src","item_text"},
                         new int[]{R.id.item_src,R.id.item_text});
-            }else {
+            }else if(TYPE == 1){
                 simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_poi,new String[]{"item_src","item_text"},
+                        new int[]{R.id.item_src,R.id.item_text});
+            }else {
+                simpleAdapter = new SimpleAdapter(this,dataList,R.layout.list_poi_orgin,new String[]{"item_src","item_text"},
                         new int[]{R.id.item_src,R.id.item_text});
             }
             poiList.setAdapter(simpleAdapter);
@@ -219,7 +224,7 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             ii.putExtra("Lng",position.longitude);
             ii.putExtra("Lat",position.latitude);
             startActivity(ii);
-        }else {
+        }else if(TYPE == 1){
             Intent ii = new Intent(MarkerPosition.this,RestRouteShowActivity.class);
             ii.putExtra("oName",getIntent().getStringExtra("oName"));
             ii.putExtra("eName",t.getText());
@@ -232,6 +237,16 @@ public class MarkerPosition extends AppCompatActivity implements AMap.OnMarkerDr
             ii.putExtra("cost",getIntent().getBooleanExtra("cost",false));
             ii.putExtra("hightspeed",getIntent().getBooleanExtra("hightspeed",false));
             ii.putExtra("avoidhightspeed",getIntent().getBooleanExtra("avoidhightspeed",false));
+            startActivity(ii);
+            finish();
+        }else {
+            Intent ii = new Intent(MarkerPosition.this,SavePointActivity.class);
+            ii.putExtra("name",t.getText());
+            ii.putExtra("Lng",position.longitude);
+            ii.putExtra("Lat",position.latitude);
+            DBO dao = new DBO(this);
+            dao.insertToPlace(new MyPlace(t.getText().toString(),position.latitude,position.longitude,true));
+            dao.close();
             startActivity(ii);
             finish();
         }

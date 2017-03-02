@@ -38,7 +38,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     private SimpleAdapter simpleAdapter;
     private LinearLayout poiList;
     private List<Map<String,Object>> dataList;
-    private Boolean DEGUG = true;
+    private Boolean DEGUG = false;
     private Intent i;
     private EditText searchText;
     private  int POSITION_TYPE;
@@ -59,6 +59,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     }
     public  void isDebug(Boolean debug){
         if(debug){
+            dao.init();
             dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
             dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
             dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
@@ -117,7 +118,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         myPlaces = dao.getMyPlace(true);
         for(MyPlace p : myPlaces){
             Map<String,Object>map=new HashMap<String,Object>();
-            map.put("item_src",R.drawable.point_collect);
+            map.put("item_src",R.drawable.vector_drawable_collection);
             map.put("item_text", p.getName());
             dataList.add(map);
         }

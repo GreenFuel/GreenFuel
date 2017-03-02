@@ -33,9 +33,10 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorDark"/>
             <ImageView
+                android:onClick="placeOnMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/point_map"
+                android:src="@drawable/map_point"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="5dp"
@@ -60,10 +61,40 @@
                     <ListView
                         android:id="@+id/positions"
                         android:layout_width="match_parent"
-                        android:layout_height="800dp">
+                        android:layout_height="500dp">
                     </ListView>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/clear"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        >
+        <LinearLayout
+            android:id="@+id/clearpath"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:onClick="clearPaths"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="清除收藏地点"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/clear"
+                android:layout_gravity="center"
+                />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

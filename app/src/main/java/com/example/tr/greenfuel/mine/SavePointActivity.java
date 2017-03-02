@@ -1,19 +1,16 @@
 package com.example.tr.greenfuel.mine;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.junge.pathProgramming.SetPath;
+import com.example.tr.greenfuel.junge.pathProgramming.MarkerPosition;
 import com.example.tr.greenfuel.model.MyPlace;
 import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.MyLocation;
@@ -27,11 +24,7 @@ public class SavePointActivity extends AppCompatActivity implements AdapterView.
     private ListView positions;
     private SimpleAdapter simpleAdapter;
     private List<Map<String,Object>> dataList;
-    private Boolean DEGUG = true;
-    private Intent i;
-    private EditText searchText;
-    private  int POSITION_TYPE;
-    private TextView positionName;
+    private Boolean DEGUG = false;
     private MyLocation myLocation;
     private boolean ISCOLLECT=false;
     private DBO dao;
@@ -42,12 +35,13 @@ public class SavePointActivity extends AppCompatActivity implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collected_point);
         dao = new DBO(this);
-        dao.clearPlace();
+        //dao.clearPlace();
         isDebug(DEGUG);
         init();
     }
     public  void isDebug(Boolean debug){
         if(debug){
+            dao.init();
             dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
             dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
             dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
@@ -60,9 +54,8 @@ public class SavePointActivity extends AppCompatActivity implements AdapterView.
         myLocation = new MyLocation(this);
         //初始化站点
         positions = (ListView) findViewById(R.id.positions);
-
         dataList = new ArrayList<Map<String,Object>>();
-        getHistorySearch();
+        getCollect();
         //设置list监听
         positions.setOnItemClickListener(this);
 
@@ -82,14 +75,17 @@ public class SavePointActivity extends AppCompatActivity implements AdapterView.
                 new int[]{R.id.item_src,R.id.item_text});
         positions.setAdapter(simpleAdapter);
     }
-
+    public void clearPaths(View view){
+        dao.clearPlaceCollect();
+        getCollect();
+    }
     private void getCollect(){
         dataList.clear();
         myPlaces.clear();
         myPlaces = dao.getMyPlace(true);
         for(MyPlace p : myPlaces){
             Map<String,Object>map=new HashMap<String,Object>();
-            map.put("item_src",R.drawable.point_collect);
+            map.put("item_src",R.drawable.vector_drawable_collection);
             map.put("item_text", p.getName());
             dataList.add(map);
         }
@@ -134,21 +130,17 @@ public class SavePointActivity extends AppCompatActivity implements AdapterView.
             getHistorySearch();
         }
     }
-    public void myPlace(View v){
-        findViewById(R.id.place_onMap).setBackgroundResource(R.color.white);
-        findViewById(R.id.place_collect).setBackgroundResource(R.color.white);
-        if(POSITION_TYPE == 1){
-            Dialog d = new Dialog(v.getContext());
-            d.setTitle("起点和终点不能相同");
-            d.show();
-        }else {
-            startActivity(new Intent(v.getContext(),SetPath.class).putExtra("orgin","我的位置"));
-            finish();
-        }
-    }
+
     //地图选点
     public void placeOnMap(View view){
-
+        Intent intent = new Intent(this, MarkerPosition.class);
+        intent.putExtra("type",2);
+        intent.putExtra("Lat",myLocation.getMyLocation().latitude);
+        intent.putExtra("Lng",myLocation.getMyLocation().longitude);
+        intent.putExtra("startLat2",myLocation.getMyLocation().latitude);
+        intent.putExtra("startLng2",myLocation.getMyLocation().longitude);
+        startActivity(intent);
+        finish();
     }
 
 }

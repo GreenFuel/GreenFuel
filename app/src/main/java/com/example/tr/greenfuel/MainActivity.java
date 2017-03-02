@@ -33,6 +33,7 @@ import com.example.tr.greenfuel.mine.MineActivity;
 import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.nearFunction.NearActivity;
 import com.example.tr.greenfuel.poiSearch.PoiSearchPageActivity;
+import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.SensorEventHelper;
 
 import static com.example.tr.greenfuel.R.id.avoidhightspeed;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
     private AMapLocation aMapLocation;  //返回的定位信息
-
+    private boolean DEBUG = false;
     private boolean mFirstFix = false;
 
     private Marker mLocMarker;
@@ -103,6 +104,11 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         mSensorHelper = new SensorEventHelper(this);
         if (mSensorHelper != null) {
             mSensorHelper.registerSensorListener();
+        }
+        if(DEBUG){
+            DBO dbo= new DBO(this);
+            dbo.init();
+            dbo.close();
         }
 //        LatLng desLatLng = new LatLng(30.765207,103.989339);
 //        aMap.moveCamera(CameraUpdateFactory.changeLatLng(desLatLng));

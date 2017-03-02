@@ -63,6 +63,7 @@ public class DBO {
         int c = palce.isCollection()?1:0;
         db.execSQL("insert into places(name,Lng,Lat,isCollection)values('" +
                 palce.getName()+"',"+palce.getLng()+","+palce.getLat()+","+c+")");
+        Log.i("cc","ok:"+c);
     }
 
     public List<MyPlace> getMyPlace(boolean b){   //表示是否为收藏的点
@@ -87,6 +88,21 @@ public class DBO {
     }
     public void clearPlace(){
         db.execSQL("delete from places where _id>0");
+    }
+    public void clearPlaceCollect(){
+        db.execSQL("delete from places where _id>0 and isCollection=1");
+    }
+    public void close(){
+        db.close();
+    }
+    public void init(){
+        db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
+                "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");
+        db.execSQL("create table if not exists paths(_id integer primary key autoincrement," +
+                "oName text not null,eName text not null,oLat double not null,oLng double not null," +
+                "eLat double not null,eLng double not null)");
+        clearPaths();
+        clearPlace();
     }
 }
 

@@ -111,7 +111,7 @@
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/point_collect"
+                    android:src="@drawable/vector_drawable_collection"
                     />
                 <TextView
                     android:layout_marginRight="10dp"
