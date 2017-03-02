@@ -51,6 +51,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double acc = 0;//加速度
     private double angle = 0;//角度
     private double speed = 0;
+    private double last_speed = 0;
 
     private ArrayList<Travelingdata> ts;
     private boolean STARTNAVI = false;
@@ -60,10 +61,11 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double distanceMax = Integer.MIN_VALUE;
     private double fuelConsumption = 0;
     private double carbonEmission = 0;
-    private boolean DEBUG = false;
+    private boolean DEBUG = true;
     private double CO = 0;
     private double NO =0;
     private double CH =0;
+
     /*
     * 每1s变化油耗、排放一次
     * */
@@ -74,6 +76,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         public void run() {
             if(STARTNAVI){
                 setRate(speed,(speed*1)/3600);
+                last_speed = speed;
+                mAMapNavi.setEmulatorNaviSpeed(60);
+                Log.i("acc","state:"+STARTNAVI);
             }
             handler.postDelayed(myRunnable,1000);
         }
@@ -149,12 +154,14 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
 
         boolean gps = getIntent().getBooleanExtra("gps", false);
         //gps= false;
-        mAMapNavi.setEmulatorNaviSpeed(60);
+
         if(gps){
-            mAMapNavi.startNavi(AMapNavi.GPSNaviMode);
+            mAMapNavi.startNavi(AMapNavi.EmulatorNaviMode);
         }else{
+            STARTNAVI = true;
             mAMapNavi.startNavi(AMapNavi.EmulatorNaviMode);
         }
+        mAMapNavi.setEmulatorNaviSpeed(60);
         handler.postDelayed(myRunnable,1000);
     }
     private void initSensor() {
@@ -212,8 +219,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         if(naviinfo.getPathRetainDistance() > distanceMax){
             distanceMax = naviinfo.getPathRetainDistance();
         }
+
+        now.setText("当前速度："+speed);
         if(DEBUG){
+            Log.i("acc","ssssss1:------"+speed);
             speed = (int) (Math.random()*70+10);
+            Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
             now.setText("当前速度："+speed);
             STARTNAVI = true;
@@ -253,6 +264,14 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         if(sensorManager != null){
             sensorManager.unregisterListener(this);
         }
+        finish();
+
+        mAMapNavi.destroy();
+        mAMapNaviView.onDestroy();
+        handler.removeCallbacks(myRunnable,myRunnable);
+
+        super.onDestroy();
+
     }
     public void endNavi(View v){
         LayoutInflater inflater = LayoutInflater.from (this);
@@ -285,12 +304,15 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         ts.add(new Travelingdata((int) v,dis,1));
         pfRate.setCurrentCount((int)EmissionCalculate.cEmissionCal(v)/100000);
         oilRate.setCurrentCount(getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
+        speedAnalyze.setCurrentCount((int)(Math.random()*200+400));
+
         carbonEmission += (EmissionCalculate.cEmissionCal(v)/1000)*dis;
         fuelConsumption += FuelCalculate.CarFuelConsumptionCal(1,ts);
-        Log.i("acc","v:"+v+"  dis:"+dis);
-        Log.i("acc","fuleRate:"+getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
-        Log.i("acc","fuleNow:"+FuelCalculate.CarFuelConsumptionCal(1,ts));
-        Log.i("acc","fule:"+fuelConsumption);
+        //Log.i("acc","v:"+v+"  dis:"+dis);
+        //Log.i("acc","fuleRate:"+getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
+        //Log.i("acc","fuleNow:"+FuelCalculate.CarFuelConsumptionCal(1,ts));
+        //Log.i("acc","fule:"+fuelConsumption);
+        acc = (speed - last_speed)/1;
         CO += EmissionCalculate.COEmissionCal(acc,v);
         CH += EmissionCalculate.HCEmissionCal(acc,v);
         NO += EmissionCalculate.NOEmissionCal(acc,v);

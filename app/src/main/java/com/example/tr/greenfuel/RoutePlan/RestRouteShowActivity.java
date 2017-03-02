@@ -100,6 +100,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         myPaths = new MyPaths();
         intiView();
         setMap(savedInstanceState);
+        //finish();
     }
 
     private void setMap(Bundle savedInstanceState) {
@@ -218,7 +219,7 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         mAMapNavi.removeAMapNaviListener(this);
         //注意：不要调用这个destory方法，因为在当前页面进行算路，算路成功的数据全部存在此对象中。到另外一个activity中只需要开始导航即可。
         //如果用户是回退退出当前activity，可以调用下面的destory方法。
-        mAMapNavi.destroy();
+        //mAMapNavi.destroy();
     }
 
     @Override
@@ -426,8 +427,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
                 break;
             case R.id.gpsnavi:
                 Intent gpsintent = new Intent(getApplicationContext(), RouteActivity.class);
-                gpsintent.putExtra("gps", true);
-                //mAMapNavi.destroy();
+                gpsintent.putExtra("gps", false);
+                //
                 startActivity(gpsintent);
                 this.finish();
                 break;

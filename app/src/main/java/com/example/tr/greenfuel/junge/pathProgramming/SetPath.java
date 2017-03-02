@@ -160,12 +160,12 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 if(congestion){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.yd_off), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_yd_off), null, null);
                     congestion = false;
                 }else {
                     view.setBackgroundResource(R.drawable.button_blue);
                     congestion = true;
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.yd_on), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_yd_on), null, null);
                     button.setTextColor(Color.WHITE);
                 }
                 break;
@@ -174,11 +174,11 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 if(cost){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf_off), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_sf_off), null, null);
                     cost = false;
                 }else {
                     view.setBackgroundResource(R.drawable.button_blue);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.sf_on), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_sf_on), null, null);
                     button.setTextColor(Color.WHITE);
                     cost = true;
                 }
@@ -188,7 +188,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 if(hightspeed){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.gs_off), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_gs_off), null, null);
                     //button.setDrawingCacheBackgroundColor(R.drawable.yd_on);
                     hightspeed = false;
                 }else {
@@ -196,7 +196,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                         Toast.makeText(this,"不能同时选择不走高速和高速优先",Toast.LENGTH_SHORT).show();
                     }else {
                         view.setBackgroundResource(R.drawable.button_blue);
-                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.gs_on), null, null);
+                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_gs_on), null, null);
                         hightspeed = true;
                         button.setTextColor(Color.WHITE);
                     }
@@ -207,7 +207,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                 if(avoidhightspeed){
                     view.setBackgroundResource(R.drawable.button_gray);
                     button.setTextColor(Color.BLACK);
-                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.nogs_off), null, null);
+                    button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_nogs_off), null, null);
                     avoidhightspeed = false;
                 }else {
                     if (hightspeed){
@@ -215,7 +215,7 @@ public class SetPath extends AppCompatActivity implements View.OnTouchListener, 
                     }else {
                         view.setBackgroundResource(R.drawable.button_blue);
                         button.setTextColor(Color.WHITE);
-                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.nogs_on), null, null);
+                        button.setCompoundDrawablesWithIntrinsicBounds(null,getResources().getDrawable(R.drawable.vector_drawable_nogs_on), null, null);
                         avoidhightspeed = true;
                     }
                 }

@@ -47,13 +47,12 @@ public class RouteNaviActivity extends Activity implements AMapNaviListener, AMa
 		mAMapNavi.addAMapNaviListener(mTtsManager);
 		mAMapNavi.setEmulatorNaviSpeed(60);
 		boolean gps=getIntent().getBooleanExtra("gps", false);
+		gps = false;
 		if(gps){
 			mAMapNavi.startNavi(AMapNavi.GPSNaviMode);
 		}else{
 			mAMapNavi.startNavi(AMapNavi.EmulatorNaviMode);
 		}
-		
-
 	}
 
 	@Override

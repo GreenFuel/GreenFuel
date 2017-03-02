@@ -206,6 +206,7 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
     @Override
     public void onNaviInfoUpdated(AMapNaviInfo naviInfo) {
         //过时
+
     }
 
     @Override
@@ -250,6 +251,7 @@ public class BaseActivity extends Activity implements AMapNaviListener, AMapNavi
 
     @Override
     public void notifyParallelRoad(int i) {
+        mAMapNavi.setEmulatorNaviSpeed(60);
         if (i == 0) {
             Toast.makeText(this, "当前在主辅路过渡", Toast.LENGTH_SHORT).show();
             Log.d("wlx", "当前在主辅路过渡");
