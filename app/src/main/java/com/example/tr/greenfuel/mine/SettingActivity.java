@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.tr.greenfuel.MainActivity;
 import com.example.tr.greenfuel.R;
 
 /**
@@ -22,11 +23,11 @@ public class SettingActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
-    Handler handler = new Handler(){
+    Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(msg.what == 1){
+            if (msg.what == 1) {
                 Toast.makeText(SettingActivity.this, "已是最新版本", Toast.LENGTH_SHORT).show();
                 dismissProgressDialog();
             }
@@ -37,12 +38,16 @@ public class SettingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        if (MainActivity.hasLogin) {
+            findViewById(R.id.exit_login).setVisibility(View.VISIBLE);
+        }
     }
 
     //应用升级
-    public void updateApp(View v){
+    public void updateApp(View v) {
         showProgressDialog();
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
@@ -53,11 +58,11 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     //退出登录
-    public void exitLogin(View v){
+    public void exitLogin(View v) {
         new AlertDialog.Builder(this).setMessage("退出登录？").setPositiveButton("退出", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                MainActivity.hasLogin = false;
             }
         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
@@ -83,7 +88,7 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
-    public void back(View v){
+    public void back(View v) {
         finish();
     }
 }
