@@ -92,6 +92,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         });
         poiList = (LinearLayout) findViewById(R.id.poiList);
         poiList.setVisibility(View.INVISIBLE);
+        getHistorySearch();
         //初始化输入框
         initEditText();
 

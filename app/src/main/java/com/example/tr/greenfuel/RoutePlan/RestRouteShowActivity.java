@@ -41,6 +41,7 @@ import com.autonavi.tbt.TrafficFacilityInfo;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.model.MyPaths;
+import com.example.tr.greenfuel.model.MyPlace;
 import com.example.tr.greenfuel.util.DBO;
 import com.example.tr.greenfuel.util.FuelCalculate;
 
@@ -121,6 +122,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
             myPaths.setEndName(getIntent().getStringExtra("eName"));
             DBO dao = new DBO(this);
             dao.insertToPaths(myPaths);
+            dao.insertToPlace(new MyPlace(myPaths.getOriginName(),myPaths.getoLat(),myPaths.getoLng(),false));
+            dao.insertToPlace(new MyPlace(myPaths.getEndName(),myPaths.geteLat(),myPaths.geteLng(),false));
         }else{
             endLatlng = new NaviLatLng(30.5891985869,104.0364842722);
         }

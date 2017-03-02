@@ -2,6 +2,7 @@ package com.example.tr.greenfuel.RoutePlan;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviView;
@@ -30,6 +30,7 @@ import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.SpringProgressView;
 import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.junge.BaseActivity;
+import com.example.tr.greenfuel.mine.MineActivity;
 import com.example.tr.greenfuel.util.EmissionCalculate;
 import com.example.tr.greenfuel.util.FuelCalculate;
 
@@ -78,7 +79,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
                 setRate(speed,(speed*1)/3600);
                 last_speed = speed;
                 mAMapNavi.setEmulatorNaviSpeed(60);
-                Log.i("acc","state:"+STARTNAVI);
+                //Log.i("acc","state:"+STARTNAVI);
             }
             handler.postDelayed(myRunnable,1000);
         }
@@ -102,7 +103,6 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                Log.i("speed", "onLocationChanged: "+location.getSpeed());
                 loc = location;
                 speed = location.getSpeed()*3.6;
                 now.setText("当前速度"+location.getSpeed()*3.6);
@@ -222,9 +222,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
 
         now.setText("当前速度："+speed);
         if(DEBUG){
-            Log.i("acc","ssssss1:------"+speed);
+            //Log.i("acc","ssssss1:------"+speed);
             speed = (int) (Math.random()*70+10);
-            Log.i("acc","ssssss2:------"+speed);
+            //Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
             now.setText("当前速度："+speed);
             STARTNAVI = true;
@@ -280,7 +280,8 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(RouteActivity.this, "查看详情", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(RouteActivity.this, MineActivity.class));
+                finish();
                 dialog.dismiss();
             }
         });
@@ -292,10 +293,11 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         t.setText("耗时："+((System.currentTimeMillis()-startTime.getTime())/1000/3600)+"小时"+((System.currentTimeMillis()-startTime.getTime())/1000/60%60)+"分钟");
         dis.setText("驾驶行程："+(distanceMax-distanceMin)/1000+"km");
         oil.setText("总共耗油："+(int)fuelConsumption+"ml");
-        cemmision.setText("碳排放量："+(int)(carbonEmission/1000)/1000+"kg");
+        cemmision.setText("碳排放量："+(int)(carbonEmission)+"g");
         AlertDialog.Builder builder=new AlertDialog.Builder(this);
         builder.setView(view);
         dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
@@ -306,12 +308,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         oilRate.setCurrentCount(getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
         speedAnalyze.setCurrentCount((int)(Math.random()*200+400));
 
-        carbonEmission += (EmissionCalculate.cEmissionCal(v)/1000)*dis;
+        carbonEmission += ((EmissionCalculate.cEmissionCal(v)/100)*dis)/1000;
         fuelConsumption += FuelCalculate.CarFuelConsumptionCal(1,ts);
         //Log.i("acc","v:"+v+"  dis:"+dis);
         //Log.i("acc","fuleRate:"+getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
         //Log.i("acc","fuleNow:"+FuelCalculate.CarFuelConsumptionCal(1,ts));
-        //Log.i("acc","fule:"+fuelConsumption);
+        Log.i("acc","v:"+v+"carbonEmission:"+carbonEmission);
         acc = (speed - last_speed)/1;
         CO += EmissionCalculate.COEmissionCal(acc,v);
         CH += EmissionCalculate.HCEmissionCal(acc,v);
