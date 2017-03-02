@@ -2,6 +2,7 @@
     <string name="app_name">GreenFuel</string>
     <string name="app_id">58a1aa3e</string>
     <string name="near">附近</string>
+    <string name="collect">收藏地点</string>
     <string name="route">路线</string>
     <string name="mine">我的</string>
     <string name="hintKeyWordSearch">请输入关键字</string>

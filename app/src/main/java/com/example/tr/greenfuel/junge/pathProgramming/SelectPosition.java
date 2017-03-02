@@ -53,7 +53,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_position);
         dao = new DBO(this);
-        dao.clearPlace();
+        //dao.clearPlace();
         isDebug(DEGUG);
         init();
     }
