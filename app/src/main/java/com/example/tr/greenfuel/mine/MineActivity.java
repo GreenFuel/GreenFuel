@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ import java.util.List;
  */
 
 public class MineActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private static final String TAG = "MineActivity";
 
     private static final boolean DEBUG = true;
 
@@ -101,11 +104,13 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case 0:
-                                    System.out.println(1111);
+                                    Log.i(TAG, "onClick: 1");
                                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //启动相机照相获取照片
                                     if (hasSdCard()) {
                                         tempFile = new File(Environment.getExternalStorageDirectory(), tempFileName);
+                                        Log.i(TAG, "onClick:tempFile " + tempFile.getPath() + tempFile.getName());
                                         Uri uri = Uri.fromFile(tempFile);
+                                        Log.i(TAG, "onClick: fileUri " + uri);
                                         intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
                                     }
                                     startActivityForResult(intent, CAMERA_REQUEST_CODE);
@@ -131,98 +136,78 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        System.out.println("onActivityResult");
         if (resultCode == RESULT_OK) {
             if (requestCode == CAMERA_REQUEST_CODE) {//拍照返回
                 if (hasSdCard()) {
-                    System.out.println("相机：" + Uri.fromFile(tempFile));
-//                    if(Uri.fromFile(tempFile) != null)
-//                        cropImg(Uri.fromFile(tempFile));
-
-                    Bitmap bitmap = null;
+                    Log.i(TAG, "onActivityResult: " + Uri.fromFile(tempFile));
+                    userHead.setImageBitmap(BitmapFactory.decodeFile(tempFile.getPath()));
+                    //上传图片
+                    uploadImg(tempFile.getPath());
                     if (data != null)
-                        bitmap = (Bitmap) data.getExtras().get("data");
-                    if (userHead != null && bitmap != null) {
-                        userHead.setImageBitmap(bitmap);
-
-                        System.out.println("拍照：" + data.getData());
-                    }
-                } else {
-                    Toast.makeText(this, "没有存储卡，无法存储照片！", Toast.LENGTH_SHORT).show();
+                        Log.i(TAG, "onActivityResult: getData" + data.getData());
                 }
             } else if (requestCode == GALLEY_REQUEST_CODE) {//相册返回
                 Uri uri = null;
                 if (data != null)
                     uri = data.getData();   //图片的uri
-//                if (uri != null) {
-//                    cropImg(uri);
-//                }
-
                 ContentResolver resolver = getContentResolver();
                 try {
                     Bitmap bitmap1 = BitmapFactory.decodeStream(resolver.openInputStream(uri));
+                    String filePath = getRealPathFromUri(uri);
+                    if (filePath == null) {
+                        Toast.makeText(this, "无法加载该照片，请更改！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    File imgFile = new File(filePath);
+                    uploadImg(imgFile.getPath());
+                    Log.i(TAG, "onActivityResult: imgFile.getPath()" + imgFile.getPath());
                     if (userHead != null && bitmap1 != null) {
                         userHead.setImageBitmap(bitmap1);
-                        System.out.println("图库：" + data.getData());
+                        Log.i(TAG, "onActivityResult: data.getData()" + data.getData());
                     }
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
-                    System.out.println("获取图片异常--相册");
+                    Log.e(TAG, "onActivityResult: FileNotFoundException", e);
                 }
-            } else if (requestCode == CROP_REQUEST_CODE) {
-                System.out.println("crop" + 3);
-                System.out.println(1);
-//                if (data != null) {
-//                    Bitmap bitmap = data.getParcelableExtra("data");
-//                    System.out.println(2);
-//                    userHead.setImageBitmap(bitmap);
-//                    if (tempFile != null)
-//                        tempFile.delete();  //将临时文件删除
-//                }
-                System.out.println("crop" + 4);
             }
         }
     }
 
 
-    private void uploadImg(Uri uri) {
+    private void uploadImg(String filePath) {
         List<Part> partList = new ArrayList<>();
         partList.add(new StringPart("driPhone", "15520452757"));
         partList.add(new StringPart("driId", 2 + ""));
+        showProgressDialog();
         try {
-            String imgPath = getRealPathFromUri(uri);
-            if (imgPath == null) {
-                System.out.println("选择的照片无效");
-                return;
-            } else {
-                showProgressDialog();
-                partList.add(new FilePart("photo", new File(imgPath)));
-                MyMultipartRequest myMultipartRequest = new MyMultipartRequest(Request.Method.POST, BASIC_URL + IMG_URL, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String s) {
-                        System.out.println(s);
-                        handler.sendEmptyMessage(MESSAGE_SUCCESS);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        System.out.println("没有返回结果：" + volleyError.getMessage());
-                        handler.sendEmptyMessage(MESSAGE_FAILED);
-                    }
-                }, partList.toArray(new Part[partList.size()]));
-                requestQueue.add(myMultipartRequest);
-            }
+            partList.add(new FilePart("photo", new File(filePath)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            System.out.println("FilePart:" + e.getMessage());
+            Log.e(TAG, "uploadImg: ", e);
         }
+        MyMultipartRequest myMultipartRequest = new MyMultipartRequest(Request.Method.POST, BASIC_URL + IMG_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                System.out.println(s);
+                handler.sendEmptyMessage(MESSAGE_SUCCESS);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG, "onErrorResponse: ", volleyError);
+                handler.sendEmptyMessage(MESSAGE_FAILED);
+            }
+        }, partList.toArray(new Part[partList.size()]));
+        requestQueue.add(myMultipartRequest);
     }
-
 
     public String getRealPathFromUri(Uri contentUri) {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor == null) {
+            return null;
+        }
         if (cursor.moveToFirst()) {
             ;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -233,7 +218,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goEmissionOrder(View v) {//尾气排放榜单
-        if (MainActivity.hasLogin) {
+        if (MainActivity.hasLogin || DEBUG) {
             startActivity(new Intent(MineActivity.this, EmissionOrderActivity.class));
         } else {
             Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();
@@ -241,7 +226,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void goHistoryData(View v) {//查看历史数据
-        if (MainActivity.hasLogin) {
+        if (MainActivity.hasLogin || DEBUG) {
             startActivity(new Intent(MineActivity.this, HistoryDataActivity.class));
         } else {
             Toast.makeText(this, "请先登录！", Toast.LENGTH_SHORT).show();

@@ -31,6 +31,9 @@ import medusa.theone.waterdroplistview.view.WaterDropListView;
 
 public class VpSimpleFragment extends Fragment implements WaterDropListView.IWaterDropListViewListener {
 
+    private static final String IMG_URL_1 = "http://cdn.sinacloud.net/tp-first-232217/img22.jpg?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488526806&ssig=MHNSxksvl8";
+    private static final String IMG_URL_2 = "http://cdn.sinacloud.net/tp-first-232217/img5.jpg?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488526806&ssig=EBMDQ1OQeu";
+
     private boolean isInit = false; //是否已经初始化数据
 
     private TextView myOrder;
@@ -107,7 +110,7 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
             map.put("order", (i + 1) + "");
             map.put("name", "张三" + i);
             map.put("emissionConsumption", i * 10 + "");
-            map.put("imageURL", "http://cdn.sinacloud.net/tp-first-232217/img12.jpg?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488269868&ssig=Qa%2BWslbWV9");
+            map.put("imageURL", IMG_URL_1);
             mapList.add(map);
         }
         simpleAdapter = new EmissionOrderListViewAdapter(getActivity(), mapList, R.layout.listview_item_emission_order, new String[]{"order", "name", "emissionConsumption", "imageURL"}
@@ -118,13 +121,13 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
 
 
     //测试上啦加载
-    private void addDataToListView(){
+    private void addDataToListView() {
         for (int i = 0; i < 30; i++) {
             Map<String, Object> map = new HashMap<>();
             map.put("order", (i + 1) + "");
             map.put("name", "张三" + i);
             map.put("emissionConsumption", i * 10 + "");
-            map.put("imageURL", "http://cdn.sinacloud.net/tp-first-232217/zheyuan1.png?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488269868&ssig=Bldx6%2F2hN3");
+            map.put("imageURL", IMG_URL_2);
             mapList.add(map);
         }
         simpleAdapter.notifyDataSetChanged();

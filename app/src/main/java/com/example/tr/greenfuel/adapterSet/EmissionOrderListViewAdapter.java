@@ -14,7 +14,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.util.PixelUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -59,26 +58,28 @@ public class EmissionOrderListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        View view;
         ViewHolder viewHolder = null;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(layoutId, null);
+            view = LayoutInflater.from(mContext).inflate(layoutId, null);
             viewHolder = new ViewHolder();
-            viewHolder.order = (TextView) convertView.findViewById(viewsId[0]);
-            viewHolder.name = (TextView) convertView.findViewById(viewsId[1]);
-            viewHolder.emissionConsumption = (TextView) convertView.findViewById(viewsId[2]);
-            viewHolder.header = (ImageView) convertView.findViewById(viewsId[3]);
-            convertView.setTag(viewHolder);
+            viewHolder.order = (TextView) view.findViewById(viewsId[0]);
+            viewHolder.name = (TextView) view.findViewById(viewsId[1]);
+            viewHolder.emissionConsumption = (TextView) view.findViewById(viewsId[2]);
+            viewHolder.header = (ImageView) view.findViewById(viewsId[3]);
+            view.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();
         }
         viewHolder.order.setText((String) (mapList.get(position)).get(keys[0]));
         viewHolder.name.setText((String) (mapList.get(position)).get(keys[1]));
-        viewHolder.emissionConsumption.setText(mapList.get(position).get(keys[2]) + " L");
-
+        viewHolder.emissionConsumption.setText(mapList.get(position).get(keys[2]) + " ml");
         ImageLoader imageLoader = new ImageLoader(requestQueue, new BitmapCache());
         ImageLoader.ImageListener imageListener = ImageLoader.getImageListener(viewHolder.header, R.mipmap.user1, R.mipmap.user1);
-        imageLoader.get((String) mapList.get(position).get(keys[3]), imageListener, PixelUtil.dp2px(40, mContext), PixelUtil.dp2px(40, mContext));
-        return convertView;
+        imageLoader.get((String) mapList.get(position).get(keys[3]), imageListener, 300, 300);
+
+        return view;
     }
 
     class ViewHolder {
