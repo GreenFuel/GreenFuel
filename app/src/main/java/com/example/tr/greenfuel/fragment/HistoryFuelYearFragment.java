@@ -61,7 +61,7 @@ public class HistoryFuelYearFragment extends Fragment {
         dataSet.setColors(new int[]{R.color.springgreen, R.color.yellow, R.color.red, R.color.deepskyblue}, getActivity());
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.9f); //由x坐标值已经决定了两个bar之间的间隙为1，所以这里设置bar的宽度为0.9，则bar之间的宽度就为0.1了
-
+        barChart.clear();
         barChart.animateY(2000);    //设置动画效果
         barChart.setData(data);
         barChart.setFitBars(true);  //使所有的bar都能完整显示出来

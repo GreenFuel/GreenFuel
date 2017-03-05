@@ -56,6 +56,7 @@ public class HistoryEmissionDayFragment extends Fragment implements Spinner.OnIt
     private void initBasicDays() {
         if (basicDays == null)
             basicDays = new ArrayList<>();
+        basicDays.clear();
         for (int i = 1; i <= 28; i++) {
             basicDays.add(i + "");
         }
@@ -111,6 +112,7 @@ public class HistoryEmissionDayFragment extends Fragment implements Spinner.OnIt
         setLineChart();
 
         LineData lineData = new LineData(lineDataSet1);
+        lineChart.clear();
         lineChart.animateY(2000);
         lineChart.setData(lineData);
         lineChart.invalidate();

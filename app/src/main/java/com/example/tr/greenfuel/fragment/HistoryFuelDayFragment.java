@@ -53,9 +53,16 @@ public class HistoryFuelDayFragment extends Fragment implements Spinner.OnItemSe
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        lineChart.destroyDrawingCache();
+    }
+
     private void initBasicDays() {
         if (basicDays == null)
             basicDays = new ArrayList<>();
+        basicDays.clear();
         for (int i = 1; i <= 28; i++) {
             basicDays.add(i + "");
         }
@@ -111,6 +118,7 @@ public class HistoryFuelDayFragment extends Fragment implements Spinner.OnItemSe
         setLineChart();
 
         LineData lineData = new LineData(lineDataSet1);
+        lineChart.clear();
         lineChart.animateY(2000);
         lineChart.setData(lineData);
         lineChart.invalidate();

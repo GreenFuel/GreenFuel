@@ -32,6 +32,9 @@ import com.example.tr.greenfuel.customView.CustomRoundedImageView;
 import com.example.tr.greenfuel.loginRegister.LoginActivity;
 import com.example.tr.greenfuel.util.MyMultipartRequest;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -218,8 +221,19 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         MyMultipartRequest myMultipartRequest = new MyMultipartRequest(Request.Method.POST, BASIC_URL + IMG_URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String s) {
-                System.out.println(s);
-                handler.sendEmptyMessage(MESSAGE_SUCCESS);
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int msg = jsonObject.getInt("msg");
+                    if (msg == 1) {//上传成功
+                        handler.sendEmptyMessage(MESSAGE_SUCCESS);
+                    } else {//上传失败
+                        handler.sendEmptyMessage(0);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "onRespe:JSONException ", e);
+                }
+                Log.i(TAG, "onRespe: jsonObject " + s);
             }
         }, new Response.ErrorListener() {
             @Override

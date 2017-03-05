@@ -37,7 +37,7 @@ import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String BASIC_URL = "http://192.168.1.125:8080/lcx/servlet";
+    public static final String BASIC_URL = "http://192.168.1.125:8080/lcx/servlet";
     private static final String AIM_URL = "/DriverLogin";
 
     private Button login;

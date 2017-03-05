@@ -8,15 +8,24 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.adapterSet.EmissionOrderListViewAdapter;
+import com.example.tr.greenfuel.loginRegister.LoginActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,6 +39,8 @@ import medusa.theone.waterdroplistview.view.WaterDropListView;
  */
 
 public class VpSimpleFragment extends Fragment implements WaterDropListView.IWaterDropListViewListener {
+    private static final String TAG = "VpSimpleFragment";
+    public static final String URL = "/DriverEmCountryRank";
 
     private static final String IMG_URL_1 = "http://cdn.sinacloud.net/tp-first-232217/img22.jpg?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488526806&ssig=MHNSxksvl8";
     private static final String IMG_URL_2 = "http://cdn.sinacloud.net/tp-first-232217/img5.jpg?KID=sina,2fxabjfMjmKgh8HbRsmp&Expires=1488526806&ssig=EBMDQ1OQeu";
@@ -37,6 +48,7 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
     private boolean isInit = false; //是否已经初始化数据
 
     private TextView myOrder;
+
     private WaterDropListView waterDropListView;
 
     private List<Map<String, Object>> mapList = new ArrayList<>();   //adpter的数据
@@ -92,15 +104,42 @@ public class VpSimpleFragment extends Fragment implements WaterDropListView.IWat
         }
         showProgressDialog();
 
+        int driId = 2;
+        int queryType = 0;  //0:全国，1：全省，2：全市
+        int page = 1;
+        String driProvince = "四川省";
+        String driCity = "成都市";
 
-        new Thread() {
+        String jsonStr = "{\"driId\":" + driId + "," +
+                "\"queryType\":" + queryType + "," +
+                "\"driProvince\":" + "\"" + driProvince + "\"," +
+                "\"driCity\":" + "\"" + driCity + "\"," +
+                "\"page\":" + page +
+                "}";
+
+        JSONObject commitObject = null;
+        try {
+            commitObject = new JSONObject(jsonStr);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "initData: JSONException ", e);
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, LoginActivity.BASIC_URL + URL, commitObject, new Response.Listener<JSONObject>() {
             @Override
-            public void run() {
-                super.run();
-                SystemClock.sleep(2000);
-                mHandler.sendEmptyMessage(1);
+            public void onResponse(JSONObject jsonObject) {
+                Log.i(TAG, "onResponse: jsonObject " + jsonObject.toString());
+
             }
-        }.start();
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG, "onErrorResponse: onErrorResponse ", volleyError);
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+
+
     }
 
     //初始化Adapter
