@@ -1,10 +1,8 @@
 package com.example.tr.greenfuel.mine;
 
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -34,6 +32,7 @@ import com.example.tr.greenfuel.customView.CustomRoundedImageView;
 import com.example.tr.greenfuel.loginRegister.LoginActivity;
 import com.example.tr.greenfuel.util.MyMultipartRequest;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -52,14 +51,18 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     private static final String BASIC_URL = "http://192.168.1.126:8080/lcx/servlet";
     private static final String IMG_URL = "/DriverHeadPhotoUpload";
 
-    private static final int CAMERA_REQUEST_CODE = 1;   //相机
-    private static final int GALLEY_REQUEST_CODE = 2;   //图库
-    private static final int CROP_REQUEST_CODE = 3; //剪切
+    String fileNameCamera = "image_header_camera.png";   // 拍照得到的临时文件名
+    String fileNameCrop = "image_header_crop.png";   //裁剪后得到的临时文件名
+    //最终截取到的图片的uri
+    private Uri finalUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), fileNameCrop));
+    private int cropWidth = 500;    //截取框的宽度
+    private int cropHeight = 500;   //截取框的高度
+
+    public static final int FROM_CROP = 1;  //从相机或图库中返回
+    private static final int CROP_PICTURE = 2;  //裁剪返回
+
     private static final int MESSAGE_SUCCESS = 1;
     private static final int MESSAGE_FAILED = 2;
-
-    private File tempFile;  //临时保存的拍照的照片
-    private String tempFileName = "user_header.png";
 
     private CustomRoundedImageView userHead;  //用户头像
 
@@ -99,33 +102,32 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         if (MainActivity.hasLogin || DEBUG) {
             switch (v.getId()) {
                 case R.id.user_head_image:
-                    new AlertDialog.Builder(this).setItems(new String[]{"拍照", "相册", "取消"}, new DialogInterface.OnClickListener() {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setItems(new String[]{"拍照", "相册"}, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             switch (which) {
                                 case 0:
-                                    Log.i(TAG, "onClick: 1");
-                                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //启动相机照相获取照片
-                                    if (hasSdCard()) {
-                                        tempFile = new File(Environment.getExternalStorageDirectory(), tempFileName);
-                                        Log.i(TAG, "onClick:tempFile " + tempFile.getPath() + tempFile.getName());
-                                        Uri uri = Uri.fromFile(tempFile);
-                                        Log.i(TAG, "onClick: fileUri " + uri);
-                                        intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+                                    if (hasSdCard()) {//是否有存储卡
+                                        Uri imgUri = null;
+                                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);    //调用相机
+                                        imgUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), fileNameCamera));
+                                        //指定照片保存路径，image_header_camera.png是一个临时文件,数据最终保存到imgUri中
+                                        intent.putExtra(MediaStore.EXTRA_OUTPUT, imgUri);
+                                        startActivityForResult(intent, FROM_CROP);
+                                    } else {
+                                        Toast.makeText(MineActivity.this, "没有存储卡！", Toast.LENGTH_SHORT).show();
                                     }
-                                    startActivityForResult(intent, CAMERA_REQUEST_CODE);
                                     break;
-                                case 1:
-                                    Intent intent1 = new Intent();
-                                    intent1.setType("image/*"); //设置要获取的内容为图片类型
-                                    intent1.setAction(Intent.ACTION_GET_CONTENT);   //设置动作为得到内容
-                                    startActivityForResult(intent1, GALLEY_REQUEST_CODE);
-                                    break;
-                                case 2:
-                                    dialog.dismiss();
+                                case 1://相册选取
+                                    Intent libraryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                                    libraryIntent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                                    startActivityForResult(libraryIntent, FROM_CROP);
                             }
                         }
-                    }).create().show();
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.create().show();
                     break;
             }
         } else {
@@ -137,50 +139,78 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST_CODE) {//拍照返回
-                if (hasSdCard()) {
-                    Log.i(TAG, "onActivityResult: " + Uri.fromFile(tempFile));
-                    userHead.setImageBitmap(BitmapFactory.decodeFile(tempFile.getPath()));
-                    //上传图片
-                    uploadImg(tempFile.getPath());
-                    if (data != null)
-                        Log.i(TAG, "onActivityResult: getData" + data.getData());
-                }
-            } else if (requestCode == GALLEY_REQUEST_CODE) {//相册返回
-                Uri uri = null;
-                if (data != null)
-                    uri = data.getData();   //图片的uri
-                ContentResolver resolver = getContentResolver();
-                try {
-                    Bitmap bitmap1 = BitmapFactory.decodeStream(resolver.openInputStream(uri));
-                    String filePath = getRealPathFromUri(uri);
-                    if (filePath == null) {
-                        Toast.makeText(this, "无法加载该照片，请更改！", Toast.LENGTH_SHORT).show();
-                        return;
+            switch (requestCode) {
+                case FROM_CROP:
+                    Uri uri = null;
+                    if (data != null) {//得到数据的uri(相册)
+                        uri = data.getData();
+                    } else {//得到临时保存的文件(照相)的uri
+                        uri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), fileNameCamera));
                     }
-                    File imgFile = new File(filePath);
-                    uploadImg(imgFile.getPath());
-                    Log.i(TAG, "onActivityResult: imgFile.getPath()" + imgFile.getPath());
-                    if (userHead != null && bitmap1 != null) {
-                        userHead.setImageBitmap(bitmap1);
-                        Log.i(TAG, "onActivityResult: data.getData()" + data.getData());
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "onActivityResult: FileNotFoundException", e);
-                }
+                    //开始截图
+                    cropImg(uri, cropWidth, cropHeight, CROP_PICTURE);
+                    break;
+                case CROP_PICTURE://系统截图返回
+                    Bitmap photo = null;
+                    photo = decodeUriAsBitmap(finalUri);    //通过 之前生成的文件的uri来获得返回的照片，而不是data对象
+                    Log.i(TAG, "onActivityResult: " + finalUri);
+                    //显示截图结果
+                    userHead.setImageBitmap(photo);
+                    //上传头像
+                    Log.i(TAG, "onActivityResult: finalUri.getPath() " + finalUri.getPath());
+                    uploadImg(finalUri.getPath());
+                    break;
             }
         }
     }
 
+    //调用系统截图
+    private void cropImg(Uri uri, int i, int i1, int cropPicture) {
+        //系统自带截图
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        //设置截取的图片信息
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", "true");
+        //裁剪框的比例 1：1
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        //裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX", cropWidth);
+        intent.putExtra("outputY", cropHeight);
+        //图片格式
+        intent.putExtra("outputFormat", "png");
+        //取消人脸识别
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("scale", true);
+        intent.putExtra("return-data", false);  //如果为true，图片会包含在data中返回，当数据过大时（一般是1M）就会崩溃，
+        // 所以这里不通过data返回，而是通过下面的uri来获取该照片
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, finalUri);
+
+        startActivityForResult(intent, CROP_PICTURE);
+    }
+
+    private Bitmap decodeUriAsBitmap(Uri uri) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+            //进行图片的压缩截取
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.e(TAG, "decodeUriAsBitmap: FileNotFoundException ", e);
+            return null;
+        }
+        return bitmap;
+    }
 
     private void uploadImg(String filePath) {
         List<Part> partList = new ArrayList<>();
-        partList.add(new StringPart("driPhone", "15520452757"));
+        //partList.add(new StringPart("driPhone", "15520452757"));
         partList.add(new StringPart("driId", 2 + ""));
         showProgressDialog();
         try {
-            partList.add(new FilePart("photo", new File(filePath)));
+            partList.add(new FilePart("filebody", new File(filePath)));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             Log.e(TAG, "uploadImg: ", e);
@@ -199,22 +229,6 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, partList.toArray(new Part[partList.size()]));
         requestQueue.add(myMultipartRequest);
-    }
-
-    public String getRealPathFromUri(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor == null) {
-            return null;
-        }
-        if (cursor.moveToFirst()) {
-            ;
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
     }
 
     public void goEmissionOrder(View v) {//尾气排放榜单
@@ -256,28 +270,6 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
             return true;
         return false;
-    }
-
-    //裁剪图片
-    private void cropImg(Uri uri) {
-        System.out.println("crop" + 1);
-        //裁剪意图
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        //裁剪框的比例 1：1
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        //裁剪后输出图片的尺寸大小
-        intent.putExtra("outputX", 500);
-        intent.putExtra("outputY", 500);
-        //图片格式
-        intent.putExtra("outputFormat", "png");
-        //取消人脸识别
-        intent.putExtra("noFaceDetection", true);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, CROP_REQUEST_CODE);
-        System.out.println("crop" + 2);
     }
 
     private void showProgressDialog() {
