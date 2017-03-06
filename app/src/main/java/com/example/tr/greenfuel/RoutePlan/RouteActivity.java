@@ -23,19 +23,26 @@ import android.widget.TextView;
 
 import com.amap.api.navi.AMapNavi;
 import com.amap.api.navi.AMapNaviView;
-import com.amap.api.navi.enums.NaviType;
+import com.amap.api.navi.model.AMapNaviLink;
+import com.amap.api.navi.model.AMapNaviPath;
+import com.amap.api.navi.model.AMapNaviStep;
 import com.amap.api.navi.model.NaviInfo;
+import com.amap.api.navi.model.NaviLatLng;
 import com.amap.api.navi.view.NextTurnTipView;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.customView.SpringProgressView;
 import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.junge.BaseActivity;
+import com.example.tr.greenfuel.light.Light;
+import com.example.tr.greenfuel.light.MyLoction;
+import com.example.tr.greenfuel.light.MyRoute;
 import com.example.tr.greenfuel.mine.MineActivity;
 import com.example.tr.greenfuel.util.EmissionCalculate;
 import com.example.tr.greenfuel.util.FuelCalculate;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class RouteActivity extends BaseActivity implements SensorEventListener{
     private NextTurnTipView mNextTurnTipView;
@@ -45,6 +52,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private TextView nowLeftM;
     private TextView allLeftM;
     private TextView nowRouteName;
+    private TextView speedAdvice;
     private TextView now;//= (TextView)findViewById(R.id.now_speed);
     private Location loc;
     private LocationManager locationManager;
@@ -63,10 +71,18 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double fuelConsumption = 0;
     private double carbonEmission = 0;
     private boolean DEBUG = true;
+    private String roadName = null;
     private double CO = 0;
     private double NO =0;
     private double CH =0;
-
+    private List<MyRoute> rs = new ArrayList<MyRoute>();//设置的8条道路
+    private List<Light> ls = new ArrayList<Light>();//8个红绿灯路口
+    private List<Integer> index = new ArrayList<Integer>();
+    private List<Integer> roadId = new ArrayList<Integer>();
+    private int linkIndex = 0;
+    private int linkIndex2 = 0;
+    private int position = 0;
+    private int rId = 0;
     /*
     * 每1s变化油耗、排放一次
     * */
@@ -78,10 +94,16 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             if(STARTNAVI){
                 setRate(speed,(speed*1)/3600);
                 last_speed = speed;
-                mAMapNavi.setEmulatorNaviSpeed(60);
+                //mAMapNavi.setEmulatorNaviSpeed(60);
                 //Log.i("acc","state:"+STARTNAVI);
             }
             handler.postDelayed(myRunnable,1000);
+        }
+    };
+    class MyRunnable2 implements Runnable{
+        @Override
+        public void run() {
+            findV(position);
         }
     };
     @Override
@@ -143,6 +165,8 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         nowLeftM = (TextView) findViewById(R.id.now_left);
         allLeftM = (TextView) findViewById(R.id.all_left);
         nowRouteName = (TextView) findViewById(R.id.now_route_name);
+        speedAdvice = (TextView) findViewById(R.id.speed_advice);
+
         now = (TextView)findViewById(R.id.now_speed);
         //设置布局完全不可见
         com.amap.api.navi.AMapNaviViewOptions options = mAMapNaviView.getViewOptions();
@@ -163,7 +187,63 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         }
         mAMapNavi.setEmulatorNaviSpeed(60);
         handler.postDelayed(myRunnable,1000);
+        initSpeed();
     }
+
+    @Override
+    public void onCalculateMultipleRoutesSuccess(int[] ints) {
+        super.onCalculateMultipleRoutesSuccess(ints);
+        //initSpeed();
+    }
+
+    private void initSpeed() {
+        Log.i("acc","path");
+        rs.clear();
+        ls.clear();
+        AMapNaviPath p = mAMapNavi.getNaviPath();
+        int k = 0;
+        int j = 0;
+        int s = 0;
+        for(AMapNaviStep step: p.getSteps()){
+            s = 0;
+            Log.i("acc","s:"+step.getStartIndex()+" e:"+step.getEndIndex());
+            for(AMapNaviLink link :step.getLinks()){
+                s += link.getLength();
+                if(link.getTrafficLights()&&link.getRoadName()!=null){
+//                    Log.i("acc","getTrafficLights:"+link.getTrafficLights());
+                      index.add(Integer.valueOf(j));
+                      roadId.add(Integer.valueOf(k));
+                      Log.i("acc","getRoadName:"+link.getRoadName());
+                      Log.i("acc","K++++:"+k);
+//                    Log.i("acc","getCoords:"+link.getCoords().size());
+//                    Log.i("acc","getCoords:"+link.getCoords().get(link.getCoords().size()-1));
+                    NaviLatLng l = link.getCoords().get(link.getCoords().size()-1);
+                    String name = link.getRoadName();
+                    ls.add(new Light(new MyLoction(l.getLatitude(), l.getLongitude()), 170, 70,
+                            new Date(System.currentTimeMillis())));
+                    rs.add(new MyRoute(60,30,s,name));
+                    s = 0;
+                }
+                Log.i("acc","j:"+(j++));
+            }
+            k++;
+        }
+
+        ls.add(new Light(new MyLoction(p.getEndPoint().getLatitude(),p.getEndPoint().getLongitude()), 100, 100,
+                new Date(System.currentTimeMillis())));
+        rs.add(new MyRoute(60,30,s,"end"));
+        Log.i("acc","rssize:"+rs.size());
+        Log.i("acc","rssize:"+ls.size());
+        for(Integer i : roadId){
+            Log.i("acc","id:"+i);
+        }
+        index.add(Integer.MAX_VALUE);
+        for(Integer i : index){
+            Log.i("acc","index__--id:"+i);
+        }
+    }
+
+
     private void initSensor() {
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensorManager.registerListener(this,
@@ -203,13 +283,67 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     @Override
     public void onCalculateRouteSuccess() {
         super.onCalculateRouteSuccess();
-        mAMapNavi.startNavi(NaviType.EMULATOR);
+        //mAMapNavi.startNavi(NaviType.EMULATOR);
     }
 
     @Override
     public void onNaviInfoUpdate(NaviInfo naviinfo) {
         super.onNaviInfoUpdate(naviinfo);
+        Log.i("acc","linkNUM"+naviinfo.getCurLink());
+        boolean roadChange =true;
         nowLeftM.setText(String.valueOf(naviinfo.getCurStepRetainDistance())+"米");
+        if(!naviinfo.getCurrentRoadName().toString().equals(roadName)){
+            roadName = naviinfo.getCurrentRoadName().toString();
+            //Log.i("acc","loadName"+roadName);
+            roadChange = false;
+            if(findName(roadName)){
+                rId ++;
+            }
+
+            Log.i("acc","rid:"+rId);
+            Log.i("acc","roadId:"+roadId.get(position));
+            //findV(roadName);
+        }
+        if(linkIndex == 0){
+             //findV(position);
+             //Handler handler = new Handler();
+             //MyRunnable2 myRunnable=new MyRunnable2();
+             //handler.post(myRunnable);
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    findV(position);
+                }
+            });
+            thread.start();
+            Log.i("acc","pos:"+position);
+            Log.i("acc","index:"+index.get(position));
+            position ++;
+            linkIndex = 1;
+        }
+        if(linkIndex2 != naviinfo.getCurLink() ){
+            linkIndex2 = naviinfo.getCurLink();
+            rId ++;
+        }
+        Log.i("id_p","rid:"+rId+" index"+index.get(position));
+        if(rId > index.get(position) ){
+            //findV(position);
+//            Handler handler = new Handler();
+//            MyRunnable2 myRunnable=new MyRunnable2();
+//            handler.post(myRunnable);
+            Log.i("acc","rid2:"+rId);
+            Log.i("acc","rid2:"+roadId.get(position-1));
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    findV(position);
+                }
+            });
+            thread.start();
+            Log.i("acc","pos:"+position);
+            Log.i("acc","index:"+index.get(position));
+            position ++;
+        }
         nowRouteName.setText(naviinfo.getCurrentRoadName().toString());
         allLeftM.setText(naviinfo.getPathRetainDistance()/1000f+"公里  "+
                 naviinfo.getPathRetainTime()/3600+"小时"+naviinfo.getPathRetainTime()/60%60+"分钟");
@@ -229,6 +363,41 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             now.setText("当前速度："+speed);
             STARTNAVI = true;
         }
+    }
+
+    private boolean findName(String roadName) {
+        for(MyRoute r : rs){
+            if(r.getName().equals(roadName)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void findV(int position) {
+        //int index = -1;
+        //找到当前路径的下标
+
+//        for(MyRoute r : rs){
+//            //Log.i("acc","route"+r.toString());
+//            if(r.getName().equals(roadName)){
+//                Log.i("acc","index222:"+index);
+//                index = rs.indexOf(r);
+//                Log.i("acc","index333:"+index);
+//                break;
+//            }
+//            //Log.i("acc","index444:"+index);
+//        }
+        //initSpeed();
+        List<MyRoute> rr = new ArrayList<MyRoute>();
+        Light ll = new Light();
+        ll.setMinEst(rs.size()-position);
+        ll.F(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),
+                0, 0, ls.subList(position,ls.size()), rs.subList(position,ls.size()), rr);
+        for(MyRoute r : rr){
+            Log.i("acc","NOw---v:"+r.getvDRIVE()+"name"+r.getName());
+        }
+        speedAdvice.setText("建议速度："+rr.get(0).getvDRIVE()+"km/h");
     }
 
     @Override
@@ -313,7 +482,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         //Log.i("acc","v:"+v+"  dis:"+dis);
         //Log.i("acc","fuleRate:"+getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
         //Log.i("acc","fuleNow:"+FuelCalculate.CarFuelConsumptionCal(1,ts));
-        Log.i("acc","v:"+v+"carbonEmission:"+carbonEmission);
+        //Log.i("acc","v:"+v+"carbonEmission:"+carbonEmission);
         acc = (speed - last_speed)/1;
         CO += EmissionCalculate.COEmissionCal(acc,v);
         CH += EmissionCalculate.HCEmissionCal(acc,v);

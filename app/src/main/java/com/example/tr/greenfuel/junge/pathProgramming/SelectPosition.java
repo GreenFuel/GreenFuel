@@ -60,12 +60,12 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     public  void isDebug(Boolean debug){
         if(debug){
             dao.init();
-            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
-            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
-            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
-            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
-            dao.insertToPlace(new MyPlace("城北客运站",30.6562406723,104.0660393993,false));
-            dao.insertToPlace(new MyPlace("西南交大",30.5891985869,104.0364842722,true));
+            dao.insertToPlace(new MyPlace("林湾村公交站",30.762219,103.997244,false));
+            dao.insertToPlace(new MyPlace("西华大学",30.776159,103.938038,true));
+            dao.insertToPlace(new MyPlace("林湾村公交站",30.762219,103.997244,false));
+            dao.insertToPlace(new MyPlace("西华大学",30.776159,103.938038,true));
+            dao.insertToPlace(new MyPlace("林湾村公交站",30.762219,103.997244,false));
+            dao.insertToPlace(new MyPlace("西华大学",30.776159,103.938038,true));
         }
     }
     public void init(){

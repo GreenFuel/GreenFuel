@@ -257,31 +257,57 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         routeOverlays.clear();
         HashMap<Integer, AMapNaviPath> paths = mAMapNavi.getNaviPaths();
         AMapNaviPath minPath = null;
+        AMapNaviPath minTime = null;
+        AMapNaviPath minWait = null;
         int oh = Integer.MAX_VALUE;
+        int minT = Integer.MAX_VALUE;
+        int minW = Integer.MAX_VALUE;
         int index = 1;
         for (int i = 0; i < ints.length; i++) {
             AMapNaviPath path = paths.get(ints[i]);
             ArrayList<Travelingdata> trs = new ArrayList<Travelingdata>();
+            int trNum = 0;
             for(AMapNaviStep step : path.getSteps()){
                 for(AMapNaviLink link :step.getLinks()){
                     trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
                 }
+                trNum += step.getTrafficLightNumber();
             }
             //pathOil.setText(""+ (int)FuelCalculate.CarFuelConsumptionCal(1,trs)+"毫升");
+//            if(oh>(int)FuelCalculate.CarFuelConsumptionCal(1,trs)){
+//                if(minPath !=null){
+//                    drawRoutes(++index, minPath);
+//                }
+//                oh = (int)FuelCalculate.CarFuelConsumptionCal(1,trs);
+//                minPath = path;
+//                setRoutesDetails(minPath,1);
+//            }else if (path != null) {
+//                //drawRoutes(ints[i], path);
+//                drawRoutes(++index, path);
+//            }
+
             if(oh>(int)FuelCalculate.CarFuelConsumptionCal(1,trs)){
-                if(minPath !=null){
-                    drawRoutes(++index, minPath);
-                }
                 oh = (int)FuelCalculate.CarFuelConsumptionCal(1,trs);
                 minPath = path;
-                setRoutesDetails(minPath,1);
-            }else if (path != null) {
-                //drawRoutes(ints[i], path);
-                drawRoutes(++index, path);
+            }
+
+            //找时间最短的路径
+            if(minT >path.getAllTime()){
+                minTime = path;
+                minT = path.getAllTime();
+            }
+            //找时间最短的路径
+            if(minW  > trNum){
+                minWait = path;
+                minW = trNum;
             }
         }
         drawRoutes(1, minPath);
-
+        setRoutesDetails(minPath,1);
+        drawRoutes(2, minTime);
+        setRoutesDetails(minTime,2);
+        drawRoutes(3, minWait);
+        setRoutesDetails(minWait,3);
     }
 
     @Override

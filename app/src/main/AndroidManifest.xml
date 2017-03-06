@@ -32,7 +32,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="c4f139b20831d267048d55a804d39e0c" />
+            android:value="68d1d17198bcc4b455b1246cdaa01c8d" />
         <!-- android:value="68d1d17198bcc4b455b1246cdaa01c8d" -->
         <!-- android:value="c4f139b20831d267048d55a804d39e0c" -->
 
@@ -46,6 +46,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- <activity android:name=".RoutePlan.GaugeChartActivity"></activity> -->
         <activity android:name=".junge.GPSNaviActivity" />
         <activity android:name=".poiSearch.PoiSearchPageActivity" />
         <activity android:name=".nearFunction.NearActivity" />

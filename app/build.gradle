@@ -49,4 +49,5 @@ dependencies {
     compile files('libs/nineoldandroids-2.4.0.jar')
     compile project(':MPChartLib')
     compile files('libs/org.apache.http.legacy.jar')
+    compile project(path: ':xCLCharts')
 }

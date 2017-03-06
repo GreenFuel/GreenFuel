@@ -138,4 +138,5 @@
         <item>十二月</item>
     </string-array>
     <string name="title_activity_charts">Charts</string>
+    <string name="helpurl"><![CDATA[<string name=\"helpurl\">http://blog.csdn.net/xcl168/article/details/29675613</string>]]></string>
 </resources>

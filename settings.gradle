@@ -1,1 +1,2 @@
 include ':app', 'mylibrary', ':MPChartLib'
+include ':xCLCharts'
