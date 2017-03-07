@@ -48,7 +48,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private NextTurnTipView mNextTurnTipView;
     private SpringProgressView oilRate;//油耗率
     private SpringProgressView pfRate;//排放率
-    private SpringProgressView speedAnalyze;//速度分析
+    private GaugeChart01View vAnalyze;
     private TextView nowLeftM;
     private TextView allLeftM;
     private TextView nowRouteName;
@@ -75,6 +75,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double CO = 0;
     private double NO =0;
     private double CH =0;
+    private int vAdrice = 46;
     private List<MyRoute> rs = new ArrayList<MyRoute>();//设置的8条道路
     private List<Light> ls = new ArrayList<Light>();//8个红绿灯路口
     private List<Integer> index = new ArrayList<Integer>();
@@ -159,9 +160,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         pfRate = (SpringProgressView) findViewById(R.id.pf_pro);
         pfRate.setMaxCount(1000.0f);
         pfRate.setCurrentCount(753);
-        speedAnalyze = (SpringProgressView) findViewById(R.id.speed_analyze);
-        speedAnalyze.setMaxCount(1000.0f);
-        speedAnalyze.setCurrentCount(582);
+
+        vAnalyze = (GaugeChart01View) findViewById(R.id.speed_analyze);
+
         nowLeftM = (TextView) findViewById(R.id.now_left);
         allLeftM = (TextView) findViewById(R.id.all_left);
         nowRouteName = (TextView) findViewById(R.id.now_route_name);
@@ -230,14 +231,14 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         }
 
         ls.add(new Light(new MyLoction(p.getEndPoint().getLatitude(),p.getEndPoint().getLongitude()), 100, 100,
-                new Date(System.currentTimeMillis())));
+               new Date(System.currentTimeMillis())));
         rs.add(new MyRoute(60,30,s,"end"));
         Log.i("acc","rssize:"+rs.size());
         Log.i("acc","rssize:"+ls.size());
         for(Integer i : roadId){
             Log.i("acc","id:"+i);
         }
-        index.add(Integer.MAX_VALUE);
+        index.add(j);
         for(Integer i : index){
             Log.i("acc","index__--id:"+i);
         }
@@ -304,6 +305,8 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             Log.i("acc","roadId:"+roadId.get(position));
             //findV(roadName);
         }
+        Log.i("vd","vd:"+vAdrice);
+
         if(linkIndex == 0){
              //findV(position);
              //Handler handler = new Handler();
@@ -312,7 +315,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    findV(position);
+                    findV(0);
                 }
             });
             thread.start();
@@ -361,6 +364,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             //Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
             now.setText("当前速度："+speed);
+            vAnalyze.setAngle((float) ((90/vAdrice)*speed));
+            vAnalyze.chartRender();
+            vAnalyze.invalidate();
             STARTNAVI = true;
         }
     }
@@ -389,6 +395,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
 //            //Log.i("acc","index444:"+index);
 //        }
         //initSpeed();
+        Log.i("pos","pos----"+position);
+        Log.i("pos","rs----"+rs.size());
+        Log.i("pos","ls----"+ls.size());
         List<MyRoute> rr = new ArrayList<MyRoute>();
         Light ll = new Light();
         ll.setMinEst(rs.size()-position);
@@ -397,7 +406,8 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         for(MyRoute r : rr){
             Log.i("acc","NOw---v:"+r.getvDRIVE()+"name"+r.getName());
         }
-        speedAdvice.setText("建议速度："+rr.get(0).getvDRIVE()+"km/h");
+        vAdrice = rr.get(0).getvDRIVE();
+        speedAdvice.setText("建议："+vAdrice+"km/h");
     }
 
     @Override
@@ -414,7 +424,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             if(!STARTNAVI){
                 pfRate.setCurrentCount(0);
                 oilRate.setCurrentCount(0);
-                speedAnalyze.setCurrentCount(0);
+               // speedAnalyze.setCurrentCount(0);
                 carbonEmission = 0;
                 fuelConsumption = 0;
             }
@@ -475,7 +485,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         ts.add(new Travelingdata((int) v,dis,1));
         pfRate.setCurrentCount((int)EmissionCalculate.cEmissionCal(v)/100000);
         oilRate.setCurrentCount(getOilRate(FuelCalculate.CarFuelConsumptionCal(1,ts)));
-        speedAnalyze.setCurrentCount((int)(Math.random()*200+400));
+        //speedAnalyze.setCurrentCount((int)(Math.random()*200+400));
 
         carbonEmission += ((EmissionCalculate.cEmissionCal(v)/100)*dis)/1000;
         fuelConsumption += FuelCalculate.CarFuelConsumptionCal(1,ts);

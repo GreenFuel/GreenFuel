@@ -127,20 +127,22 @@ public class GaugeChart01View extends GraphicalView {
 	//分区[角度(0-mStartAngle)，颜色]		
 	private void chartDataSet()
 	{
-		int Angle = 180/3;
-		mPartitionSet.add(new Pair<Float,Integer>((float)Angle, Color.rgb(247, 156, 27)));
-		mPartitionSet.add(new Pair<Float,Integer>((float)Angle, Color.rgb(73, 172, 72)));
-		mPartitionSet.add(new Pair<Float,Integer>((float)Angle, Color.rgb(224, 62, 54)));
+		float Angle = 180f/14f;
+		mPartitionSet.add(new Pair<Float,Integer>((float)(Angle*3), Color.rgb(224, 62, 54)));
+		mPartitionSet.add(new Pair<Float,Integer>((float)(Angle*3), Color.rgb(247, 156, 27)));
+		mPartitionSet.add(new Pair<Float,Integer>((float)(Angle*2), Color.rgb(73, 172, 72)));
+		mPartitionSet.add(new Pair<Float,Integer>((float)(Angle*3), Color.rgb(247, 156, 27)));
+		mPartitionSet.add(new Pair<Float,Integer>((float)(Angle*3), Color.rgb(224, 62, 54)));
 	}
 	
 	private void chartLabels()
 	{
 		//标签		
-		mLabels.add("起始");
+		mLabels.add("最小");
+		mLabels.add("警惕");
 		mLabels.add("安全");
 		mLabels.add("警惕");
-		mLabels.add("危险");
-		mLabels.add("终止");
+		mLabels.add("最大");
 	}
 
 	

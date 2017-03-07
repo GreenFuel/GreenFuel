@@ -38,7 +38,7 @@ public class SelectPosition extends AppCompatActivity implements Inputtips.Input
     private SimpleAdapter simpleAdapter;
     private LinearLayout poiList;
     private List<Map<String,Object>> dataList;
-    private Boolean DEGUG = false;
+    private Boolean DEGUG = true;
     private Intent i;
     private EditText searchText;
     private  int POSITION_TYPE;
