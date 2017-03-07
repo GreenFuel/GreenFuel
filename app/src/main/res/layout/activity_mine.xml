@@ -7,15 +7,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="240dp"
-        android:background="@mipmap/mine_bg_pic"
+        android:background="@mipmap/bg_mine2"
         >
         <Button
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:onClick="back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/btn_bg_back_white_blue"
             android:id="@+id/button" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:text="个人中心"/>
         <Button
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -34,7 +44,7 @@
             android:layout_marginBottom="30dp"
             android:layout_centerHorizontal="true"
             android:maxLines="1"
-            android:background="@drawable/btn_corner_rect_press"
+            android:background="@drawable/button_blue"
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
@@ -48,11 +58,11 @@
         <com.example.tr.greenfuel.customView.CustomRoundedImageView
             android:id="@+id/user_head_image"
             android:clickable="true"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             custom:cornerRadius="10dp"
             custom:type="circle"
-            custom:imgSrc="@mipmap/user1"
+            custom:imgSrc="@drawable/user_img"
             android:layout_marginBottom="20dp"
             android:layout_above="@+id/login_register"
             android:layout_centerHorizontal="true" />
@@ -69,8 +79,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:background="@color/colorWhite"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             >
             <TextView
                 android:text="0.00"
@@ -86,9 +96,9 @@
                 android:gravity="center"/>
         </LinearLayout>
         <TextView
-            android:layout_width="1dp"
+            android:layout_width="2px"
             android:layout_height="match_parent"
-            android:background="@color/darkGrey"/>
+            android:background="@color/colorGray3"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -96,8 +106,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:background="@color/colorWhite"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
             <TextView
                 android:text="0.00"
                 android:layout_width="wrap_content"
@@ -112,9 +122,9 @@
                 android:gravity="center"/>
         </LinearLayout>
         <TextView
-            android:layout_width="1dp"
+            android:layout_width="2px"
             android:layout_height="match_parent"
-            android:background="@color/darkGrey"/>
+            android:background="@color/colorGray3"/>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -122,8 +132,8 @@
             android:orientation="vertical"
             android:gravity="center"
             android:background="@color/colorWhite"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
             >
             <TextView
                 android:text="0.00"
@@ -142,18 +152,24 @@
     </LinearLayout>
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/darkGrey"/>
-
+        android:layout_height="2px"
+        android:background="@color/colorGray3"/>
+    <ScrollView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
     <LinearLayout
         android:onClick="goEmissionOrder"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:paddingRight="5dp"
         android:clickable="true"
         android:background="@drawable/rect_bg_white_gray_press"
@@ -162,6 +178,7 @@
             android:text="@string/emission_order"
             android:textSize="@dimen/lTextSize"
             android:padding="10dp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -185,13 +202,11 @@
 
     <LinearLayout
         android:onClick="goHistoryData"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
         android:paddingRight="5dp"
         android:clickable="true"
         android:background="@drawable/rect_bg_white_gray_press"
@@ -200,6 +215,7 @@
             android:text="@string/history_data"
             android:textSize="@dimen/lTextSize"
             android:padding="10dp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -223,21 +239,21 @@
 
     <LinearLayout
         android:onClick="goSavePoint"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="1dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+
         android:paddingRight="5dp"
         android:clickable="true"
         android:background="@drawable/rect_bg_white_gray_press"
         >
         <TextView
-            android:text="@string/save_point"
+            android:text="@string/myRoute"
             android:textSize="@dimen/lTextSize"
             android:padding="10dp"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -258,5 +274,107 @@
             android:layout_gravity="center_vertical"
             />
     </LinearLayout>
+    <LinearLayout
+        android:onClick="goSavePoint"
+        android:layout_marginTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:clickable="true"
+        android:background="@drawable/rect_bg_white_gray_press"
+        >
+        <TextView
+            android:text="@string/save_point"
+            android:textSize="@dimen/lTextSize"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@color/transparent"/>
+        <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/btn_right_press"
+            android:layout_gravity="center_vertical"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:onClick="setting"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:clickable="true"
+        android:background="@drawable/rect_bg_white_gray_press"
+        >
+        <TextView
+            android:text="@string/mine_setting"
+            android:textSize="@dimen/lTextSize"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@color/transparent"/>
 
+    </LinearLayout>
+    <LinearLayout
+        android:onClick="goSavePoint"
+        android:layout_marginTop="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingRight="5dp"
+        android:clickable="true"
+        android:background="@drawable/rect_bg_white_gray_press"
+        >
+        <TextView
+            android:text="@string/exit"
+            android:textSize="@dimen/lTextSize"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:gravity="center_vertical"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical|right"
+            android:padding="10dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:background="@color/transparent"/>
+    </LinearLayout>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
