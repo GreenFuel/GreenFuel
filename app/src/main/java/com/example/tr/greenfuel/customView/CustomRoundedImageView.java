@@ -11,7 +11,6 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.ImageView;
 
 import com.example.tr.greenfuel.R;
 
@@ -19,7 +18,7 @@ import com.example.tr.greenfuel.R;
  * Created by tangpeng on 2017/2/18.
  */
 
-public class CustomRoundedImageView extends ImageView {
+public class CustomRoundedImageView extends android.support.v7.widget.AppCompatImageView {
 
     private Bitmap imgSrc;
     private int type;   //图片类型

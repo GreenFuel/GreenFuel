@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.model.MyPlace;
+import com.example.tr.greenfuel.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +67,15 @@ public class DBO {
         Log.i("cc","ok:"+c);
     }
 
+    //插入用户
+    public void  insertToUser(User user){  //插入点
+        db.execSQL("create table if not exists user(_id integer primary key autoincrement," +
+                "name text not null,tel text not null,password text not null,brand text not null,type text not null,model text not null)");
+
+        db.execSQL("insert into places(name,tel,password,brand,type,model,)values('" +
+                user.getName()+"',"+user.getTel()+","+user.getPassword()+","+user.getBrand()+","+user.getType()+","+user.getModel()+")");
+    }
+    
     public List<MyPlace> getMyPlace(boolean b){   //表示是否为收藏的点
         db.execSQL("create table if not exists places(_id integer primary key autoincrement," +
                 "name text not null,Lat double not null,Lng double not null,isCollection integer not null)");

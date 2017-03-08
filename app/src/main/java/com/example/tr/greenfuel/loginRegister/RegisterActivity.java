@@ -1,6 +1,7 @@
 package com.example.tr.greenfuel.loginRegister;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -158,6 +159,15 @@ public class RegisterActivity extends AppCompatActivity {
     //下一步，先验证输入的短信验证验证码是否正确
     public void goNextStep(View v) {
         String code = checkCode.getText().toString().trim();
+        SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+        SharedPreferences.Editor ed = sp.edit();
+        String ph = phone.getText().toString();
+        String ps = passwordAgain.getText().toString();
+
+        ed.putString("phone",ph);
+        ed.putString("password",ps);
+        ed.commit();
+
         if (DEBUG || (code != null && code.length() == 4) || !checkCode.isFocusable()) {
             if (!DEBUG)
                 SMSSDK.submitVerificationCode("86", phone.getText().toString().trim(), code);

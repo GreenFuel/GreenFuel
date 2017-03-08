@@ -3,6 +3,7 @@ package com.example.tr.greenfuel.loginRegister;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,6 +27,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.tr.greenfuel.R;
 import com.example.tr.greenfuel.loginRegister.aboutCar.CarBrand;
 import com.example.tr.greenfuel.loginRegister.aboutCar.CarBrandActivity;
+import com.example.tr.greenfuel.mine.MineActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +53,7 @@ public class FillPersonInfoActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     private RequestQueue requestQueue;
 
+    private boolean DEBUG = true;
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -60,7 +63,7 @@ public class FillPersonInfoActivity extends AppCompatActivity {
                 setResult(1);
                 finish();
             } else if (msg.what == 2) {//注册失败
-                Toast.makeText(FillPersonInfoActivity.this, "注册失败！", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(FillPersonInfoActivity.this, "注册失败！", Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -127,6 +130,14 @@ public class FillPersonInfoActivity extends AppCompatActivity {
                 "\"carEmissionStd\":" + "\"" + txtEmission + "\"" +
                 "}";
         JSONObject jsonObject = null;
+        SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("username",editUserName.getText().toString());
+        editor.putString("carBrand",carBrand.toString());
+        editor.putString("carType",carType.toString());
+        editor.putString("model",textEmissionType.getText().toString());
+        editor.commit();
+
         try {
             jsonObject = new JSONObject(jsonStr);
         } catch (JSONException e) {
@@ -162,6 +173,10 @@ public class FillPersonInfoActivity extends AppCompatActivity {
         });
         if (requestQueue != null)
             requestQueue.add(jsonObjectRequest);
+        if(DEBUG){
+            startActivity(new Intent(this, MineActivity.class));
+            finish();
+        }
     }
 
     //选择品牌

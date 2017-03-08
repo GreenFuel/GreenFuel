@@ -3,7 +3,10 @@ package com.example.tr.greenfuel.RoutePlan;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -19,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.amap.api.navi.AMapNavi;
@@ -54,6 +58,10 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private TextView nowRouteName;
     private TextView speedAdvice;
     private TextView now;//= (TextView)findViewById(R.id.now_speed);
+    private LinearLayout nowSpeedBG;
+//颜色表
+    private int[] vBG = {Color.rgb(231,59,55),Color.rgb(231,59,55),Color.rgb(237,125,49),Color.rgb(237,125,49),Color.rgb(105,178,115),Color.rgb(105,178,115),
+        Color.rgb(237,125,49),Color.rgb(237,125,49),Color.rgb(231,59,55),Color.rgb(231,59,55)};
     private Location loc;
     private LocationManager locationManager;
     private SensorManager sensorManager;
@@ -76,6 +84,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double NO =0;
     private double CH =0;
     private int vAdrice = 46;
+
     private List<MyRoute> rs = new ArrayList<MyRoute>();//设置的8条道路
     private List<Light> ls = new ArrayList<Light>();//8个红绿灯路口
     private List<Integer> index = new ArrayList<Integer>();
@@ -167,6 +176,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         allLeftM = (TextView) findViewById(R.id.all_left);
         nowRouteName = (TextView) findViewById(R.id.now_route_name);
         speedAdvice = (TextView) findViewById(R.id.speed_advice);
+
+
+        nowSpeedBG = (LinearLayout) findViewById(R.id.speed_bg);
+
+        vAdrice = (int)(Math.random()*30f+30);
+        speedAdvice.setText(""+(int)vAdrice);
 
         now = (TextView)findViewById(R.id.now_speed);
         //设置布局完全不可见
@@ -356,19 +371,32 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         if(naviinfo.getPathRetainDistance() > distanceMax){
             distanceMax = naviinfo.getPathRetainDistance();
         }
-
-        now.setText("当前速度："+speed);
+        now.setText(""+(int)speed);
+        //setSpeedColor(speed);
         if(DEBUG){
             //Log.i("acc","ssssss1:------"+speed);
             speed = (int) (Math.random()*70+10);
             //Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
-            now.setText("当前速度："+speed);
-            vAnalyze.setAngle((float) ((90/vAdrice)*speed));
+            now.setText(""+(int)speed);
+            setSpeedColor(speed);
+            vAnalyze.setAngle((float) ((90f/vAdrice)*speed));
+            Log.i("angle","speed:------"+speed);
+            Log.i("angle","angle:------"+(float) ((90f/vAdrice)*speed));
             vAnalyze.chartRender();
             vAnalyze.invalidate();
             STARTNAVI = true;
         }
+    }
+
+    private void setSpeedColor(double speed) {
+        GradientDrawable bg = (GradientDrawable)nowSpeedBG.getBackground();
+        int i = (int)((5f/vAdrice)*speed);
+        if(i >= 10){
+            i = 9;
+        }
+        bg.setColor(vBG[i]);
+        nowSpeedBG.setBackground(bg);
     }
 
     private boolean findName(String roadName) {
@@ -401,13 +429,19 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         List<MyRoute> rr = new ArrayList<MyRoute>();
         Light ll = new Light();
         ll.setMinEst(rs.size()-position);
-        ll.F(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),
-                0, 0, ls.subList(position,ls.size()), rs.subList(position,ls.size()), rr);
+        if(position == 0){
+            ll.F(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),
+                    0, 0, ls.subList(position+1,ls.size()), rs.subList(position+1,ls.size()), rr);
+        } else {
+            ll.F(new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()),
+                    0, 0, ls.subList(position, ls.size()), rs.subList(position, ls.size()), rr);
+        }
         for(MyRoute r : rr){
             Log.i("acc","NOw---v:"+r.getvDRIVE()+"name"+r.getName());
         }
         vAdrice = rr.get(0).getvDRIVE();
-        speedAdvice.setText("建议："+vAdrice+"km/h");
+        speedAdvice.setText(""+(int)vAdrice);
+        mTtsManager.startSpeaking("建议速度"+speedAdvice);
     }
 
     @Override
@@ -459,6 +493,13 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+                SharedPreferences.Editor editor = sp.edit();
+
+                editor.putFloat("fule",(float) (fuelConsumption/1000f+sp.getFloat("fule",0.0f)));
+                editor.putFloat("distance",(float) ((distanceMax-distanceMin)/1000f)+sp.getFloat("distance",0.0f));
+                editor.putFloat("carbon",(float) (carbonEmission/1000f+sp.getFloat("carbon",0.0f)));
+                editor.commit();
                 startActivity(new Intent(RouteActivity.this, MineActivity.class));
                 finish();
                 dialog.dismiss();
@@ -478,6 +519,10 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+//        Button btn = (Button) findViewById(R.id.button2);
+//        GradientDrawable mGrad = (GradientDrawable) btn.getBackground();
+//        mGrad.setColor(Color.BLUE);
+//        btn.setBackground(mGrad);
     }
 
     public void setRate(double v,double dis){

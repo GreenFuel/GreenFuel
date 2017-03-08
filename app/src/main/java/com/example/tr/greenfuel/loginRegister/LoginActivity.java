@@ -3,6 +3,7 @@ package com.example.tr.greenfuel.loginRegister;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -48,6 +49,8 @@ public class LoginActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
 
     private InputMethodManager inputMethodManager;
+
+    private boolean DEBUG =true;
 
     Handler handler = new Handler() {
         @Override
@@ -97,6 +100,19 @@ public class LoginActivity extends AppCompatActivity {
         final String pass = passView.getText().toString().trim();
         Pattern pattern = Pattern.compile("((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,5-9]))[0-9]{8}");
         Matcher matcher = pattern.matcher(phone);
+        if(DEBUG){
+            if(phone.equals("18483652982") && pass.equals("123456")){
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+            SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+            String ph = sp.getString("phone","");
+            String ps = sp.getString("password","");
+            if(phone.equals(ph) && pass.equals(ps) && phone !="" && phone != null){
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
+            }
+        }
         if (!matcher.matches()) {
             Toast.makeText(this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
         } else if (pass.equals("")) {
@@ -168,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.setCancelable(false);
         }
-        progressDialog.show();
+        //progressDialog.show();
     }
 
     private void dismissProgressDialog() {

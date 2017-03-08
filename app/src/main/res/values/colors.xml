@@ -8,7 +8,8 @@
     <color name="gray4">#CCCCCC</color>
     <color name="gray5_semi_trans">#80000000</color>
     <color name="colorDark">#000000</color>
-    <color name="colorIconBlue">#0b76dd</color>
+    <!--<color name="colorIconBlue">#0b76dd</color>-->
+    <color name="colorIconBlue">#69b273</color>
     <color name="colorIconBlueTransparent">#aa0b76dd</color>
     <color name="colorGray1">#8a8a8a</color>
     <color name="colorWhite">#ffffff</color>
@@ -58,7 +59,7 @@
     <color name="salmon">#fa8072</color><!--鲜肉色 -->
     <color name="ghostwhite">#f8f8ff</color><!--幽灵白 -->
     <color name="mintcream">#f5fffa</color><!--薄荷色 -->
-    <color name="whitesmoke">#f5f5f5</color><!--烟白色 -->
+    <color name="whitesmoke">#69b273</color><!--烟白色 -->
     <color name="beige">#f5f5dc</color><!--米色 -->
     <color name="wheat">#f5deb3</color><!--浅黄色 -->
     <color name="sandybrown">#f4a460</color><!--沙褐色 -->
@@ -108,6 +109,7 @@
     <color name="mediumpurple">#9370db</color><!--中紫色 -->
     <color name="lightgreen">#90ee90</color><!--亮绿色 -->
     <color name="darkseagreen">#8fbc8f</color><!--暗海兰色 -->
+    <color name="buttongreen">#69b273</color>
     <color name="saddlebrown">#8b4513</color><!--重褐色 -->
     <color name="darkmagenta">#8b008b</color><!--暗洋红 -->
     <color name="darkred">#8b0000</color><!--暗红色 -->

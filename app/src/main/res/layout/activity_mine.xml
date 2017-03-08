@@ -50,11 +50,11 @@
             android:paddingRight="10dp"
             android:layout_width="100dp"
             android:layout_height="35dp"
-            android:text="@string/login_register"
+            android:text="@string/mine_info"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:textSize="@dimen/lTextSize"/>
-
+<!--
         <com.example.tr.greenfuel.customView.CustomRoundedImageView
             android:id="@+id/user_head_image"
             android:clickable="true"
@@ -66,7 +66,17 @@
             android:layout_marginBottom="20dp"
             android:layout_above="@+id/login_register"
             android:layout_centerHorizontal="true" />
-
+ -->
+        <ImageView
+            android:id="@+id/user_head_image"
+            android:clickable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/user_img"
+            android:layout_marginBottom="20dp"
+            android:layout_above="@+id/login_register"
+            android:layout_centerHorizontal="true"
+            />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,6 +93,34 @@
             android:paddingBottom="10dp"
             >
             <TextView
+                android:id="@+id/distance"
+                android:text="0.00"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/tomato"
+                android:textSize="@dimen/xxlTextSize"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/today_driver_distance"
+                android:gravity="center"/>
+        </LinearLayout>
+        <TextView
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/colorGray3"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/colorWhite"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+            <TextView
+                android:id="@+id/fule"
                 android:text="0.00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,35 +145,10 @@
             android:gravity="center"
             android:background="@color/colorWhite"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-            <TextView
-                android:text="0.00"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/tomato"
-                android:textSize="@dimen/xxlTextSize"
-                android:gravity="center"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/save_fuel"
-                android:gravity="center"/>
-        </LinearLayout>
-        <TextView
-            android:layout_width="2px"
-            android:layout_height="match_parent"
-            android:background="@color/colorGray3"/>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="@color/colorWhite"
-            android:paddingTop="10dp"
             android:paddingBottom="10dp"
             >
             <TextView
+                android:id="@+id/carbon"
                 android:text="0.00"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

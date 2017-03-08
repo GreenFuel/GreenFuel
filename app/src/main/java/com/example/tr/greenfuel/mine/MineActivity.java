@@ -3,6 +3,7 @@ package com.example.tr.greenfuel.mine;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -16,6 +17,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.internal.http.multipart.FilePart;
@@ -28,7 +31,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
 import com.example.tr.greenfuel.MainActivity;
 import com.example.tr.greenfuel.R;
-import com.example.tr.greenfuel.customView.CustomRoundedImageView;
 import com.example.tr.greenfuel.loginRegister.LoginActivity;
 import com.example.tr.greenfuel.util.MyMultipartRequest;
 
@@ -38,6 +40,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +71,7 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     private static final int MESSAGE_SUCCESS = 1;
     private static final int MESSAGE_FAILED = 2;
 
-    private CustomRoundedImageView userHead;  //用户头像
+    private ImageView userHead;  //用户头像
 
     private ProgressDialog progressDialog;
     private RequestQueue requestQueue;
@@ -96,8 +100,17 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
-        userHead = (CustomRoundedImageView) findViewById(R.id.user_head_image);
+        userHead = (ImageView) findViewById(R.id.user_head_image);
         userHead.setOnClickListener(this);
+        TextView d = (TextView) findViewById(R.id.distance);
+        TextView f = (TextView) findViewById(R.id.fule);
+        TextView c = (TextView) findViewById(R.id.carbon);
+        SharedPreferences sp = getSharedPreferences("data",MODE_PRIVATE);
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+
+        d.setText(""+df.format(sp.getFloat("distance",0.0f)));
+        f.setText(""+df.format(sp.getFloat("fule",0.0f)));
+        c.setText(""+df.format(sp.getFloat("carbon",0.0f)));
     }
 
     @Override

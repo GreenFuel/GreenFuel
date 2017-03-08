@@ -39,7 +39,7 @@
         <!-- 定位需要的服务 使用2.0的定位需要加上这个 -->
         <service android:name="com.amap.api.location.APSService" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".loginRegister.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +47,7 @@
             </intent-filter>
         </activity>
         <!-- <activity android:name=".RoutePlan.GaugeChartActivity"></activity> -->
+        <activity android:name=".mine.MineActivity"></activity>
         <activity android:name=".junge.GPSNaviActivity" />
         <activity android:name=".poiSearch.PoiSearchPageActivity" />
         <activity android:name=".nearFunction.NearActivity" />
@@ -56,11 +57,10 @@
         <activity android:name=".RoutePlan.RouteActivity" />
         <activity android:name=".RoutePlan.RouteNaviActivity"></activity>
         <activity android:name=".junge.pathProgramming.SetPath" />
-        <activity android:name=".mine.MineActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".junge.pathProgramming.SelectPosition" />
         <activity android:name=".RoutePlan.RestRouteShowActivity" />
         <activity android:name=".loginRegister.FillPersonInfoActivity" />
-        <activity android:name=".loginRegister.LoginActivity" />
         <activity android:name=".poiSearch.PoiByKeyWordsActivity" />
         <activity android:name=".junge.pathProgramming.MarkerPosition" />
         <activity android:name=".mine.EmissionOrderActivity" />

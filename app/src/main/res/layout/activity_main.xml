@@ -5,8 +5,45 @@
     android:layout_height="match_parent"
     >
     <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/buttongreen"
+        >
+        <ImageView
+            android:onClick="goMine"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/user_img" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="绿途"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            />
+        <ImageButton
+            android:onClick="keySearch"
+            android:layout_marginRight="20dp"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/search"
+            android:background="@color/transparent"
+            />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/header"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -14,6 +51,7 @@
             android:layout_height="0dp"
             android:layout_weight="1">
         <com.amap.api.maps.MapView
+
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -33,8 +71,27 @@
                     android:layout_height="match_parent"
                     android:src="@mipmap/location"/>
             </LinearLayout>
+            <Button
+                android:id="@+id/route"
+                android:onClick="onClick"
+                android:layout_marginBottom="5dp"
+                android:layout_gravity="center"
+                android:layout_alignParentBottom="true"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:text="路线"
+                android:textColor="@color/white"
+                android:drawableRight="@drawable/vector_drawable_route"
+                android:drawablePadding="0dp"
+                android:padding="10dp"
+                android:background="@drawable/button_cricle_green"
+                />
         </RelativeLayout>
+
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/linerLayoutBottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,8 +124,7 @@
                     />
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/route"
-                android:onClick="onClick"
+
                 android:clickable="true"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -96,7 +152,7 @@
             </LinearLayout>
             <LinearLayout
                 android:clickable="true"
-                android:onClick="goMine"
+
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -137,6 +193,7 @@
         android:layout_marginBottom="5dp"
         android:clickable="true"
         android:onClick="keySearch"
+        android:visibility="gone"
         >
         <TextView
             android:onClick="keySearch"
@@ -149,6 +206,7 @@
             android:textColorHint="@color/darkGrey"/>
     </LinearLayout>
     <CheckedTextView
+        android:layout_marginTop="70dp"
         android:onClick="realRouteChange"
         android:layout_marginRight="5dp"
         android:layout_alignParentRight="true"
