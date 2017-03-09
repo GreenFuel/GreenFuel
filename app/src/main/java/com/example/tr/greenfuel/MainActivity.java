@@ -334,5 +334,6 @@ public class MainActivity extends AppCompatActivity implements LocationSource,
         ii.putExtra("hightspeed", hightspeed);
         ii.putExtra("avoidhightspeed", avoidhightspeed);
         startActivity(ii);
+
     }
 }

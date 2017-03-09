@@ -10,6 +10,8 @@ public class Circle {
     private float radius;
     private int color;
 
+
+
     public float getX() {
         return x;
     }
