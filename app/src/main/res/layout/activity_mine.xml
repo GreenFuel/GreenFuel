@@ -67,7 +67,7 @@
             android:layout_above="@+id/login_register"
             android:layout_centerHorizontal="true" />
  -->
-        <com.example.tr.greenfuel.customView.CustomRoundedImageView
+        <ImageView
             android:id="@+id/user_head_image"
             android:clickable="true"
             android:layout_width="wrap_content"
@@ -189,12 +189,7 @@
         >
         <TextView
             android:text="@string/emission_order"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"
@@ -226,12 +221,7 @@
         >
         <TextView
             android:text="@string/history_data"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"
@@ -264,12 +254,7 @@
         >
         <TextView
             android:text="@string/myRoute"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"
@@ -300,12 +285,7 @@
         >
         <TextView
             android:text="@string/save_point"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:textColor="@color/black"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"
@@ -338,12 +318,7 @@
         >
         <TextView
             android:text="@string/mine_setting"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"
@@ -371,12 +346,7 @@
         >
         <TextView
             android:text="@string/exit"
-            android:textSize="@dimen/lTextSize"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
+            style="@style/textstyle1"
             />
         <TextView
             android:layout_width="0dp"

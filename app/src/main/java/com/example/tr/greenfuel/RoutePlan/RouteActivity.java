@@ -43,6 +43,7 @@ import com.example.tr.greenfuel.light.MyRoute;
 import com.example.tr.greenfuel.mine.MineActivity;
 import com.example.tr.greenfuel.util.EmissionCalculate;
 import com.example.tr.greenfuel.util.FuelCalculate;
+import com.example.tr.greenfuel.util.TTSController;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -313,7 +314,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             //Log.i("acc","loadName"+roadName);
             roadChange = false;
             if(findName(roadName)){
-                rId ++;
+                //rId ++;
             }
 
             Log.i("acc","rid:"+rId);
@@ -344,6 +345,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             rId ++;
         }
         Log.i("id_p","rid:"+rId+" index"+index.get(position));
+        //rs.get(position).setvUP(naviinfo.getLimitSpeed());
         if(rId > index.get(position) ){
             //findV(position);
 //            Handler handler = new Handler();
@@ -375,7 +377,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         //setSpeedColor(speed);
         if(DEBUG){
             //Log.i("acc","ssssss1:------"+speed);
-            speed = (int) (Math.random()*70+10);
+            speed = (int) (Math.random()*60+10);
             //Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
             now.setText(""+(int)speed);
@@ -441,7 +443,9 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         }
         vAdrice = rr.get(0).getvDRIVE();
         speedAdvice.setText(""+(int)vAdrice);
-        mTtsManager.startSpeaking("建议速度"+speedAdvice);
+        TTSController tsc = new TTSController(this);
+        tsc.init();
+        tsc.startSpeaking("建议速度"+(int)vAdrice);
     }
 
     @Override

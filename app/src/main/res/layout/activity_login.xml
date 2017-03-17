@@ -165,7 +165,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="20dp">
+        >
         <CheckBox
             android:id="@+id/agreeProtocol"
             android:layout_width="20dp"
@@ -187,5 +187,12 @@
             android:textColor="@color/colorIconBlue"
             android:gravity="center_vertical"/>
     </LinearLayout>
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginBottom="10dp"
+        android:text="语音技术由科大讯飞公司提供"
+        />
 </LinearLayout>
