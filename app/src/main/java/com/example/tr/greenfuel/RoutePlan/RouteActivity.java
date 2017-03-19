@@ -79,7 +79,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     private double distanceMax = Integer.MIN_VALUE;
     private double fuelConsumption = 0;
     private double carbonEmission = 0;
-    private boolean DEBUG = true;
+    private boolean DEBUG = false;
     private String roadName = null;
     private double CO = 0;
     private double NO =0;
@@ -98,6 +98,10 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     * 每1s变化油耗、排放一次
     * */
     private Handler handler = new Handler();
+    private Handler handler2 = new Handler();
+    private MyRunnable3 myRunnable3=new MyRunnable3();
+    private Handler handler3 = new Handler();
+    private MyRunnable4 myRunnable4=new MyRunnable4();
     private MyRunnable myRunnable=new MyRunnable();
     class MyRunnable implements Runnable{
         @Override
@@ -117,6 +121,30 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             findV(position);
         }
     };
+
+    class MyRunnable3 implements Runnable{
+        @Override
+        public void run() {
+            speed = (int) (Math.random()*60+10);
+            //Log.i("acc","ssssss2:------"+speed);
+            now.setText(""+(int)speed);
+            setSpeedColor(speed);
+            handler2.postDelayed(myRunnable3,2000);
+
+
+        }
+    };
+
+    class MyRunnable4 implements Runnable{
+        @Override
+        public void run() {
+            TTSController tsc = new TTSController(RouteActivity.this);
+            tsc.init();
+            tsc.startSpeaking("建议速度"+(int)vAdrice);
+            handler3.postDelayed(myRunnable4,60000);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,9 +230,13 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             STARTNAVI = true;
             mAMapNavi.startNavi(AMapNavi.EmulatorNaviMode);
         }
-        mAMapNavi.setEmulatorNaviSpeed(60);
+        mAMapNavi.setEmulatorNaviSpeed((int)speed);
         handler.postDelayed(myRunnable,1000);
         initSpeed();
+        if(DEBUG) {
+            handler2.postDelayed(myRunnable3,2000);
+        }
+        handler3.postDelayed(myRunnable4,20000);
     }
 
     @Override
@@ -317,11 +349,8 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
                 //rId ++;
             }
 
-            Log.i("acc","rid:"+rId);
-            Log.i("acc","roadId:"+roadId.get(position));
             //findV(roadName);
         }
-        Log.i("vd","vd:"+vAdrice);
 
         if(linkIndex == 0){
              //findV(position);
@@ -335,8 +364,6 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
                 }
             });
             thread.start();
-            Log.i("acc","pos:"+position);
-            Log.i("acc","index:"+index.get(position));
             position ++;
             linkIndex = 1;
         }
@@ -344,15 +371,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
             linkIndex2 = naviinfo.getCurLink();
             rId ++;
         }
-        Log.i("id_p","rid:"+rId+" index"+index.get(position));
         //rs.get(position).setvUP(naviinfo.getLimitSpeed());
         if(rId > index.get(position) ){
             //findV(position);
 //            Handler handler = new Handler();
 //            MyRunnable2 myRunnable=new MyRunnable2();
 //            handler.post(myRunnable);
-            Log.i("acc","rid2:"+rId);
-            Log.i("acc","rid2:"+roadId.get(position-1));
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -360,8 +384,6 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
                 }
             });
             thread.start();
-            Log.i("acc","pos:"+position);
-            Log.i("acc","index:"+index.get(position));
             position ++;
         }
         nowRouteName.setText(naviinfo.getCurrentRoadName().toString());
@@ -377,14 +399,12 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         //setSpeedColor(speed);
         if(DEBUG){
             //Log.i("acc","ssssss1:------"+speed);
-            speed = (int) (Math.random()*60+10);
+            //speed = (int) (Math.random()*60+10);
             //Log.i("acc","ssssss2:------"+speed);
             mAMapNavi.setEmulatorNaviSpeed((int) speed);
-            now.setText(""+(int)speed);
-            setSpeedColor(speed);
+           // now.setText(""+(int)speed);
+          //  setSpeedColor(speed);
             vAnalyze.setAngle((float) ((90f/vAdrice)*speed));
-            Log.i("angle","speed:------"+speed);
-            Log.i("angle","angle:------"+(float) ((90f/vAdrice)*speed));
             vAnalyze.chartRender();
             vAnalyze.invalidate();
             STARTNAVI = true;
@@ -411,23 +431,6 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
     }
 
     private void findV(int position) {
-        //int index = -1;
-        //找到当前路径的下标
-
-//        for(MyRoute r : rs){
-//            //Log.i("acc","route"+r.toString());
-//            if(r.getName().equals(roadName)){
-//                Log.i("acc","index222:"+index);
-//                index = rs.indexOf(r);
-//                Log.i("acc","index333:"+index);
-//                break;
-//            }
-//            //Log.i("acc","index444:"+index);
-//        }
-        //initSpeed();
-        Log.i("pos","pos----"+position);
-        Log.i("pos","rs----"+rs.size());
-        Log.i("pos","ls----"+ls.size());
         List<MyRoute> rr = new ArrayList<MyRoute>();
         Light ll = new Light();
         ll.setMinEst(rs.size()-position);
@@ -443,9 +446,7 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
         }
         vAdrice = rr.get(0).getvDRIVE();
         speedAdvice.setText(""+(int)vAdrice);
-        TTSController tsc = new TTSController(this);
-        tsc.init();
-        tsc.startSpeaking("建议速度"+(int)vAdrice);
+
     }
 
     @Override
@@ -503,6 +504,10 @@ public class RouteActivity extends BaseActivity implements SensorEventListener{
                 editor.putFloat("fule",(float) (fuelConsumption/1000f+sp.getFloat("fule",0.0f)));
                 editor.putFloat("distance",(float) ((distanceMax-distanceMin)/1000f)+sp.getFloat("distance",0.0f));
                 editor.putFloat("carbon",(float) (carbonEmission/1000f+sp.getFloat("carbon",0.0f)));
+
+//                editor.putFloat("fule",(float) (0));
+//                editor.putFloat("distance",(float) 0);
+//                editor.putFloat("carbon",(float) (0));
                 editor.commit();
                 startActivity(new Intent(RouteActivity.this, MineActivity.class));
                 finish();

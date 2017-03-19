@@ -116,10 +116,42 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/darkGrey"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            >
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="20dp"
+                >
+                <RadioButton
+                    android:onClick="setUserType"
+                    android:id="@+id/old_driver"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BRT"
+                    />
+                <RadioButton
+                    android:onClick="setUserType"
+                    android:id="@+id/new_driver"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="小客车"
+                    />
+            </RadioGroup>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
             <RadioButton
                 android:layout_weight="1"
@@ -130,16 +162,16 @@
                 android:layout_marginLeft="20dp"
                 />
             <TextView
-                android:layout_marginRight="20dp"
+                android:layout_weight="1"
                 android:clickable="true"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:onClick="forgetPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/forget_password"
                 android:textColor="@color/colorIconBlue"
                 android:layout_gravity="right"
-            />
+                />
         </LinearLayout>
         <Button
             android:id="@+id/login"
