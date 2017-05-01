@@ -23,7 +23,9 @@
             android:gravity="center"
             android:textSize="@dimen/lTextSize"
             android:textColor="@color/colorWhite"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true" />
         <TextView
             android:clickable="true"
             android:onClick="register"
@@ -123,6 +125,7 @@
             android:orientation="horizontal"
             >
             <RadioGroup
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -135,7 +138,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="BRT"
+                    android:text="老司机"
                     />
                 <RadioButton
                     android:onClick="setUserType"
@@ -144,7 +147,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="小客车"
+                    android:text="黄司机"
                     />
             </RadioGroup>
 

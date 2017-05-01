@@ -9,12 +9,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -36,7 +38,7 @@ import java.util.regex.Pattern;
  * Created by tangpeng on 2017/2/18.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
 
     public static final String BASIC_URL = "http://192.168.1.125:8080/lcx/servlet";
     private static final String AIM_URL = "/DriverLogin";
@@ -49,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     private RequestQueue requestQueue;
 
     private InputMethodManager inputMethodManager;
-
+    private RadioButton oldDriver;
     private boolean DEBUG =true;
 
     Handler handler = new Handler() {
@@ -92,6 +94,8 @@ public class LoginActivity extends AppCompatActivity {
                 login.setClickable(isChecked);
             }
         });
+        oldDriver = (RadioButton) findViewById(R.id.old_driver);
+        oldDriver.setOnCheckedChangeListener(this);
     }
 
     private void checkInfo() {
@@ -114,7 +118,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         if (!matcher.matches()) {
-            Toast.makeText(this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, "请输入正确的手机号", Toast.LENGTH_SHORT).show();
         } else if (pass.equals("")) {
             Toast.makeText(this, "请填写密码", Toast.LENGTH_SHORT).show();
         } else {
@@ -190,6 +194,48 @@ public class LoginActivity extends AppCompatActivity {
     private void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
+        }
+    }
+    public void setUserType(View view){
+        SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+       // Toast.makeText(this,"OK",Toast.LENGTH_SHORT).show();
+        if(view.getId() == R.id.old_driver){
+            editor.putBoolean("oldType",true);
+            Log.i("type","Logtype:"+true);
+           // Toast.makeText(this,"TURE",Toast.LENGTH_SHORT).show();
+        }else {
+            editor.putBoolean("oldType",false);
+            Log.i("type","Logtype:"+false);
+            //Toast.makeText(this,"FALSE",Toast.LENGTH_SHORT).show();
+        }
+        //Log.i("type","type:"+type);
+        editor.commit();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        switch (compoundButton.getId()){
+            case R.id.old_driver:
+                if(b){
+                    editor.putBoolean("oldType",true);
+                    Log.i("type","Logtype2:"+true);
+                }else{
+                    editor.putBoolean("oldType",false);
+                    Log.i("type","Logtype2:"+true);
+                }
+                break;
+            case R.id.new_driver:
+                if(b){
+                    editor.putBoolean("oldType",false);
+                    Log.i("type","Logtype:"+true);
+                }else{
+                    editor.putBoolean("oldType",true);
+                    Log.i("type","Logtype:"+true);
+                }
+                break;
         }
     }
 }

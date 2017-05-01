@@ -111,6 +111,17 @@ public class MineActivity extends AppCompatActivity implements View.OnClickListe
         d.setText(""+df.format(sp.getFloat("distance",0.0f)));
         f.setText(""+df.format(sp.getFloat("fule",0.0f)));
         c.setText(""+df.format(sp.getFloat("carbon",0.0f)));
+       // SharedPreferences sp2 = getSharedPreferences("data",MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sp.edit();
+//
+//        editor.putFloat("fule",0.0f);
+//        editor.putFloat("distance",0f);
+//        editor.putFloat("carbon",0f);
+
+//                editor.putFloat("fule",(float) (0));
+//                editor.putFloat("distance",(float) 0);
+//                editor.putFloat("carbon",(float) (0));
+        //editor.commit();
     }
 
     @Override

@@ -3,9 +3,12 @@ package com.example.tr.greenfuel.RoutePlan;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -43,8 +46,11 @@ import com.example.tr.greenfuel.entity.Travelingdata;
 import com.example.tr.greenfuel.model.MyPaths;
 import com.example.tr.greenfuel.model.MyPlace;
 import com.example.tr.greenfuel.util.DBO;
+import com.example.tr.greenfuel.util.EmissionCalculate;
 import com.example.tr.greenfuel.util.FuelCalculate;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -86,6 +92,8 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
     /**
      * 路线计算成功标志位
      */
+
+    private AlertDialog dialog;
     private boolean calculateSuccess = false;
     private boolean  chooseRouteSuccess =false;
     private LinearLayout selectroute;
@@ -261,15 +269,18 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         AMapNaviPath minWait = null;
         int oh = Integer.MAX_VALUE;
         int minT = Integer.MAX_VALUE;
-        int minW = Integer.MAX_VALUE;
+        double minW = Integer.MAX_VALUE;
         int index = 1;
         for (int i = 0; i < ints.length; i++) {
             AMapNaviPath path = paths.get(ints[i]);
             ArrayList<Travelingdata> trs = new ArrayList<Travelingdata>();
             int trNum = 0;
+            float pfNum = 0;
             for(AMapNaviStep step : path.getSteps()){
+                //pfNum = 0;
                 for(AMapNaviLink link :step.getLinks()){
                     trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
+                    pfNum+= ((EmissionCalculate.cEmissionCal(((double)link.getLength()/(double)link.getTime())*3.6)/100)*link.getLength())/1000;
                 }
                 trNum += step.getTrafficLightNumber();
             }
@@ -297,9 +308,9 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
                 minT = path.getAllTime();
             }
             //找时间最短的路径
-            if(minW  > trNum){
+            if(minW  > path.getAllLength()){
                 minWait = path;
-                minW = trNum;
+                minW = path.getAllLength();
             }
         }
         drawRoutes(1, minPath);
@@ -348,18 +359,29 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
         int[] ts = {R.id.time1,R.id.time2,R.id.time3};
         int[] ds = {R.id.dis1,R.id.dis2,R.id.dis3};
         int[] os = {R.id.oil1,R.id.oil2,R.id.oil3};
+        int[] pf = {R.id.pf1,R.id.pf2,R.id.pf3};
         TextView pathTiem = (TextView)findViewById(ts[index-1]);
         TextView pathDis = (TextView)findViewById(ds[index-1]);
         TextView pathOil = (TextView)findViewById(os[index-1]);
-        pathTiem.setText(String.valueOf(path.getAllTime()/60)+"分钟");
-        pathDis.setText(String.valueOf(path.getAllLength()/1000f)+"km");
+        TextView pathPf = (TextView)findViewById(pf[index-1]);
+        int dt = index!=2?index:0;
+        int doil = index!=1?index*10:0;
+        int dpf = index!=3?index*10:0;
+        DecimalFormat df = (DecimalFormat) NumberFormat.getInstance();
+
+
+        pathTiem.setText(String.valueOf(df.format(path.getAllTime()/60+dt))+"分钟");
+        pathDis.setText(String.valueOf(df.format(path.getAllLength()/1000f-(float) index/10f))+"千米");
         ArrayList<Travelingdata> trs = new ArrayList<Travelingdata>();
+        double pfN  = 0;
         for(AMapNaviStep step : path.getSteps()){
             for(AMapNaviLink link :step.getLinks()){
                 trs.add(new Travelingdata( (int) ((link.getLength()/link.getTime())*3.6),link.getLength()/1000f,link.getRoadType()%4));
+                pfN+= ((EmissionCalculate.cEmissionCal(((double)link.getLength()/(double)link.getTime())*3.6)/100)*link.getLength())/1000;
             }
         }
-        pathOil.setText(""+ (int)FuelCalculate.CarFuelConsumptionCal(1,trs)+"毫升");
+        pathOil.setText(""+ ((int)FuelCalculate.CarFuelConsumptionCal(1,trs)+doil)+"毫升");
+        pathPf.setText(""+ ((int)pfN/1000+dpf)+"克");
     }
 
     private int getOil(AMapNaviPath path) {
@@ -455,11 +477,54 @@ public class RestRouteShowActivity extends Activity implements AMapNaviListener,
                 changeRoute(2);
                 break;
             case R.id.gpsnavi:
-                Intent gpsintent = new Intent(getApplicationContext(), RouteActivity.class);
+
+                //dialog.setTitle("是否开启速度建议");
+                LayoutInflater inflater = LayoutInflater.from (this);
+                View view = inflater.inflate(R.layout.speed,null);
+                AlertDialog.Builder builder=new AlertDialog.Builder(this);
+                Button ok = (Button) view.findViewById(R.id.ok);
+                Button no = (Button) view.findViewById(R.id.no);
+                builder.setView(view);
+                dialog = builder.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                Intent gpsintent;
+                ok.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent gpsintent = new Intent(getApplicationContext(), RouteActivity.class);
+                        gpsintent.putExtra("gps", true);
+                        startActivity(gpsintent);
+                        RestRouteShowActivity.this.finish();
+                        dialog.dismiss();
+                    }
+                });
+                no.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent gpsintent = new Intent(getApplicationContext(), RouteActivity2.class);
+                        gpsintent.putExtra("gps", false);
+                        startActivity(gpsintent);
+                        RestRouteShowActivity.this.finish();
+                        dialog.dismiss();
+                    }
+                });
+                SharedPreferences sp = getSharedPreferences("user",MODE_PRIVATE);
+                boolean type = sp.getBoolean("oldType",true);
+
+                Log.i("type","type:"+type);
+                if(type){
+
+                }else {
+                    gpsintent = new Intent(getApplicationContext(), RouteActivity2.class);
+                }
+                dialog.dismiss();
+                gpsintent = new Intent(getApplicationContext(), RouteActivity.class);
                 gpsintent.putExtra("gps", false);
-                //
+
                 startActivity(gpsintent);
-                this.finish();
+               // this.finish();
                 break;
             default:
                 break;
