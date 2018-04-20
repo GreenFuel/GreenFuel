@@ -13,7 +13,7 @@
         android:label="Tests for org.xclcharts.chart.test"
         android:targetPackage="org.xclcharts.chart.test" />
 
-    <application>
+    <application android:debuggable="true" >
         <uses-library android:name="android.test.runner" />
     </application>
 

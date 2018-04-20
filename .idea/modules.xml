@@ -2,11 +2,16 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/GreenFuel.iml" filepath="$PROJECT_DIR$/GreenFuel.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/GreenFuel.iml" filepath="$PROJECT_DIR$/.idea/GreenFuel.iml" />
+      <module fileurl="file://D:\FirefoxDownload\GreenFuel\GreenFuel.iml" filepath="D:\FirefoxDownload\GreenFuel\GreenFuel.iml" />
       <module fileurl="file://$PROJECT_DIR$/MPChartLib/MPChartLib.iml" filepath="$PROJECT_DIR$/MPChartLib/MPChartLib.iml" />
+      <module fileurl="file://D:\FirefoxDownload\GreenFuel\MPChartLib\MPChartLib.iml" filepath="D:\FirefoxDownload\GreenFuel\MPChartLib\MPChartLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\FirefoxDownload\GreenFuel\app\app.iml" filepath="D:\FirefoxDownload\GreenFuel\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/mylibrary/mylibrary.iml" filepath="$PROJECT_DIR$/mylibrary/mylibrary.iml" />
+      <module fileurl="file://D:\FirefoxDownload\GreenFuel\mylibrary\mylibrary.iml" filepath="D:\FirefoxDownload\GreenFuel\mylibrary\mylibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/xCLCharts/xCLCharts.iml" filepath="$PROJECT_DIR$/xCLCharts/xCLCharts.iml" />
+      <module fileurl="file://D:\FirefoxDownload\GreenFuel\xCLCharts\xCLCharts.iml" filepath="D:\FirefoxDownload\GreenFuel\xCLCharts\xCLCharts.iml" />
     </modules>
   </component>
 </project>
